@@ -9,12 +9,6 @@ module Decidim
     class Engine < ::Rails::Engine
       isolate_namespace Decidim::HalfSignup
 
-      routes do
-        # Add engine routes here
-        # resources :half_signup
-        # root to: "half_signup#index"
-      end
-
       initializer "HalfSignup.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
