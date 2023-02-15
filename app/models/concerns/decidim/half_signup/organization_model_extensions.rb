@@ -7,6 +7,7 @@ module Decidim
       included do
         has_one :auth_setting,
                 class_name: "Decidim::HalfSignup::AuthSetting",
+                foreign_key: "decidim_organization_id",
                 dependent: :destroy
       end
     end
