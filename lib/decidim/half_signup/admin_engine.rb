@@ -32,12 +32,6 @@ module Decidim
         end
       end
 
-      initializer "decidim_half_signup.add_customizations" do |app|
-        app.config.to_prepare do
-          Decidim::Organization.include(Decidim::HalfSignup::OrganizationModelExtensions)
-        end
-      end
-
       def load_seed
         nil
       end
