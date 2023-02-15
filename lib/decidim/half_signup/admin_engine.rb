@@ -26,7 +26,7 @@ module Decidim
                         decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"),
                         position: 1.0,
                         if: allowed_to?(:update, :organization, organization: current_organization),
-                        active: is_active_link?(decidim_admin.edit_organization_path)
+                        active: is_active_link?(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
         end
       end
 

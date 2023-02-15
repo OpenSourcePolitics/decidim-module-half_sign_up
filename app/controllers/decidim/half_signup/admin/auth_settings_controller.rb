@@ -4,6 +4,7 @@ module Decidim
   module HalfSignup
     module Admin
       class AuthSettingsController < Decidim::Admin::ApplicationController
+        layout "decidim/admin/settings"
         def edit
           enforce_permission_to :update, :organization, organization: current_organization
 
@@ -12,6 +13,19 @@ module Decidim
 
         def update
           enforce_permission_to :update, :organization, organization: current_organization
+
+          @form = form(AuthSettingForm).from_params(params)
+
+          UpdateAuthSettings.call(authentication_settings, @form) do
+            on(:ok) do
+              flash[:notice] = I18n.t("organization.update.success", scope: "decidim.admin")
+            end
+
+            on(:invalid) do
+              flash.now[:alert] = I18n.t("organization.update.error", scope: "decidim.admin")
+            end
+          end
+          render :edit
         end
 
         private
