@@ -9,5 +9,6 @@ module Decidim
   # This namespace holds the logic of the `HalfSignup` component. This component
   # allows users to create half_signup in a participatory space.
   module HalfSignup
+    autoload :PartialSignupSettings, "decidim/half_signup/partial_signup_settings"
   end
 end

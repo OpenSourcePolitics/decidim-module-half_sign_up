@@ -5,12 +5,20 @@ en:
       decidim:
         half_signup:
           auth_settings:
-            enable_partial_email_signup_verification: Enable partial signup using email verification
-            enable_partial_sms_signup_verification: Enable partial signup using SMS verification
+            enable_partial_email_signup: Enable partial signup using email verification
+            enable_partial_sms_signup: Enable partial signup using SMS verification
   decidim:
+    budgets:
+      voting:
+        index:
+          sign_in_first: You need to sign in to start voting.
     components:
       half_signup:
         name: HalfSignup
+    devise:
+      sessions:
+        new:
+          email: Sign in with Email
     half_signup:
       admin:
         auth_settings:
@@ -19,3 +27,4 @@ en:
             update: Update
       menu:
         auth_settings: Authentication settings
+sign_in_first: You need to sign in to start voting.

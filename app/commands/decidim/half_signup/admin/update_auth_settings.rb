@@ -10,8 +10,8 @@ module Decidim
         #
         # authentication_settings - The authentication_settings that will be updated.
         # form - A form object with the params.
-        def initialize(authentication_settings, form)
-          @authentication_settings = authentication_settings
+        def initialize(auth_settings, form)
+          @auth_settings = auth_settings
           @form = form
         end
 
@@ -28,7 +28,7 @@ module Decidim
 
         def update_auth_settings
           Decidim.traceability.update!(
-            authentication_settings,
+            @auth_settings,
             form.current_user,
             attributes
           )
