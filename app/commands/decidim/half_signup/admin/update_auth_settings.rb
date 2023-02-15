@@ -36,8 +36,8 @@ module Decidim
 
         def attributes
           {
-            enable_partial_sms_signup_verification: form.enable_partial_sms_signup_verification,
-            enable_partial_email_signup_verification: form.enable_partial_email_signup_verification
+            enable_partial_sms_signup: form.enable_partial_sms_signup,
+            enable_partial_email_signup: form.enable_partial_email_signup
           }
         end
       end
