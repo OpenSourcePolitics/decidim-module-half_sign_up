@@ -21,13 +21,14 @@ module Decidim
           UpdateAuthSettings.call(authentication_settings(current_organization), @form) do
             on(:ok) do
               flash[:notice] = I18n.t("organization.update.success", scope: "decidim.admin")
+              redirect_to action: :edit
             end
 
             on(:invalid) do
               flash.now[:alert] = I18n.t("organization.update.error", scope: "decidim.admin")
+              render :edit
             end
           end
-          render :edit
         end
       end
     end
