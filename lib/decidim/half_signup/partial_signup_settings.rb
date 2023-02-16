@@ -9,6 +9,13 @@ module Decidim
           organization: organization
         )
       end
+
+      def half_signup_enabled?(organization)
+        auth_settings = authentication_settings(organization)
+        return unless auth_settings
+
+        auth_settings&.enable_partial_email_signup || auth_settings&.enable_partial_sms_signup
+      end
     end
   end
 end

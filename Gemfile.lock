@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     decidim-half_signup (0.27.0)
+      countries (~> 5.1, >= 5.1.2)
       decidim-core (= 0.27.0)
 
 GEM
@@ -146,6 +147,8 @@ GEM
     coffee-script-source (1.12.2)
     commonmarker (0.23.8)
     concurrent-ruby (1.2.0)
+    countries (5.3.1)
+      unaccent (~> 0.3)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -336,7 +339,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.10.2)
+    devise-i18n (1.10.3)
       devise (>= 4.8.0)
     devise_invitable (2.0.7)
       actionmailer (>= 5.0)
@@ -738,13 +741,14 @@ GEM
     thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.11)
-    timeout (0.3.1)
+    timeout (0.3.2)
     tomlrb (2.0.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unaccent (0.4.0)
     unicode-display_width (2.4.2)
     valid_email2 (2.3.1)
       activemodel (>= 3.2)

@@ -25,6 +25,18 @@ en:
           edit:
             title: Half signup module
             update: Update
+      quick_auth:
+        options:
+          title: You need to authenticate to vote.
+          select: "Should we send a code:"
+        phone_form:
+          submit: Send code via SMS
+        phone_instructions:
+          enter_phone_number: Enter your phone number
+          step_one: Step 1 of 2
+          type_in_phone: Type in your phone number below to get a verification code via SMS to your phone number.
+        sms:
+          title: SMS authentication
+          another_method: Another method
       menu:
         auth_settings: Authentication settings
-sign_in_first: You need to sign in to start voting.
