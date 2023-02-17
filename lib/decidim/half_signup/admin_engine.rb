@@ -11,7 +11,7 @@ module Decidim
 
       routes do
         scope "/organization" do
-          resources :auth_settings, param: :slug, only: [:edit, :update]
+          resources :auth_settings, param: :slug, only: [:edit, :update], path: ""
         end
       end
 
