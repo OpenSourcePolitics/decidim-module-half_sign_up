@@ -10,7 +10,9 @@ module Decidim
       paths["lib/tasks"] = nil
 
       routes do
-        resources :auth_settings, param: :slug, only: [:edit, :update]
+        scope "/organization" do
+          resources :auth_settings, param: :slug, only: [:edit, :update]
+        end
       end
 
       initializer "decidim_half_signup.mount_routes", before: "decidim_admin.mount_routes" do
@@ -21,10 +23,11 @@ module Decidim
 
       initializer "decidim_half_signup.add_half_signup_menu_to_admin", before: "decidim_admin.admin_settings_menu" do
         Decidim.menu :admin_settings_menu do |menu|
+          # /organization/
           menu.add_item :edit_organization,
                         I18n.t("menu.auth_settings", scope: "decidim.half_signup"),
                         decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"),
-                        position: 1.0,
+                        position: 1.1,
                         if: allowed_to?(:update, :organization, organization: current_organization),
                         active: is_active_link?(decidim_half_signup_admin.edit_auth_setting_path(
                                                   slug: "authentication_settings"

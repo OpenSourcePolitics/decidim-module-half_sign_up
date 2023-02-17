@@ -46,6 +46,8 @@ module Decidim
           Decidim::Organization.include(
             Decidim::HalfSignup::OrganizationModelExtensions
           )
+
+          Decidim::Menu.include(Decidim::HalfSignup::MenuExtensions)
         end
       end
     end
