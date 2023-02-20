@@ -7,6 +7,9 @@ en:
           auth_settings:
             enable_partial_email_signup: Enable partial signup using email verification
             enable_partial_sms_signup: Enable partial signup using SMS verification
+      sms_sign_in:
+        phone_country: Phone country
+        phone_number: Phone number
   decidim:
     budgets:
       voting:
@@ -26,9 +29,16 @@ en:
             title: Half signup module
             update: Update
       quick_auth:
+        authenticate:
+          unnamed_user: Unnamed user
+        authenticate_user:
+          error: Verification failed. Please try again.
         options:
           title: You need to authenticate to vote.
           select: "Should we send a code:"
+        development_hint:
+          verification_code: "The verificaiton code is: "
+          hint_notification: (This message only appears in development mode)
         phone_form:
           submit: Send code via SMS
         phone_instructions:
@@ -38,5 +48,22 @@ en:
         sms:
           title: SMS authentication
           another_method: Another method
+        sms_verification:
+          error:
+            invalid_from_number: The sender number is not correctly configured or is not able to send messages. Please contact the platform support for further help.
+            invalid_geo_permission: The system is not configured to send messages to your country. Please contact the platform support for further help.
+            invalid_to_number: The phone number you provided is not correct. Please check that you entered your phone number correctly.
+            unknown: An error occured which has been logged, please try again. If the error persists, please contact the platform support for further help.
+          success: "Verification code sent to %{phone}."
+        verify:
+          sign_in: Sign in with SMS
+          step_two: Step 2 of 2
+          enter_verification_message: "Enter the verification code sent to: %{phone}"
+          enter_verification_code: Enter verification code
+          submit: Verify
+          not_receive: Did not receive the code?
+          resend_code: Resend code
+          use_another_method: use another method
+          or: Or
       menu:
         auth_settings: Authentication settings

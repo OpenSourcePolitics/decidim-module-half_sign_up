@@ -9,7 +9,7 @@
         <div class="columns large-6 medium-centered" id="select-wrapper">
           <div class="card">
             <div class="card__content">
-              <%= decidim_form_for(@form, url: users_quick_auth_verify_path, method: :get) do |form| %>
+              <%= decidim_form_for(@form, url: users_quick_auth_sms_verification_path, method: :post) do |form| %>
                 <%= render partial: "phone_form", locals: { form: form } %>
               <% end %>
               <p class="text-center">

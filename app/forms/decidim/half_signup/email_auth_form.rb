@@ -3,7 +3,7 @@
 module Decidim
   module HalfSignup
     class EmailAuthForm < Form
-      mimic :sms_sign_in
+      mimic :email_sign_in
 
       attribute :email, String
 

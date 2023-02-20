@@ -5,6 +5,8 @@ module Decidim
     # Custom helpers, scoped to the half_signup engine.
     #
     module QuickAuthHelper
+      include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
+
       def phone_country_options(selected = nil)
         options_for_select(sorted_countries, selected)
       end
@@ -20,8 +22,8 @@ module Decidim
 
       def current_phone_number
         PhoneNumberFormatter.new(
-          phone_number: session[:authentication_attempt]["phone"],
-          iso_country_code: session[:authentication_attempt]["country"]
+          phone_number: auth_session[:phone],
+          iso_country_code: auth_session[:country]
         ).format
       end
 

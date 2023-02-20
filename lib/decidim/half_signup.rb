@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "countries"
+
 require "decidim/half_signup/version"
 require "decidim/half_signup/admin"
 require "decidim/half_signup/engine"
@@ -20,7 +21,7 @@ module Decidim
     # The country or countries to be selected in country selection
     # during sms verification/authentication. The default is being set to nil
     config_accessor :default_countries do
-      nil
+      [:fi]
     end
   end
 end
