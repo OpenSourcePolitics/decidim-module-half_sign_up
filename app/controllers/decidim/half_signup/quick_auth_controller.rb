@@ -48,7 +48,8 @@ module Decidim
         @form = form(VerificationCodeForm).from_params(params)
         AuthenticateUser.call(form: @form, data: auth_session, organization: current_organization) do
           on(:ok) do |user|
-            raise user.inspect
+            flash[:notice] = I18n.t(".signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            sign_in_and_redirect user
           end
 
           on(:invalid) do

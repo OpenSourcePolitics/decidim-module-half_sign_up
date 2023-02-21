@@ -33,6 +33,7 @@ en:
           unnamed_user: Unnamed user
         authenticate_user:
           error: Verification failed. Please try again.
+          signed_in: Signed in successfully.
         options:
           title: You need to authenticate to vote.
           select: "Should we send a code:"
