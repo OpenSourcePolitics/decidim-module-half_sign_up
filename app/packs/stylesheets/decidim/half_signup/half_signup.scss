@@ -20,6 +20,11 @@
     }
   }
 }
+.centered_items{
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
 
 form input[type='number']::-webkit-outer-spin-button,
 form input[type='number']::-webkit-inner-spin-button {

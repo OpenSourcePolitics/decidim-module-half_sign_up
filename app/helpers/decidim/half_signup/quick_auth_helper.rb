@@ -6,6 +6,7 @@ module Decidim
     #
     module QuickAuthHelper
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
+      include Decidim::HalfSignup::PartialSignupSettings
 
       def phone_country_options(selected = nil)
         options_for_select(sorted_countries, selected)
@@ -25,6 +26,19 @@ module Decidim
           phone_number: auth_session[:phone],
           iso_country_code: auth_session[:country]
         ).format
+      end
+
+      def half_signup_handlers
+        settings = authentication_settings(current_organization)
+
+        [].tap do |array|
+          array << "email" if settings&.enable_partial_email_signup
+          array << "sms" if settings&.enable_partial_sms_signup
+        end
+      end
+
+      def handlers_count
+        half_signup_handlers.length
       end
 
       private

@@ -3,23 +3,22 @@
 module Decidim
   module HalfSignup
     class AuthenticateUser < Decidim::Command
-      def initialize(form:, data:, organization:)
+      def initialize(form:, data:)
         @form = form
         @data = data
-        @organization = organization
       end
 
       def call
-        return broadcast(:invalid) if @form.invalid?
+        return broadcast(:invalid) unless form.valid?
         return broadcast(:invalid) unless validate!
 
-        user = find_or_create_user(@data)
+        user = find_or_create_user!
         broadcast(:ok, user)
       end
 
       private
 
-      attr_reader :form, :data, :organization
+      attr_reader :form, :data
 
       def validate!
         return false unless code_still_valid?
@@ -37,18 +36,27 @@ module Decidim
         @verification_code_sent_at ||= data["sent_at"]&.in_time_zone
       end
 
-      def find_or_create_user(data)
-        user = Decidim::User.find_by(
-          phone_number: data["phone"],
-          phone_country: data["country"]
-        )
+      def find_or_create_user!
+        user = if sms_auth?
+                 Decidim::User.find_by(
+                   phone_number: data["phone"],
+                   phone_country: data["country"],
+                   organization: form.organization
+                 )
+               else
+                 Decidim::User.find_by(
+                   email: data["email"],
+                   organization: form.organization
+                 )
+               end
+
         return user if user.present?
 
         generated_password = SecureRandom.hex
         Decidim::User.create! do |record|
           record.name = t(".unnamed_user")
           record.nickname = UserBaseEntity.nicknamize(record.name)
-          record.email = generate_email(data["country"], data["phone"])
+          record.email = data["email"] || generate_email(data["country"], data["phone"])
           record.password = generated_password
           record.password_confirmation = generated_password
 
@@ -57,12 +65,16 @@ module Decidim
           record.phone_number = data["phone"]
           record.phone_country = data["country"]
           record.tos_agreement = "1"
-          record.organization = organization
+          record.organization = form.organization
         end
       end
 
       def generate_email(country, phone)
-        EmailGenerator.new(organization, country, phone).generate
+        EmailGenerator.new(form.organization, country, phone).generate
+      end
+
+      def sms_auth?
+        data["auth_method"] == "sms"
       end
     end
   end

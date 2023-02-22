@@ -16,21 +16,34 @@ module Decidim
         init_sessions!({ auth_method: "email" })
       end
 
-      def sms_verification
-        @form = form(SmsAuthForm).from_params(params)
+      def verification
+        @form = set_auth_form
         # in the test, and development environment, and with the Twilio gateway installation,
         # we have to set the organization to nil, since the delivery report can not be sent to the
         # localhost. However, we should set this to the current_organization if production
-        SendSmsCode.call(@form, organization: set_organization) do
+        SendVerification.call(@form) do
           on(:ok) do |result|
-            update_sessions!({ code: result, country: @form.phone_country, phone: @form.phone_number })
-            flash[:notice] = I18n.t(".success", scope: "decidim.half_signup.quick_auth.sms_verification", phone: formatted_phone_number(@form))
+            if sms_auth?
+              update_sessions!({ code: result, country: @form.phone_country, phone: @form.phone_number })
+              flash[:notice] = I18n.t(".success", scope: "decidim.half_signup.quick_auth.sms_verification", phone: formatted_phone_number(@form))
+            else
+              update_sessions!({ code: result, email: @form.email })
+              flash[:notice] = I18n.t(".success", scope: "decidim.half_signup.quick_auth.email_verification", email: form.email)
+            end
             redirect_to action: "verify"
           end
 
           on(:invalid) do |error_code|
-            flash.now[:alert] = sms_sending_error(error_code)
-            render action: "sms"
+            flash.now[:alert] = if error_code
+                                  sms_sending_error(error_code)
+                                else
+                                  I18n.t(".unknown", scope: "decidim.half_signup.quick_auth.sms_verification")
+                                end
+            if sms_auth?
+              render action: "sms"
+            else
+              render action: "email"
+            end
           end
         end
       end
@@ -40,15 +53,13 @@ module Decidim
         @verification_code = auth_session["code"]
       end
 
-      def email_verification
-        form(EmailAuthForm).from_params(params)
-      end
-
       def authenticate
         @form = form(VerificationCodeForm).from_params(params)
-        AuthenticateUser.call(form: @form, data: auth_session, organization: current_organization) do
+        @verification_code = auth_session["code"]
+        AuthenticateUser.call(form: @form, data: auth_session) do
           on(:ok) do |user|
             flash[:notice] = I18n.t(".signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            reset_auth_session
             sign_in_and_redirect user
           end
 
@@ -59,28 +70,37 @@ module Decidim
         end
       end
 
-      def resend_code
-        # params[:auth_method] # sms|email
+      def resend
+        return unless ensure_code_delivery
+
+        @form = form(set_auth_form.constantize).from_params(params_from_previous_attempts)
+
+        SendVerification.call(@form, organization: current_organization) do
+          on(:ok) do |result|
+            update_sessions!(result)
+            flash[:notice] = if sms_auth?
+                               I18n.t(".success", scope: "decidim.half_signup.quick_auth.sms_verification", phone: formatted_phone_number(@form))
+                             else
+                               I18n.t(".success", scope: "decidim.half_signup.quick_auth.email_verification", email: auth_session["email"])
+                             end
+            redirect_to action: "verify"
+          end
+
+          on(:invalid) do |error_code|
+            if sms_auth?
+              flash.now[:alert] = sms_sending_error(error_code)
+              render action: "sms"
+            else
+              flash.now[:alert] = I18n.t(".error", scope: "decidim.half_signup.quick_auth.email_verification")
+              render action: "email"
+            end
+          end
+        end
       end
 
       def options; end
 
       private
-
-      def set_organization
-        return current_organization unless twilio_gateway?
-        return nil if Rails.env.test? || Rails.env.development?
-
-        current_organization
-      end
-
-      def twilio_gateway?
-        Decidim.config.sms_gateway_service == "Decidim::Sms::Twilio::Gateway"
-      end
-
-      def formatted_phone_number(form)
-        PhoneNumberFormatter.new(phone_number: form.phone_number, iso_country_code: form.phone_country).format
-      end
 
       def sms_sending_error(error_code)
         case error_code
@@ -92,6 +112,35 @@ module Decidim
           I18n.t(".invalid_from_number", scope: "decidim.half_signup.quick_auth.sms_verification")
         else
           I18n.t(".unknown", scope: "decidim.half_signup.quick_auth.sms_verification")
+        end
+      end
+
+      def params_from_previous_attempts
+        {
+          phone_country: auth_session["phone"],
+          phone_number: auth_session["country"],
+          email: auth_session["email"]
+        }
+      end
+
+      def send_code_allowed?
+        auth_session.present? &&
+          auth_session["sent_at"] < 1.minute.ago
+      end
+
+      def ensure_code_delivery
+        return true if send_code_allowed?
+
+        flash[:error] = I18n.t(".not_allowed", scope: "decidim.half_signup.quick_auth.resend_code")
+        redirect_to action: "verify"
+        false
+      end
+
+      def set_auth_form
+        if sms_auth?
+          form(SmsAuthForm).from_params(params)
+        else
+          form(EmailAuthForm).from_params(params)
         end
       end
     end

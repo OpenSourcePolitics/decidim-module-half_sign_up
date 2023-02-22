@@ -2,7 +2,7 @@
 
 module Decidim
   module HalfSignup
-    class SmsAuthForm < Form
+    class SmsAuthForm < AuthForm
       mimic :sms_sign_in
 
       attribute :phone_number, Integer

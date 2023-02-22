@@ -2,11 +2,11 @@
 
 module Decidim
   module HalfSignup
-    class VerificationCodeForm < Form
-      attribute :verification, String
+    class AuthForm < Form
+      attribute :auth_method, String
       attribute :organization, Decidim::Organization
 
-      validates :verification, presence: true
+      validates :auth_method, inclusion: { in: %w(sms email) }
 
       alias organization current_organization
     end

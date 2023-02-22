@@ -1,25 +1,53 @@
-<div class="wrapper text-center">
-    <%= t(".title") %>
-  <div class="row m-top-3">
-    <div class="medium-6 columns medium-offset-3">
-      <div class="large-5 columns float-left padding-small">
-        <h3>Left Column Title</h3>
-        <p>Some text goes here</p>
-        <div class="button-group expanded padding-small">
-          <button class="button">Button 2</button>
+<div class="columns large-6 medium-8 text-center large-offset-3 medium-offset-2">
+  <h1><%= t(".title") %></h1>
+  <div class="row card -3">
+    <div class="card__content centered_items">
+    <% if handlers_count > 1 %>
+      <% half_signup_handlers.each_with_index do |handler, ind| %>
+            <% if handler == "sms" %>
+              <div class="small-12 medium-5 columns">
+                <div class="row">
+                  <%= image_pack_tag "media/images/chatbubble-sms-outline.svg", class: "columns small-6 small-offset-3" %>
+                </div>
+                <div class="row">
+                  <%= link_to t(".sms"), users_quick_auth_sms_path, class: "button expanded" %>
+                </div>
+              </div>
+            <% else %>
+              <div class="small-12 medium-5 columns">
+                <div class="row">
+                  <%= image_pack_tag "media/images/mail-open-outline.svg", class: "columns small-6 small-offset-3" %>
+                </div>
+                <div class="row">
+                  <%= link_to t(".email"), users_quick_auth_email_path, class: "button expanded" %>
+                </div>
+              </div>
+            <% end %>
+        <% if ind == 0 %>
+          <div class="small-12 medium-2 columns">
+            <%= t(".or")%>
+          </div>
+        <% end %>
+      <% end %>
+    <% elsif half_signup_handlers.first == "sms" %>
+      <div class="small-12 columns">
+        <div class="row">
+          <%= image_pack_tag "media/images/chatbubble-sms-outline.svg", class: "columns small-8 small-offset-2" %>
+        </div>
+        <div class="row">
+          <%= link_to t(".sms"), users_quick_auth_sms_path, class: "button expanded" %>
         </div>
       </div>
-      <div class="large-2 columns float-left padding-small">
-        <h3>Middle Column Title</h3>
-        <p>Some text goes here</p>
-      </div>
-      <div class="large-5 columns float-left">
-        <h3>Left Column Title</h3>
-        <p>Some text goes here</p>
-        <div class="button-group expanded padding-small">
-          <button class="button">Button 2</button>
+    <% else %>
+      <div class="small-12 columns">
+        <div class="row">
+          <%= image_pack_tag "media/images/mail-open-outline.svg", class: "columns small-8 small-offset-2" %>
+        </div>
+        <div class="row">
+          <%= link_to t(".email"), users_quick_auth_email_path, class: "button expanded" %>
         </div>
       </div>
+    <% end %>
     </div>
   </div>
 </div>

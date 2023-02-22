@@ -37,25 +37,39 @@ en:
         options:
           title: You need to authenticate to vote.
           select: "Should we send a code:"
+          or: OR
+          sms: TO YOUR PHONE
+          email: TO YOUR EMAIL
         development_hint:
           verification_code: "The verificaiton code is: "
           hint_notification: (This message only appears in development mode)
         phone_form:
           submit: Send code via SMS
-        phone_instructions:
-          enter_phone_number: Enter your phone number
+        instructions:
+          enter_phone: Enter your phone number
           step_one: Step 1 of 2
           type_in_phone: Type in your phone number below to get a verification code via SMS to your phone number.
+          enter_email: Enter your email address
+          type_in_email: Type in your email address below to get a verification code via email.
         sms:
           title: SMS authentication
           another_method: Another method
+        email:
+          title: SMS authentication
+          another_method: Another method
+        email_form:
+          submit: Send code via Email
         sms_verification:
-          error:
-            invalid_from_number: The sender number is not correctly configured or is not able to send messages. Please contact the platform support for further help.
-            invalid_geo_permission: The system is not configured to send messages to your country. Please contact the platform support for further help.
-            invalid_to_number: The phone number you provided is not correct. Please check that you entered your phone number correctly.
-            unknown: An error occured which has been logged, please try again. If the error persists, please contact the platform support for further help.
+          invalid_from_number: The sender number is not correctly configured or is not able to send messages. Please contact the platform support for further help.
+          invalid_geo_permission: The system is not configured to send messages to your country. Please contact the platform support for further help.
+          invalid_to_number: The phone number you provided is not correct. Please check that you entered your phone number correctly.
+          unknown: An error occured which has been logged, please try again. If the error persists, please contact the platform support for further help.
           success: "Verification code sent to %{phone}."
+        email_verification:
+          error: An error occured while trying to send the verification to your email address, please try again. If the error persists, please contact the platform support for further help.
+          success: "Verification code sent to %{email}."
+          subject: Your verification code
+          body: "Your verification code is %{verification}"
         verify:
           sign_in: Sign in with SMS
           step_two: Step 2 of 2
@@ -66,5 +80,9 @@ en:
           resend_code: Resend code
           use_another_method: use another method
           or: Or
+        resend_code:
+          sent_sms: "Verification code resent to %{phone}."
+          sent_email: "Verification code resent to %{phone}."
+          not_allowed: Please wait at least 1 minute to resend the code.
       menu:
         auth_settings: Authentication settings

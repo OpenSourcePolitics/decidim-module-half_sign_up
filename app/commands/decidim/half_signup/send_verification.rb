@@ -1,0 +1,83 @@
+# frozen_string_literal: true
+
+module Decidim
+  module HalfSignup
+    class SendVerification < Decidim::Command
+      include Decidim::HalfSignup::QuickAuth::VerificationCodeGenerator
+
+      def initialize(form)
+        @form = form
+      end
+
+      def call
+        return broadcast(:invalid) unless @form.valid?
+
+        if @form.auth_method == "sms"
+          result = send_sms_verification!
+          return broadcast(:invalid, @sms_gateway_error_code) unless result
+        else
+          result = send_email_verification!
+          return broadcast(:invalid) unless result
+        end
+
+        broadcast(:ok, result)
+      end
+
+      private
+
+      attr_reader :form
+
+      def verification_code
+        @verification_code ||= generate_code
+      end
+
+      def send_sms_verification!
+        sms_gateway.deliver_code
+
+        verification_code
+      rescue Decidim::Sms::GatewayError => e
+        @sms_gateway_error_code = e.error_code
+
+        false
+      end
+
+      def sms_gateway
+        @sms_gateway ||=
+          begin
+            phone_number = phone_with_country_code(form.phone_country, form.phone_number)
+            # We need to provide  the organization if the gateway is twilio.
+            if twilio_gateway?
+              Decidim.config.sms_gateway_service.constantize.new(phone_number, verification_code, organization: set_organization)
+            else
+              Decidim.config.sms_gateway_service.constantize.new(phone_number, verification_code)
+            end
+          end
+      end
+
+      def set_organization
+        return form.organization unless twilio_gateway?
+        return nil if Rails.env.test? || Rails.env.development?
+
+        form.organization
+      end
+
+      def twilio_gateway?
+        Decidim.config.sms_gateway_service == "Decidim::Sms::Twilio::Gateway"
+      end
+
+      def formatted_phone_number(form)
+        PhoneNumberFormatter.new(phone_number: form.phone_number, iso_country_code: form.phone_country).format
+      end
+
+      def phone_with_country_code(country_code, phone_number)
+        PhoneNumberFormatter.new(phone_number: phone_number, iso_country_code: country_code).format
+      end
+
+      def send_email_verification!
+        return false unless Decidim::HalfSignup::VerificationCodeMailer.verification_code(form.email, verification_code, form.organization).deliver_now
+
+        verification_code
+      end
+    end
+  end
+end

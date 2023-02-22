@@ -16,7 +16,7 @@ module Decidim
             email: options[:email] || nil,
             method: options[:auth_method],
             verified: false,
-            sent_at: Time.current
+            sent_at: nil
           }
         end
 
@@ -25,7 +25,7 @@ module Decidim
           options.each do |key, value|
             auth_session[key] = value if auth_session.has_key?(key)
           end
-          # auth_session.merge!(verification_code: result, sent_at: Time.current)
+          auth_session.merge!(sent_at: Time.current)
         end
 
         def auth_session
@@ -33,11 +33,11 @@ module Decidim
         end
 
         def auth_method
-          auth_session[:method]
+          auth_session["method"]
         end
 
         def sms_auth?
-          auth_session[:method] == "sms"
+          auth_session["method"] == "sms"
         end
       end
     end

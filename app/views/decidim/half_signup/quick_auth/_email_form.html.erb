@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="columns large-8 large-offset-2">
+    <%= form.text_field :email %>
+  </div>
+</div>
+<div class="row">
+  <div class="columns large-centered">
+    <%= form.hidden_field :auth_method, value: "email", readonly: true %>
+    <%= form.submit t(".submit"), class:"button expanded" %>
+  </div>
+</div>

@@ -5,7 +5,7 @@ class CreateAuthSettings < ActiveRecord::Migration[6.1]
     create_table :decidim_half_signup_auth_settings do |t|
       t.boolean :enable_partial_sms_signup_verification, default: false
       t.boolean :enable_partial_email_signup_verification, default: false
-      t.references :decidim_organization, foreign_key: true, index: true
+      t.references :decidim_organization, foreign_key: true, index: { name: :index_half_signup_auth_settings_on_organization_id }
 
       t.timestamps
     end

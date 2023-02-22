@@ -2,13 +2,12 @@
 
 module Decidim
   module HalfSignup
-    class EmailAuthForm < Form
+    class EmailAuthForm < AuthForm
       mimic :email_sign_in
 
       attribute :email, String
 
       validates :email, presence: true, "valid_email_2/email": { disposable: true }
-      validates :send_code_as_email
     end
   end
 end

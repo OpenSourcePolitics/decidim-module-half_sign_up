@@ -19,7 +19,7 @@ module Decidim
           )
           namespace :users_quick_auth, path: "users/quick_auth", module: "quick_auth" do
             get :sms, :email, :resend, :verify
-            post :sms_verification, :email_verification, :authenticate
+            post :verification, :authenticate
           end
         end
       end
