@@ -21,7 +21,7 @@ module Decidim
       end
 
       def verification
-        @form = set_auth_form
+        @form = set_auth_form.from_params(params)
         # in the test, and development environment, and with the Twilio gateway installation,
         # we have to set the organization to nil, since the delivery report can not be sent to the
         # localhost. However, we should set this to the current_organization if production
@@ -77,9 +77,9 @@ module Decidim
       def resend
         return unless ensure_code_delivery
 
-        @form = form(set_auth_form.constantize).from_params(params_from_previous_attempts)
+        @form = set_auth_form.from_params(params_from_previous_attempts)
 
-        SendVerification.call(@form, organization: current_organization) do
+        SendVerification.call(@form) do
           on(:ok) do |result|
             update_sessions!(result)
             flash[:notice] = if sms_auth?
@@ -157,9 +157,9 @@ module Decidim
 
       def set_auth_form
         if sms_auth?
-          form(SmsAuthForm).from_params(params)
+          form(SmsAuthForm)
         else
-          form(EmailAuthForm).from_params(params)
+          form(EmailAuthForm)
         end
       end
     end
