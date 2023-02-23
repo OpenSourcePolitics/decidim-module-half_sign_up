@@ -66,6 +66,7 @@ module Decidim
           record.phone_country = data["country"]
           record.tos_agreement = "1"
           record.organization = form.organization
+          record.locale = form.current_locale
         end
       end
 
