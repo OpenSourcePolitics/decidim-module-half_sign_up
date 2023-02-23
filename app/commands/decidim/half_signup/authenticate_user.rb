@@ -74,7 +74,7 @@ module Decidim
       end
 
       def sms_auth?
-        data["auth_method"] == "sms"
+        data["method"] == "sms"
       end
     end
   end
