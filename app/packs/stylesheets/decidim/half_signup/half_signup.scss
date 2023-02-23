@@ -20,10 +20,12 @@
     }
   }
 }
-.centered_items{
-  display: flex;
-  align-items: center;
-  font-size: 2rem;
+.half_signup{
+  &.middle_option{
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+  }
 }
 
 form input[type='number']::-webkit-outer-spin-button,
