@@ -1,25 +1,27 @@
-<div class="columns large-6 medium-8 text-center large-offset-3 medium-offset-2">
-  <h1><%= t(".title") %></h1>
-  <div class="row card -3">
-    <div class="half_signup card__content middle_option">
-    <% if handlers_count > 1 %>
-      <% half_signup_handlers.each_with_index do |handler, ind| %>
-            <% if handler == "sms" %>
-              <%= render partial: "sms_option", locals: { multiple_columns: true } %>
-            <% else %>
-              <%= render partial: "email_option", locals: { multiple_columns: true }%>
-            <% end %>
-        <% if ind == 0 %>
-          <div class="small-12 medium-2 columns">
-            <%= t(".or")%>
-          </div>
+<div class="content">
+  <div class="columns large-6 medium-8 text-center large-offset-3 medium-offset-2">
+    <h1><%= t(".title") %></h1>
+    <div class="row card -3">
+      <div class="half_signup card__content middle_option">
+      <% if handlers_count > 1 %>
+        <% half_signup_handlers.each_with_index do |handler, ind| %>
+              <% if handler == "sms" %>
+                <%= render partial: "sms_option", locals: { multiple_columns: true } %>
+              <% else %>
+                <%= render partial: "email_option", locals: { multiple_columns: true }%>
+              <% end %>
+          <% if ind == 0 %>
+            <div class="small-12 medium-2 columns">
+              <%= t(".or")%>
+            </div>
+          <% end %>
         <% end %>
+      <% elsif half_signup_handlers.first == "sms" %>
+        <%= render partial: "sms_option", locals: { multiple_columns: false } %>
+      <% else %>
+        <%= render partial: "email_option", locals: { multiple_columns: false }%>
       <% end %>
-    <% elsif half_signup_handlers.first == "sms" %>
-      <%= render partial: "sms_option", locals: { multiple_columns: false } %>
-    <% else %>
-      <%= render partial: "email_option", locals: { multiple_columns: false }%>
-    <% end %>
+      </div>
     </div>
   </div>
 </div>
