@@ -44,6 +44,11 @@ module Decidim
           Decidim::Devise::SessionsController.include(
             Decidim::HalfSignup::SessionsExtensions
           )
+
+          Decidim::Devise::RegistrationsController.include(
+            Decidim::HalfSignup::RegisterationsExtensions
+          )
+
           Decidim::Organization.include(
             Decidim::HalfSignup::OrganizationModelExtensions
           )
