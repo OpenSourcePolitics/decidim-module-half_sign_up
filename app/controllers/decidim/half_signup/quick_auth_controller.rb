@@ -4,14 +4,19 @@ module Decidim
   module HalfSignup
     class QuickAuthController < ::Decidim::Devise::OmniauthRegistrationsController
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
+      include Decidim::HalfSignup::PartialSignupSettings
+
+      before_action :store_user_location!, if: :storable_location?
       # TODO: Ensure user is not logged in
 
       def sms
+        ensure_authorized("sms")
         @form = form(SmsAuthForm).instance
         init_sessions!({ auth_method: "sms" })
       end
 
       def email
+        ensure_authorized("email")
         @form = form(EmailAuthForm).instance
         init_sessions!({ auth_method: "email" })
       end
@@ -101,6 +106,27 @@ module Decidim
       def options; end
 
       private
+
+      def store_user_location!
+        # :user is the scope we are authenticating
+        store_location_for(:user, request.fullpath)
+      end
+
+      # Its important that the location is NOT stored if:
+      # - The request method is not GET (non idempotent)
+      # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an
+      #    infinite redirect loop.
+      # - The request is an Ajax request as this can lead to very unexpected behaviour.
+      def storable_location?
+        request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+      end
+
+      def ensure_authorized(option)
+        return if half_signup_handlers.include? option
+
+        flash[:error] = I18n.t("decidim.half_signup.quick_auth.options.not_allowed")
+        redirect_to decidim_half_signup.users_quick_auth_path
+      end
 
       def sms_sending_error(error_code)
         case error_code

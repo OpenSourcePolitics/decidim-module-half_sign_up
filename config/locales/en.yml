@@ -40,6 +40,7 @@ en:
           or: OR
           sms: TO YOUR PHONE
           email: TO YOUR EMAIL
+          not_allowed: You are not allowed to perform this action.
         development_hint:
           verification_code: "The verificaiton code is: "
           hint_notification: (This message only appears in development mode)
