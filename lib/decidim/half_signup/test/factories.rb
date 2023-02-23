@@ -9,5 +9,9 @@ FactoryBot.define do
     participatory_space { create(:participatory_process, :with_steps) }
   end
 
+  factory :auth_setting, class: "Decidim::HalfSignup::AuthSetting" do
+    slug { "authentication_settings" }
+    organization { create(:organization) }
+  end
   # Add engine factories here
 end
