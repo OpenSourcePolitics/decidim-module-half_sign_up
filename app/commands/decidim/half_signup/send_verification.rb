@@ -74,7 +74,7 @@ module Decidim
       end
 
       def send_email_verification!
-        return false unless Decidim::HalfSignup::VerificationCodeMailer.verification_code(form.email, verification_code, form.organization).deliver_now
+        return false unless Decidim::HalfSignup::VerificationCodeMailer.verification_code(form.email, verification_code, form.organization).deliver_later
 
         verification_code
       end
