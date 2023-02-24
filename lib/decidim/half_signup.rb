@@ -17,6 +17,7 @@ module Decidim
 
     autoload :PartialSignupSettings, "decidim/half_signup/partial_signup_settings"
     autoload :MenuExtensions, "decidim/half_signup/menu_extensions"
+    autoload :GatewayError, "decidim/half_signup/gateway"
 
     # The country or countries to be selected in country selection
     # during sms verification/authentication. The default is being set to nil
