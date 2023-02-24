@@ -35,7 +35,7 @@ module Decidim
         sms_gateway.deliver_code
 
         verification_code
-      rescue Decidim::Sms::GatewayError => e
+      rescue Decidim::HalfSignup::GatewayError => e
         @sms_gateway_error_code = e.error_code
 
         false
@@ -74,7 +74,12 @@ module Decidim
       end
 
       def send_email_verification!
-        return false unless Decidim::HalfSignup::VerificationCodeMailer.verification_code(form.email, verification_code, form.organization).deliver_later
+        return false unless Decidim::HalfSignup::VerificationCodeMailer
+                            .verification_code(
+                              email: form.email,
+                              verification: verification_code,
+                              organization: form.organization
+                            ).deliver_later
 
         verification_code
       end
