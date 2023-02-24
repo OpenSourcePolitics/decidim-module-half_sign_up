@@ -34,9 +34,9 @@ module Decidim
       def send_sms_verification!
         sms_gateway.deliver_code
 
-        verification_code
+        return verification_code if sms_gateway.deliver_code
       rescue Decidim::HalfSignup::GatewayError => e
-        @sms_gateway_error_code = e.error_code
+        @sms_gateway_error_code = e&.error_code
 
         false
       end
@@ -62,7 +62,7 @@ module Decidim
       end
 
       def twilio_gateway?
-        Decidim.config.sms_gateway_service == "Decidim::Sms::Twilio::Gateway"
+        Decidim.config.sms_gateway_service.constantize.instance_method(:initialize).parameters.count > 2
       end
 
       def formatted_phone_number(form)
