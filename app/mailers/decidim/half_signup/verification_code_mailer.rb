@@ -10,7 +10,7 @@ module Decidim
       # locale - The locale that will be used for the email content (optional).
       #
       # Returns nothing.
-      def verification_code(email, verification, organization)
+      def verification_code(email:, verification:, organization:)
         @verification = verification
         @organization = organization
 
