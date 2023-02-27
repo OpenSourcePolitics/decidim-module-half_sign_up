@@ -57,47 +57,68 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.on_queue("mailers").twice
       end
     end
-  end
 
-  describe "when sms" do
-    subject { command.call }
+    describe "when sms" do
+      subject { command.call }
 
-    let!(:auth_method) { "sms" }
+      let!(:auth_method) { "sms" }
 
-    context "when form is not valid" do
-      before do
-        allow(form).to receive(:valid?).and_return(false)
+      context "when form is not valid" do
+        before do
+          allow(form).to receive(:valid?).and_return(false)
+        end
+
+        it "broadcasts :invlid" do
+          expect(subject).to broadcast(:invalid)
+          expect(Decidim.config.sms_gateway_service.constantize).not_to receive(:call)
+        end
       end
 
-      it "broadcasts :invlid" do
-        expect(subject).to broadcast(:invalid)
-        expect(Decidim.config.sms_gateway_service.constantize).not_to receive(:call)
-      end
-    end
-
-    context "when phone number is provided" do
       context "when form is valid" do
         let!(:phone_number) { 4_577_886_622 }
         let!(:phone_country) { "FI" }
-        let(:gatewayer) { instance_double(Decidim::Verifications::Sms::ExampleGateway) }
 
-        before do
-          allow(Decidim::Verifications::Sms::ExampleGateway).to receive(:new).and_return(gatewayer)
-        end
+        context "when default gateway" do
+          let(:gatewayer) { Decidim::Verifications::Sms::ExampleGateway }
 
-        context "when it is able to deliver the code" do
-          before do
-            allow(gatewayer).to receive(:deliver_code).and_return(true)
+          context "when delivers the code" do
+            before do
+              allow_any_instance_of(gatewayer).to receive(:deliver_code).and_return(true) # rubocop:disable Rspec/AnyInstance
+            end
+
+            it "delivers the verification code" do
+              expect(subject).to broadcast(:ok, verification)
+            end
           end
 
-          it "delivers the verification code" do
-            expect(subject).to broadcast(:ok, verification)
+          context "when fails to deliver" do
+            before do
+              allow_any_instance_of(gatewayer).to receive(:deliver_code).and_return(false) # rubocop:disable Rspec/AnyInstance
+            end
+
+            it "delivers the verification code" do
+              expect(subject).to broadcast(:invalid)
+            end
           end
         end
 
-        context "when there is some error in sending sms" do
+        context "when another gateway configured" do
+          let(:foo_gateway) do
+            Class.new do
+              def initialize(bar, bas, organization:)
+                # a dummy method for initialize
+              end
+
+              def deliver_code
+                false
+              end
+            end
+          end
+
           before do
-            allow(gatewayer).to receive(:deliver_code).and_return(false)
+            # rubocop:disable Rspec/MessageChain
+            allow(Decidim.config).to receive_message_chain(:sms_gateway_service, :constantize).and_return(foo_gateway)
+            # rubocop:enable Rspec/MessageChain
           end
 
           it "does not deliver the verification code" do
