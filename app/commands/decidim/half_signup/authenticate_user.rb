@@ -54,7 +54,7 @@ module Decidim
 
         generated_password = SecureRandom.hex
         Decidim::User.create! do |record|
-          record.name = t(".unnamed_user")
+          record.name = I18n.t(".unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
           record.nickname = UserBaseEntity.nicknamize(record.name)
           record.email = data["email"] || generate_email(data["country"], data["phone"])
           record.password = generated_password
