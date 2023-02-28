@@ -330,7 +330,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
         get :resend
         expect(response).to redirect_to(action: "verify")
         expect(flash[:notice]).to eq("Verification code sent to some_email@example.com.")
-    end
+      end
     end
   end
 end
