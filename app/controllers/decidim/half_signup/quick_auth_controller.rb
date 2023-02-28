@@ -81,7 +81,7 @@ module Decidim
 
         SendVerification.call(@form) do
           on(:ok) do |result|
-            update_sessions!(result)
+            update_sessions!({ code: result })
             flash[:notice] = if sms_auth?
                                I18n.t("success", scope: "decidim.half_signup.quick_auth.sms_verification", phone: formatted_phone_number(@form))
                              else
@@ -136,13 +136,16 @@ module Decidim
 
       def params_from_previous_attempts
         {
-          phone_country: auth_session["phone"],
-          phone_number: auth_session["country"],
-          email: auth_session["email"]
+          phone_country: auth_session["country"],
+          phone_number: auth_session["phone"],
+          email: auth_session["email"],
+          auth_method: auth_session["method"]
         }
       end
 
       def send_code_allowed?
+        return true unless sms_auth?
+
         auth_session.present? &&
           auth_session["sent_at"] < 1.minute.ago
       end
