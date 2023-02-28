@@ -8,8 +8,6 @@ module Decidim
       attribute :organization, Decidim::Organization
 
       validates :verification, presence: true
-
-      alias organization current_organization
     end
   end
 end

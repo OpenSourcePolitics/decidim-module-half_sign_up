@@ -4,11 +4,9 @@ module Decidim
   module HalfSignup
     class AuthForm < Form
       attribute :auth_method, String
-      attribute :organization, Decidim::Organization
+      attribute :organization
 
       validates :auth_method, inclusion: { in: %w(sms email) }
-
-      alias organization current_organization
     end
   end
 end

@@ -21,7 +21,7 @@ module Decidim
       end
 
       def verification
-        @form = set_auth_form.from_params(params)
+        @form = set_auth_form.from_params(params.merge(organization: current_organization))
         # in the test, and development environment, and with the Twilio gateway installation,
         # we have to set the organization to nil, since the delivery report can not be sent to the
         # localhost. However, we should set this to the current_organization if production
@@ -58,7 +58,8 @@ module Decidim
       end
 
       def authenticate
-        @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale))
+        @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
+
         @verification_code = auth_session["code"]
         AuthenticateUser.call(form: @form, data: auth_session) do
           on(:ok) do |user|
@@ -77,7 +78,7 @@ module Decidim
       def resend
         return unless ensure_code_delivery
 
-        @form = set_auth_form.from_params(params_from_previous_attempts)
+        @form = set_auth_form.from_params(params_from_previous_attempts.merge(organization: current_organization))
 
         SendVerification.call(@form) do
           on(:ok) do |result|

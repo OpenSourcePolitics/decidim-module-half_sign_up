@@ -102,7 +102,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       end
 
       it "sends a verification code and redirects to verify action" do
-        post :verification, params: { auth_method: "sms", phone_number: "457787874", phone_country: "FI" }
+        post :verification, params: { auth_method: "sms", phone_number: "457787874", phone_country: "FI", organization: organization }
 
         expect(auth_session).to include("method" => "sms", "code" => "123456", "country" => "FI", "phone" => 4_577_878_74)
         expect(response).to redirect_to(action: "verify")
