@@ -41,7 +41,7 @@ describe "Admin manage auth settings", type: :system do
     end
     expect(page.find("#auth_setting_enable_partial_sms_signup")).to be_checked
     auth_settings = Decidim::HalfSignup::AuthSetting.last
-    expect(auth_settings.enable_partial_email_signup).to eq(false)
-    expect(auth_settings.enable_partial_sms_signup).to eq(true)
+    expect(auth_settings.enable_partial_email_signup).to be(false)
+    expect(auth_settings.enable_partial_sms_signup).to be(true)
   end
 end
