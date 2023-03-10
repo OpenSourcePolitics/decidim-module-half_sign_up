@@ -2,18 +2,21 @@
   <div class="wraper">
     <div class="row collapse">
       <div class="columns large-8 large-centered text-center page-title margin-top-3">
-        <h1><%= t(".title") %></h1>
-        <%= render partial: "instructions", locals: { method: "phone" } %>
+        <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
       </div>
       <div class="row">
-        <div class="columns large-6 medium-centered" id="select-wrapper">
+        <div class="columns large-6 medium-centered margin-bottom-3" id="select-wrapper">
           <div class="card">
             <div class="card__content">
+            <h2 class="text-center"><%= t(".enter_phone") %></h2>
+            <div class="columns small-10 small-offset-1 text-center">
+              <p><%= t("instruction", scope:"decidim.half_signup.quick_auth.sms") %></p>
+            </div>
               <%= decidim_form_for(@form, url: users_quick_auth_verification_path, method: :post) do |form| %>
                 <%= render partial: "phone_form", locals: { form: form } %>
               <% end %>
               <p class="text-center">
-                <%= link_to t(".another_method"), decidim_half_signup.users_quick_auth_path, class: "text-center" %>
+                <%= link_to t("another_method", scope:"decidim.half_signup.quick_auth"), decidim_half_signup.users_quick_auth_path, class: "text-center" %>
               </p>
             </div>
           </div>

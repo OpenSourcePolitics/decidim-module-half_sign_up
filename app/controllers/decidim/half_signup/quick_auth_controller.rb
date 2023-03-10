@@ -56,6 +56,7 @@ module Decidim
       def verify
         @form = form(VerificationCodeForm).instance
         @verification_code = auth_session["code"]
+        @info = set_contact_info
       end
 
       def authenticate
@@ -188,6 +189,12 @@ module Decidim
         else
           form(EmailAuthForm)
         end
+      end
+
+      def set_contact_info
+        auth_session["email"] || PhoneNumberFormatter.new(
+          phone_number: auth_session["phone"], iso_country_code: auth_session["country"]
+        ).format
       end
     end
   end
