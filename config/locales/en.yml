@@ -15,6 +15,8 @@ en:
             title: Half signup module
             update: Update
       quick_auth:
+        authenticate:
+          unnamed_user: Unnamed user
         another_method: Another method
         authenticate_user:
           error: Verification failed. Please try again.
