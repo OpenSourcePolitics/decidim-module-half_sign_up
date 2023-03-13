@@ -12,7 +12,7 @@
         <div class="columns small-10 small-offset-1">
           <p class="text-center">
             <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
-            <%= link_to t(".use_another_method"),  decidim_half_signup.users_quick_auth_path %>
+          <%= link_to t(".use_another_method"),  decidim_half_signup.users_quick_auth_path %>
           </p>
         </div>
         <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
