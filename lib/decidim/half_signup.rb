@@ -24,5 +24,13 @@ module Decidim
     config_accessor :default_countries do
       [:fi]
     end
+
+    # Configuration to enable or disable agree to the terms and condition pages
+    # for new users who create their account. The default is set to true, meaning that
+    # new users will be redirected to the agree to the terms and conditions page after creting
+    # the account.
+    config_accessor :show_tos_page_after_signup do
+      true
+    end
   end
 end
