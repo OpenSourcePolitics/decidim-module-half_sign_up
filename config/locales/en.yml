@@ -1,15 +1,5 @@
 ---
 en:
-  activemodel:
-    attributes:
-      decidim:
-        half_signup:
-          auth_settings:
-            enable_partial_email_signup: Enable partial signup using email verification
-            enable_partial_sms_signup: Enable partial signup using SMS verification
-      sms_sign_in:
-        phone_country: Phone country
-        phone_number: Phone number
   decidim:
     budgets:
       voting:
@@ -18,10 +8,6 @@ en:
     components:
       half_signup:
         name: HalfSignup
-    devise:
-      sessions:
-        new:
-          email: Sign in with Email
     half_signup:
       admin:
         auth_settings:
@@ -30,63 +16,57 @@ en:
             update: Update
       quick_auth:
         another_method: Another method
-        enter_code: "Please enter the code:"
-        instruction: You should have received the code to %{contact_info}
-        welcome: "Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>"
-        authenticate:
-          unnamed_user: Unnamed user
         authenticate_user:
           error: Verification failed. Please try again.
           signed_in: Signed in successfully.
-        options:
-          title: You need to authenticate to vote.
-          select: "Should we send a code:"
-          or: OR
-          sms: TO YOUR PHONE
-          email: TO YOUR EMAIL
-          not_allowed: You are not allowed to perform this action.
         development_hint:
-          verification_code: "The verificaiton code is: "
-          hint_notification: (This message only appears in development mode)
-        phone_form:
-          submit: SEND THE CODE
-        instructions:
-          step_one: Step 1 of 2
-          type_in_phone: Type in your phone number below to get a verification code via SMS to your phone number.
-          enter_email: Enter your email address
-          type_in_email: Type in your email address below to get a verification code via email.
-        sms:
-          enter_phone: "Please enter your phone number:"
-          instruction: The phone number will be your key to the platform. Unless you add a password to your accout, an SMS will be sent to your phone number every time you wish to log in.
+          hint_notification: "(This message only appears in development mode)"
+          verification_code: 'The verificaiton code is: '
         email:
-          enter_email: "Please eneter your email:"
-          instruction: The email address will be your key to the platform. Unless you add a password to your accout, an email will be sent to your email every time you wish to log in.
+          enter_email: 'Please eneter your email:'
+          instruction: The email address will be your key to the platform. Unless
+            you add a password to your accout, an email will be sent to your email
+            every time you wish to log in.
         email_form:
           submit: SEND THE CODE
-        sms_verification:
-          invalid_from_number: The sender number is not correctly configured or is not able to send messages. Please contact the platform support for further help.
-          invalid_geo_permission: The system is not configured to send messages to your country. Please contact the platform support for further help.
-          invalid_to_number: The phone number you provided is not correct. Please check that you entered your phone number correctly.
-          unknown: An error occured which has been logged, please try again. If the error persists, please contact the platform support for further help.
-          success: "Verification code sent to %{phone}."
         email_verification:
-          error: An error occured while trying to send the verification to your email address, please try again. If the error persists, please contact the platform support for further help.
-          success: "Verification code sent to %{email}."
+          body: Your verification code is %{verification}
+          error: An error occured while trying to send the verification to your email
+            address, please try again. If the error persists, please contact the platform
+            support for further help.
           subject: Your verification code
-          body: "Your verification code is %{verification}"
+          success: Verification code sent to %{email}.
+        enter_code: 'Please enter the code:'
+        instruction: You should have received the code to %{contact_info}
+        options:
+          email: TO YOUR EMAIL
+          not_allowed: You are not allowed to perform this action.
+          or: OR
+          sms: TO YOUR PHONE
+          title: You need to authenticate to vote.
+        phone_form:
+          submit: SEND THE CODE
+        resend_code:
+          not_allowed: Please wait at least 1 minute to resend the code.
+        sms:
+          enter_phone: 'Please enter your phone number:'
+          instruction: The phone number will be your key to the platform. Unless you
+            add a password to your accout, an SMS will be sent to your phone number
+            every time you wish to log in.
+        sms_verification:
+          invalid_from_number: The sender number is not correctly configured or is
+            not able to send messages. Please contact the platform support for further
+            help.
+          invalid_geo_permission: The system is not configured to send messages to
+            your country. Please contact the platform support for further help.
+          invalid_to_number: The phone number you provided is not correct. Please
+            check that you entered your phone number correctly.
+          success: Verification code sent to %{phone}.
+          unknown: An error occured which has been logged, please try again. If the
+            error persists, please contact the platform support for further help.
         verify:
-          sign_in: Sign in with SMS
-          step_two: Step 2 of 2
-          enter_verification_message: "Enter the verification code sent to: %{phone}"
-          enter_verification_code: Enter verification code
-          submit: Verify
           not_receive: Did not receive the code?
           resend_code: Resend code
-          use_another_method: (incorrect address?)
-          or: Or
-        resend_code:
-          sent_sms: "Verification code resent to %{phone}."
-          sent_email: "Verification code resent to %{phone}."
-          not_allowed: Please wait at least 1 minute to resend the code.
-      menu:
-        auth_settings: Authentication settings
+          submit: Verify
+          use_another_method: "(incorrect address?)"
+        welcome: Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>
