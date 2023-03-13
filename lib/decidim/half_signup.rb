@@ -32,5 +32,10 @@ module Decidim
     config_accessor :show_tos_page_after_signup do
       true
     end
+
+    # Default configuration digits to generate the auth code.
+    config_accessor :auth_code_length do
+      4
+    end
   end
 end

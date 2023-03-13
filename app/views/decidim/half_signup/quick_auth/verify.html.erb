@@ -4,10 +4,10 @@
     <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
   </div>
 </div>
-<div class="columns large-4 medium-centered">
+<div class="columns large-4 mediumlarge-6 medium-8 medium-offset-2 medium-centered">
   <div class="card">
     <div class="card__content">
-      <div class="columns medium-7 large-10 medium-centered">
+      <div class="columns medium-10 large-8 medium-centered">
         <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
         <div class="columns small-10 small-offset-1">
           <p class="text-center">
@@ -16,11 +16,19 @@
           </p>
         </div>
         <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
-          <div class="row">
-            <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
-            <%= form.text_field :verification %>
-            <%= form.submit t(".submit"), class:"button expanded" %>
+          <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
+
+          <div id="verification" class="row small-up-<%= auth_code_length %>">
+            <% auth_code_length.times do  |ind| %>
+              <div class="column column-block">
+                  <input type="text" name="<%= "digit#{ind + 1}"%>" class="thumbnail text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+              </div>
+              <% end %>
           </div>
+          <br/>
+          <span class="form-error is-invisible" role="alert" id="zip-code-error">There's an error in this field.</span>
+          <%= form.hidden_field :verification %>
+          <%= form.submit t(".submit"), class:"button expanded" %>
         <% end %>
       </div>
 
@@ -31,3 +39,4 @@
     </div>
   </div>
 </div>
+<%= javascript_pack_tag "decidim_verification" %>

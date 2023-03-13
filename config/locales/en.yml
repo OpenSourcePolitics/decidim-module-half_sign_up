@@ -72,4 +72,9 @@ en:
           submit: Verify
           incorrect_email: "(incorrect address?)"
           incorrect_phone: "(incorrect phone number?)"
+          inputs:
+            one: First digit
+            other: digit %{count}
+          first_input: Please enter your verification code. Character 1
+          other_inputs: Character %{num}
         welcome: Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>

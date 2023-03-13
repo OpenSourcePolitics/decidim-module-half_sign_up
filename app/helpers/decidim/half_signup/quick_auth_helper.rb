@@ -53,6 +53,10 @@ module Decidim
           link_to t(".incorrect_phone"), decidim_half_signup.users_quick_auth_sms_path
         end
       end
+
+      def auth_code_length
+        ::Decidim::HalfSignup.auth_code_length.to_i
+      end
     end
   end
 end
