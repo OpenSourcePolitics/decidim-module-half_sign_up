@@ -45,6 +45,14 @@ module Decidim
         end
         unsorted
       end
+
+      def auth_link_generator
+        if auth_method == "email"
+          decidim_half_signup.users_quick_auth_email_path
+        else
+          decidim_half_signup.users_quick_auth_sms_path
+        end
+      end
     end
   end
 end
