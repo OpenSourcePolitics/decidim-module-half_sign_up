@@ -54,10 +54,10 @@ $(() => {
     verificationInputs.forEach((input) => {
       input.classList.add("is-invalid-input")
     })
-    togglevalidity(document.querySelector("#zip-code-error"))
+    togglevalidity(document.querySelector("#verification-error"))
   }
 
-  const form = document.querySelector(".new_user_data");
+  const form = document.querySelector(".new_verification_code");
   $(form).on("submit", (ev) => {
     setVerificationField();
     if (fieldsvalid()) {
