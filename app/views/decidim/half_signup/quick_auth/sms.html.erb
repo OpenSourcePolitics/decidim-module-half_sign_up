@@ -16,7 +16,7 @@
                 <%= render partial: "phone_form", locals: { form: form } %>
               <% end %>
               <p class="text-center">
-                <%= link_to t("another_method", scope:"decidim.half_signup.quick_auth"), decidim_half_signup.users_quick_auth_path, class: "text-center" %>
+                <%= link_to t("another_method", scope:"decidim.half_signup.quick_auth"), decidim_half_signup.users_quick_auth_path, class: "text-center" if half_signup_handlers.include?("email") %>
               </p>
             </div>
           </div>

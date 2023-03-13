@@ -12,7 +12,7 @@
         <div class="columns small-10 small-offset-1">
           <p class="text-center">
             <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
-          <%= link_to t(".use_another_method"), auth_link_generator %>
+          <%= auth_link_generator %>
           </p>
         </div>
         <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
@@ -24,8 +24,8 @@
         <% end %>
       </div>
 
-      <p class="text-center"><%= t(".not_receive") %></p>
       <p class="text-center">
+        <%= t(".have_not_received") %>
         <%= link_to t(".resend_code"), users_quick_auth_resend_path %>
       </p>
     </div>

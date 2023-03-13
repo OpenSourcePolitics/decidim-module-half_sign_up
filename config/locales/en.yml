@@ -17,7 +17,7 @@ en:
       quick_auth:
         authenticate:
           unnamed_user: Unnamed user
-        another_method: Another method
+        another_method: Use Another method
         authenticate_user:
           error: Verification failed. Please try again.
           signed_in: Signed in successfully.
@@ -67,8 +67,9 @@ en:
           unknown: An error occured which has been logged, please try again. If the
             error persists, please contact the platform support for further help.
         verify:
-          not_receive: Did not receive the code?
-          resend_code: Resend code
+          have_not_received: Haven't received the code?
+          resend_code: Send it again.
           submit: Verify
-          use_another_method: "(incorrect address?)"
+          incorrect_email: "(incorrect address?)"
+          incorrect_phone: "(incorrect phone number?)"
         welcome: Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>

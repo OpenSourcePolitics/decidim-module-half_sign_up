@@ -48,9 +48,9 @@ module Decidim
 
       def auth_link_generator
         if auth_method == "email"
-          decidim_half_signup.users_quick_auth_email_path
+          link_to t(".incorrect_email"), decidim_half_signup.users_quick_auth_email_path
         else
-          decidim_half_signup.users_quick_auth_sms_path
+          link_to t(".incorrect_phone"), decidim_half_signup.users_quick_auth_sms_path
         end
       end
     end
