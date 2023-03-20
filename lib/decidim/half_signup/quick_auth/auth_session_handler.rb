@@ -16,6 +16,8 @@ module Decidim
             email: options[:email] || nil,
             method: options[:auth_method],
             verified: false,
+            attempts: options[:attempts] || 0,
+            last_attempt: nil,
             sent_at: nil
           }
         end

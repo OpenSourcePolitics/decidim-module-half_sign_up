@@ -10,7 +10,7 @@ module Decidim
 
       def call
         return broadcast(:invalid) unless form.valid?
-        return broadcast(:invalid) unless validate!
+        return broadcast(:invalid, "invalid") unless validate!
 
         user = find_or_create_user!
         broadcast(:ok, user)

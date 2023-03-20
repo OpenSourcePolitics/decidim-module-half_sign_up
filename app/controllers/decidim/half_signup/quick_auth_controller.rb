@@ -60,6 +60,7 @@ module Decidim
       end
 
       def authenticate
+        redirect_to action: "verify" && return unless ensure_attempts_threshold
         @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
 
         @verification_code = auth_session["code"]
@@ -70,7 +71,8 @@ module Decidim
             sign_in_and_redirect user, event: :authentication
           end
 
-          on(:invalid) do
+          on(:invalid) do |validation|
+            add_failed_attempt if validation == "invalid"
             flash.now[:error] = I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
             render :verify
           end
@@ -195,6 +197,27 @@ module Decidim
         auth_session["email"] || PhoneNumberFormatter.new(
           phone_number: auth_session["phone"], iso_country_code: auth_session["country"]
         ).format
+      end
+
+      def add_failed_attempt
+        auth_session["attempts"] += 1
+        auth_session["last_attempt"] = Time.current
+      end
+
+      def ensure_attempts_threshold
+        return true if auth_session["attempts"] < 20
+
+        if auth_session["last_attempt"] <= 2.minutes.ago
+          reset_attempts
+          return true
+        end
+        flash[:error] = I18n.t("threshold_exceeded", scope: "decidim.half_signup.quick_auth.authenticate_user")
+        false
+      end
+
+      def reset_attempts
+        auth_session["attempts"] = 0
+        auth_session["last_attempt"] = nil
       end
     end
   end
