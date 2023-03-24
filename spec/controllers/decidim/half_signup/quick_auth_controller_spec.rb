@@ -12,6 +12,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   let(:email) { nil }
   let(:method) { nil }
   let(:verified) { nil }
+  let(:last_attempt) { nil }
+  let(:attempts) { 0 }
   let!(:correct_code) { "correct code" }
   let!(:wrong_code) { "wrong code" }
   let(:auth_session) do
@@ -22,8 +24,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       "email" => email,
       "method" => method,
       "verified" => verified,
-      "attempts" => 0,
-      "last_attempt" => nil,
+      "attempts" => attempts,
+      "last_attempt" => last_attempt,
       "sent_at" => Time.current
     }
   end
@@ -241,6 +243,21 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
           post :authenticate, params: { verification_code: { verification: wrong_code } }
           expect(response).to render_template(:verify)
           expect(flash[:error]).to eq("Verification failed. Please try again.")
+        end
+      end
+    end
+
+    context "when too many failing attempts" do
+      let!(:attempts) { 20 }
+
+      context "when less than two minutes has passed since last attempt" do
+        let!(:last_attempt) { 1.minute.ago }
+
+        it "redirects the user to the verify and displays error message" do
+          post :authenticate, params: { verification_code: { verification: correct_code } }
+          expect(response).to redirect_to(action: "verify")
+          expect(flash[:error]).to eq("Too many failed attempts. Please try again later.")
+          expect(auth_session).to include("attempts" => 20)
         end
       end
     end

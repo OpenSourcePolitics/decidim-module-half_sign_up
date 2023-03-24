@@ -7,7 +7,7 @@ module Decidim
       include Decidim::HalfSignup::PartialSignupSettings
 
       before_action :ensure_authorized, only: [:sms, :email, :verify, :options]
-      before_action :store_user_location!, if: :storable_location?
+      # before_action :store_user_location!, if: :storable_location?
 
       def sms
         ensure_enabled_auth("sms")
@@ -60,7 +60,8 @@ module Decidim
       end
 
       def authenticate
-        redirect_to action: "verify" && return unless ensure_attempts_threshold
+        redirect_to(action: "verify") && return unless ensure_attempts_threshold
+
         @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
 
         @verification_code = auth_session["code"]
