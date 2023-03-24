@@ -7,10 +7,31 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   let(:user) { create(:user, :confirmed, organization: organization) }
   let(:organization) { create(:organization) }
   let(:decidim_half_signup) { Decidim::HalfSignup::Engine.routes.url_helpers }
+  let(:phone) { nil }
+  let(:country) { nil }
+  let(:email) { nil }
+  let(:method) { nil }
+  let(:verified) { nil }
+  let!(:correct_code) { "correct code" }
+  let!(:wrong_code) { "wrong code" }
+  let(:auth_session) do
+    {
+      "code" => "correct code",
+      "country" => country,
+      "phone" => phone,
+      "email" => email,
+      "method" => method,
+      "verified" => verified,
+      "attempts" => 0,
+      "last_attempt" => nil,
+      "sent_at" => Time.current
+    }
+  end
 
   before do
     request.env["decidim.current_organization"] = organization
     request.env["devise.mapping"] = ::Devise.mappings[:user]
+    request.session[:auth_attempt] = auth_session
   end
 
   describe "GET #sms" do
@@ -24,7 +45,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
         end
       end
 
-      context "when the sams_auth settings is enabled" do
+      context "when the sms_auth settings is enabled" do
         before do
           auth_settings.enable_partial_sms_signup = true
           auth_settings.save
@@ -82,23 +103,11 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   end
 
   describe "POST #verification" do
-    let!(:auth_session) do
-      {
-        "code" => nil,
-        "country" => nil,
-        "phone" => nil,
-        "email" => nil,
-        "method" => nil,
-        "verified" => false,
-        "sent_at" => Time.current
-      }
-    end
-
     context "when auth method is SMS" do
+      let!(:method) { "sms" }
+
       before do
-        auth_session["method"] = "sms"
         allow(SecureRandom).to receive(:random_number).and_return("123456")
-        request.session[:auth_attempt] = auth_session
       end
 
       it "sends a verification code and redirects to verify action" do
@@ -117,10 +126,10 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     end
 
     context "when auth method is email" do
+      let!(:method) { "email" }
+
       before do
-        auth_session["method"] = "email"
         allow(SecureRandom).to receive(:random_number).and_return("123456")
-        request.session[:auth_attempt] = auth_session
       end
 
       it "sends a verification code and redirects to verify action" do
@@ -140,13 +149,9 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   end
 
   describe "GET#verify" do
-    let!(:auth_session) do
-      { "code" => "123456" }
-    end
-
-    before do
-      request.session[:auth_attempt] = auth_session
-    end
+    let!(:method) { "sms" }
+    let!(:country) { "FI" }
+    let!(:phone) { 4_576_776_517 }
 
     it "renders the :verify template" do
       get :verify
@@ -155,40 +160,16 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   end
 
   describe "POST#authenticate" do
-    let!(:auth_session) do
-      {
-        "code" => nil,
-        "country" => nil,
-        "phone" => nil,
-        "email" => nil,
-        "method" => nil,
-        "verified" => false,
-        "sent_at" => Time.current
-      }
-    end
-
-    before do
-      request.session[:auth_attempt] = auth_session
-    end
-
     context "when sms auth" do
-      let(:correct_code) { "correct code" }
-      let(:wrong_code) { "wrong code" }
-
-      before do
-        auth_session["method"] = "sms"
-        auth_session["phone"] = "123456789"
-        auth_session["country"] = "FI"
-        auth_session["code"] = correct_code
-      end
+      let!(:method) { "sms" }
+      let!(:phone) { "123456789" }
+      let!(:country) { "FI" }
 
       context "when correct" do
-        let!(:code) { correct_code }
-
         context "when account does not exist" do
           it "creates the account and authenticates user" do
             expect do
-              post :authenticate, params: { verification_code: { verification: code } }
+              post :authenticate, params: { verification_code: { verification: correct_code } }
             end.to change(Decidim::User, :count).by(1)
             user = Decidim::User.last
             expect(user.phone_number).to eq("123456789")
@@ -206,7 +187,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
 
           it "authenticates and logs in" do
             expect do
-              post :authenticate, params: { verification_code: { verification: code } }
+              post :authenticate, params: { verification_code: { verification: correct_code } }
             end.not_to change(Decidim::User, :count)
             expect(response).to redirect_to("/authorizations")
           end
@@ -214,10 +195,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       end
 
       context "when incorrect" do
-        let!(:code) { wrong_code }
-
         it "does not authenticate" do
-          post :authenticate, params: { verification_code: { verification: code } }
+          post :authenticate, params: { verification_code: { verification: wrong_code } }
           expect(response).to render_template(:verify)
           expect(flash[:error]).to eq("Verification failed. Please try again.")
         end
@@ -225,22 +204,14 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     end
 
     context "when email auth" do
-      let(:correct_code) { "correct code" }
-      let(:wrong_code) { "wrong code" }
-
-      before do
-        auth_session["method"] = "email"
-        auth_session["email"] = "someone@example.org"
-        auth_session["code"] = correct_code
-      end
+      let!(:method) { "email" }
+      let!(:email) { "someone@example.org" }
 
       context "when correct" do
-        let!(:code) { correct_code }
-
         context "when account does not exist" do
           it "creates the account and authenticates user" do
             expect do
-              post :authenticate, params: { verification_code: { verification: code } }
+              post :authenticate, params: { verification_code: { verification: correct_code } }
             end.to change(Decidim::User, :count).by(1)
             user = Decidim::User.last
             expect(user.phone_number).to be_nil
@@ -258,7 +229,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
 
           it "authenticates and logs in" do
             expect do
-              post :authenticate, params: { verification_code: { verification: code } }
+              post :authenticate, params: { verification_code: { verification: correct_code } }
             end.not_to change(Decidim::User, :count)
             expect(response).to redirect_to("/authorizations")
           end
@@ -266,10 +237,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       end
 
       context "when incorrect" do
-        let!(:code) { wrong_code }
-
         it "does not authenticate" do
-          post :authenticate, params: { verification_code: { verification: code } }
+          post :authenticate, params: { verification_code: { verification: wrong_code } }
           expect(response).to render_template(:verify)
           expect(flash[:error]).to eq("Verification failed. Please try again.")
         end
@@ -278,25 +247,10 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   end
 
   describe "Get#resend" do
-    let!(:auth_session) do
-      {
-        "code" => "123456",
-        "country" => nil,
-        "phone" => nil,
-        "email" => nil,
-        "method" => nil,
-        "verified" => false,
-        "sent_at" => Time.current
-      }
-    end
-
     context "when sms auth" do
-      before do
-        auth_session["method"] = "sms"
-        auth_session["phone"] = "457832145"
-        auth_session["country"] = "FI"
-        request.session[:auth_attempt] = auth_session
-      end
+      let!(:method) { "sms" }
+      let!(:phone) { "457832145" }
+      let!(:country) { "FI" }
 
       context "when resend allowed" do
         before do
@@ -320,11 +274,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     end
 
     context "when email auth" do
-      before do
-        auth_session["method"] = "email"
-        auth_session["email"] = "some_email@example.com"
-        request.session[:auth_attempt] = auth_session
-      end
+      let!(:method) { "email" }
+      let!(:email) { "some_email@example.com" }
 
       it "always resends the code" do
         get :resend
