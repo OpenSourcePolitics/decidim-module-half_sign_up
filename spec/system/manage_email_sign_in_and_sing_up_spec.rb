@@ -114,6 +114,24 @@ describe "Manage sms sign in", type: :system do
     end
   end
 
+  context "when both methods are enabled" do
+    before do
+      auth_settings.update(enable_partial_sms_signup: true)
+      click_link "Sign In"
+    end
+
+    it "shows auick_auth select page and proper links" do
+      expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
+      click_link "TO YOUR EMAIL"
+      expect(page).to have_current_path(decidim_half_signup.users_quick_auth_email_path)
+      expect(page).to have_link("Use Another method", href: decidim_half_signup.users_quick_auth_path)
+      fill_in "Email", with: email
+      click_button "SEND THE CODE"
+      expect(page).to have_current_path(decidim_half_signup.users_quick_auth_verify_path)
+      expect(page).to have_link("(incorrect address?)")
+    end
+  end
+
   private
 
   def fill_in_code(code, element)
