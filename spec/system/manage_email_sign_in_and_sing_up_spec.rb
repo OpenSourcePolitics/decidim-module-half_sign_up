@@ -85,7 +85,7 @@ describe "Manage sms sign in", type: :system do
 
     context "when changing the default auth_code_length" do
       before do
-        allow(Decidim::HalfSignup).to receive(:auth_code_length).and_return(5)
+        allow(Decidim::HalfSignup.config).to receive(:auth_code_length).and_return(5)
         fill_in "Email", with: email
         click_button "SEND THE CODE"
       end
@@ -98,7 +98,7 @@ describe "Manage sms sign in", type: :system do
     context "when show_tos_page_after_signup is set to false" do
       before do
         allow(SecureRandom).to receive(:random_number).and_return(code)
-        allow(Decidim::HalfSignup).to receive(:show_tos_page_after_signup).and_return(false)
+        allow(Decidim::HalfSignup.config).to receive(:show_tos_page_after_signup).and_return(false)
         fill_in "Email", with: email
         click_button "SEND THE CODE"
         fill_in_code(code, "digit")
