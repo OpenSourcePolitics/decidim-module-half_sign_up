@@ -18,6 +18,7 @@ module Decidim
               expect(subject.generate_code.length).to eq(4)
             end
           end
+
           context "when changed to other values" do
             before do
               allow(Decidim::HalfSignup.config).to receive(:auth_code_length).and_return(6)
