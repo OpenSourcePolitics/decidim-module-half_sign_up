@@ -28,7 +28,7 @@ en:
           hint_notification: "(This message only appears in development mode)"
           verification_code: 'The verificaiton code is: '
         email:
-          enter_email: 'Please eneter your email:'
+          enter_email: 'Please enter your email:'
           instruction: The email address will be your key to the platform. Unless
             you add a password to your accout, an email will be sent to your email
             every time you wish to log in.
