@@ -28,17 +28,17 @@ describe "Sign in and sign up page", type: :system do
       end
     end
 
-    context "when settings are enabled" do
+    context "when email settings are enabled" do
       let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_email_signup: true) }
 
       before do
         click_link "Sign In"
       end
 
-      it "redirects the user to the quick_auth path" do
-        expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
-        expect(page).to have_link("TO YOUR EMAIL")
-        expect(page).not_to have_link("TO YOUR PHONE")
+      it "redirects the user to the quick_auth email_path" do
+        expect(page).to have_current_path(decidim_half_signup.users_quick_auth_email_path)
+        expect(page).to have_button("SEND THE CODE")
+        expect(page).to have_content("Please enter your email:")
       end
     end
   end
@@ -62,17 +62,38 @@ describe "Sign in and sign up page", type: :system do
       end
     end
 
-    context "when settings are enabled" do
+    context "when sms settings are enabled" do
       let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
 
       before do
         click_link "Sign Up"
       end
 
-      it "redirects the user to the quick_auth path" do
+      it "redirects the user to the quick_auth_sms_path" do
+        expect(page).to have_current_path(decidim_half_signup.users_quick_auth_sms_path)
+        expect(page).to have_button("SEND THE CODE")
+        expect(page).to have_content("Please enter your phone number:")
+      end
+    end
+
+    context "when both sms and email is enabled" do
+      let!(:auth_settings) do
+        create(
+          :auth_setting,
+          organization: organization,
+          enable_partial_sms_signup: true,
+          enable_partial_email_signup: true
+        )
+      end
+
+      before do
+        click_link "Sign Up"
+      end
+
+      it "redirects the user to the quick_auth_path" do
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
         expect(page).to have_link("TO YOUR PHONE")
-        expect(page).not_to have_link("TO YOUR EMAIL")
+        expect(page).to have_link("TO YOUR EMAIL")
       end
     end
   end
