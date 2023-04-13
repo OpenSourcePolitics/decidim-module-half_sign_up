@@ -1,1 +1,11 @@
-<%== t("body", scope: "decidim.half_signup.quick_auth.email_verification", verification: @verification) %>
+<p><%= t("welcome", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
+
+<p><%= t("content", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
+
+<p style="text-align:center; margin-top: 10px"><%= t("details", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
+
+<div style="text-align:center; font-size: 28px; margin-bottom: 10px">
+  <div id="code" style="display: inline; border: 2px solid #000; padding: 8px;">
+    <%= @verification %>
+  </div>
+</div>

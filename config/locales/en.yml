@@ -35,6 +35,11 @@ en:
         email_form:
           submit: SEND THE CODE
         email_verification:
+          content: Confirm your email address by entering the confirmation code below in the field provided on the service.
+          details: 'Your confirmation code is:'
+          subject: Email confirmation
+          verify_email: Confirm email address
+          welcome: 'Welcome to the platform!'
           body: Your verification code is %{verification}
           error: An error occured while trying to send the verification to your email
             address, please try again. If the error persists, please contact the platform
