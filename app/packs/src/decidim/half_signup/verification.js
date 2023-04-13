@@ -21,6 +21,24 @@ $(() => {
         input.blur();
       }
     })
+
+    input.addEventListener("paste", (event) => {
+      const clipboardData = event.clipboardData || window.clipboardData;
+      const pastedData = clipboardData.getData("text").trim();
+
+      // find the first empty input field and paste the data there
+      let jj = 0;
+      for (let ii = ind; ii < verificationInputs.length; ii += 1) {
+        if (jj > pastedData.length) {
+          return;
+        }
+        if (pastedData.substr(jj, 1)) {
+          verificationInputs[ii].value = pastedData.substr(jj, 1);
+          verificationInputs[ii].focus();
+          jj += 1
+        }
+      }
+    });
   });
   const fieldsvalid = () => {
     let allFieldsFilled = true;
