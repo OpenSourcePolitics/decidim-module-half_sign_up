@@ -21,9 +21,9 @@
           <div id="verification" class="row small-up-<%= auth_code_length %>">
             <% auth_code_length.times do  |ind| %>
               <div class="column column-block">
-                  <input type="text" name="<%= "digit#{ind + 1}"%>" class="thumbnail text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+                <input type="text" name="<%= "digit#{ind + 1}" %>" class="thumbnail text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
               </div>
-              <% end %>
+            <% end %>
           </div>
           <br/>
           <span class="form-error is-invisible" role="alert" id="verification-error"><%= t("decidim.forms.errors.error") %></span>

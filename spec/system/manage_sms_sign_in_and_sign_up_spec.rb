@@ -9,8 +9,6 @@ describe "Manage sms sign in", type: :system do
   let(:phone) { 4_551_122_334 }
   let(:phone_country) { "FI" }
 
-
-
   context "when default settings" do
     before do
       allow(Decidim::HalfSignup.config).to receive(:default_countries).and_return([])
