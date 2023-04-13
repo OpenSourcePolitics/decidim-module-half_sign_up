@@ -1,13 +1,21 @@
+<div class="row collapse margin-top-3">
+  <div class="columns large-6 large-centered text-center page-title">
+    <h2><%= t(".welcome", organization: current_organization.name).html_safe %></h2>
+  </div>
+</div>
 <div class="content">
   <div class="columns large-6 medium-8 text-center large-offset-3 medium-offset-2">
-    <h1><%= t(".title") %></h1>
-    <div class="row card -3">
-      <div class="half_signup card__content middle_option">
-        <%= render partial: "sms_option", locals: { multiple_columns: true } %>
-        <div class="small-12 medium-2 columns">
-          <%= t(".or")%>
-        </div>
+    <div class="row card">
+      <div class="columns medium-10 medium-offset-1">
+        <h3><%= t(".title") %></h3>
+        <h4> <em><%= t(".send_code_to") %></em></h4>
+        <div class="half_signup card__content middle_option">
+          <%= render partial: "sms_option", locals: { multiple_columns: true } %>
+          <div class="small-12 medium-2 columns">
+            <%= t(".or")%>
+          </div>
           <%= render partial: "email_option", locals: { multiple_columns: true }%>
+        </div>
       </div>
     </div>
   </div>

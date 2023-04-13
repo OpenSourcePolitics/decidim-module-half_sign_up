@@ -49,13 +49,15 @@ en:
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
         options:
-          email: TO YOUR EMAIL
+          welcome: "Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>"
+          email: To your email
           not_allowed: You are not allowed to perform this action.
           or: OR
-          sms: TO YOUR PHONE
+          sms: To your phone
           title: You need to authenticate to vote.
+          send_code_to: "Should we send the code to:"
         phone_form:
-          submit: SEND THE CODE
+          submit: Send the code
         resend_code:
           not_allowed: Please wait at least 1 minute to resend the code.
         sms:
