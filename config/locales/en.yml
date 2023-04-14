@@ -29,11 +29,9 @@ en:
           verification_code: 'The verificaiton code is: '
         email:
           enter_email: 'Please enter your email:'
-          instruction: The email address will be your key to the platform. Unless
-            you add a password to your accout, an email will be sent to your email
-            every time you wish to log in.
+          instruction: The email address will be your key to the platform. An email will be sent to your email every time you wish to sign in. If you already have an account on this platform, please enter that email to sign in.
         email_form:
-          submit: SEND THE CODE
+          submit: Send the code
         email_verification:
           content: Confirm your email address by entering the confirmation code below in the field provided on the service.
           details: 'Your confirmation code is:'
@@ -49,7 +47,7 @@ en:
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
         options:
-          welcome: "Welcome to the <br><strong>%{organization} Participatory Budgeting!</strong>"
+          welcome: "Welcome to the <br><strong>%{organization} Platform!</strong>"
           email: To your email
           not_allowed: You are not allowed to perform this action.
           or: OR
@@ -64,7 +62,7 @@ en:
           enter_phone: 'Please enter your phone number:'
           instruction: The phone number will be your key to the platform. Unless you
             add a password to your accout, an SMS will be sent to your phone number
-            every time you wish to log in.
+            every time you wish to sign in.
         sms_verification:
           invalid_from_number: The sender number is not correctly configured or is
             not able to send messages. Please contact the platform support for further
