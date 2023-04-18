@@ -32,7 +32,7 @@ module Decidim
 
       def generate_data(country)
         [
-          "#{country.iso_short_name} (+#{country.country_code})",
+          "(+#{country.country_code}) #{country.iso_short_name}",
           country.alpha2,
           { data: { flag_image: image_pack_path("media/images/#{country.alpha2.downcase}.svg") } }
         ]

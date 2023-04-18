@@ -1,5 +1,10 @@
 ---
 en:
+  activemodel:
+    attributes:
+      sms_auth:
+        phone_country: Country code
+        phone_number: Phone number
   decidim:
     budgets:
       voting:

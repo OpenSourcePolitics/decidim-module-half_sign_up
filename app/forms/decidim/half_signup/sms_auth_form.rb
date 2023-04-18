@@ -3,7 +3,7 @@
 module Decidim
   module HalfSignup
     class SmsAuthForm < AuthForm
-      mimic :sms_sign_in
+      mimic :sms_auth
 
       attribute :phone_number, Integer
       attribute :phone_country, String

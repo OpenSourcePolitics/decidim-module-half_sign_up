@@ -1,5 +1,18 @@
 @import "vendor/slim-select/slimselect";
 
+.ss-main.country-select .ss-single-selected,
+.ss-content .ss-list .ss-option{
+  .country-flag{
+    margin-right: .5rem;
+
+    img{
+      position: relative;
+      display: inline-block;
+      width: 1rem;
+    }
+  }
+}
+
 .ss-main.country-select{
   .ss-single-selected{
     padding: $input-padding;
@@ -8,24 +21,32 @@
     height: 2.4375rem;
     border: $input-border;
     box-shadow: $input-shadow;
-  }
 
-  .ss-single-selected,
-  .ss-option{
-    .country-flag img{
-      position: relative;
-      display: inline-block;
-      width: 1rem;
-      margin: -.1rem .5rem 0 0;
+    .placeholder {
+      white-space: unset;
+
+      .country-flag{
+        flex: 0 0 16px;
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+
+    .country-text{
+      white-space: nowrap;
     }
   }
 }
+
 .half_signup{
   &.middle_option{
     display: flex;
     align-items: center;
     font-size: 1.6rem;
   }
+
   &.gray-image{
     fill: currentColor;
   }
