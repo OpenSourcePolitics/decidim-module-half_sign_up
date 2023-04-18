@@ -6,8 +6,8 @@ en:
         phone_country: Country code
         phone_number: Phone number
       auth_setting:
-        enable_partial_sms_signup: Enable partial signup and signin with SMS
-        enable_partial_email_signup: Enable partial signup and signin with email
+        enable_partial_sms_signup: Enable partial sign up and sign in using SMS verification
+        enable_partial_email_signup: Enable partial sign up and sign in using email verification
   decidim:
     budgets:
       voting:
@@ -22,6 +22,12 @@ en:
           edit:
             title: Half signup module
             update: Update
+          sms:
+            help_text: This option allows users to sign up and sign in to the platform using their email address by receiving a verification code by SMS.
+          email:
+            help_text: This option allows users to sign up and sign in to the platform using their email address by receiving a verification through email.
+          title: Settings available through code
+          description: The module provides some settings through module configurations that can be set from the code. Use the following code sample in an initializer with the comments that explain what each setting does.
       menu:
         auth_settings: Authentication settings
       quick_auth:
