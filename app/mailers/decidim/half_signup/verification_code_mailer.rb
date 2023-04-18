@@ -11,11 +11,11 @@ module Decidim
       #
       # Returns nothing.
       def verification_code(email:, verification:, organization:)
-        @verification = verification
+        @verification = verification.strip
         @organization = organization
 
         I18n.with_locale(locale || organization.default_locale) do
-          mail(to: email, subject: I18n.t("subject", scope: "decidim.half_signup.quick_auth.email_verification"))
+          mail(to: email, subject: I18n.t("subject", scope: "decidim.half_signup.quick_auth.email_verification", verification: verification))
         end
       end
     end

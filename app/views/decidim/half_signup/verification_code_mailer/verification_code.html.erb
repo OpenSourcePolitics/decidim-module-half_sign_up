@@ -1,11 +1,13 @@
+<style>
+  #:last-child {
+    letter-spacing: 0;
+  }
+</style>
 <p><%= t("welcome", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
-
+<br/>
 <p><%= t("content", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
-
+<br/>
 <p style="text-align:center; margin-top: 10px"><%= t("details", scope: "decidim.half_signup.quick_auth.email_verification") %></p>
-
-<div style="text-align:center; font-size: 28px; margin-bottom: 10px">
-  <div id="code" style="display: inline; border: 2px solid #000; padding: 8px;">
-    <%= @verification %>
-  </div>
+<div style="text-align:center; font-size: 34px; margin: 40px 0">
+  <div id="code" style="display: inline; border: 2px solid #000; padding: 16px 20px 16px 30px; letter-spacing: 10px;"><%= @verification %></div>
 </div>

@@ -5,8 +5,7 @@ module Decidim
     module QuickAuth
       module VerificationCodeGenerator
         def generate_code
-          # code = SecureRandom.random_number(10**auth_code_length).to_s
-          code = "62"
+          code = SecureRandom.random_number(10**auth_code_length).to_s
           add_zeros(code)
         end
 

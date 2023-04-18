@@ -46,7 +46,7 @@ en:
           error: An error occured while trying to send the verification to your email
             address, please try again. If the error persists, please contact the platform
             support for further help.
-          subject: Your verification code
+          subject: "Your verification code is: %{verification}"
           success: Verification code sent to %{email}.
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
