@@ -50,6 +50,33 @@
   &.gray-image{
     fill: currentColor;
   }
+  &.maximum-width{
+    max-width: 420px;
+  }
+  &.input-padding{
+    padding: 8px 4px;
+  }
+  &.custom-input{
+    @include breakpoint(small){
+      padding: 0 10px;
+    }
+    @include breakpoint(smallmedium){
+     height: 3.25rem;
+     padding: 0 25px;
+    }
+    @include breakpoint(medium){
+      padding: 0 15px;
+    }
+    @include breakpoint(mediumlarge){
+      padding: 0 20px;
+    }
+    @include breakpoint(large){
+      padding: 0 15px;
+    }
+    @include breakpoint(xxlarge){
+      height: 3.2rem;
+    }
+  }
 }
 
 form input[type='number']::-webkit-outer-spin-button,

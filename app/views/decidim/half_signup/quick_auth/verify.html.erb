@@ -4,10 +4,10 @@
     <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
   </div>
 </div>
-<div class="columns large-4 mediumlarge-6 medium-8 medium-offset-2 medium-centered">
+<div class="columns medium-10 large-6 small-centered">
   <div class="card">
     <div class="card__content">
-      <div class="columns medium-10 large-8 medium-centered">
+      <div class="columns medium-10 small-centered maximum-width half_signup">
         <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
         <div class="columns small-10 small-offset-1">
           <p class="text-center">
@@ -17,17 +17,19 @@
         </div>
         <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
           <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
-
-          <div id="verification" class="row small-up-<%= auth_code_length %>">
-            <% auth_code_length.times do  |ind| %>
-              <div class="column column-block">
-                <input type="text" name="<%= "digit#{ind + 1}" %>" class="thumbnail text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
-              </div>
-            <% end %>
+          <div class="columns medium-10 medium-centered">
+            <div id="verification" class="row small-up-<%= auth_code_length %>">
+              <% auth_code_length.times do  |ind| %>
+                <div class="column column-block half_signup custom-input">
+                  <input type="text" name="<%= "digit#{ind + 1}" %>" class="half_signup input-padding text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+                </div>
+              <% end %>
+            </div>
           </div>
           <br/>
           <span class="form-error is-invisible" role="alert" id="verification-error"><%= t("decidim.forms.errors.error") %></span>
           <%= form.hidden_field :verification %>
+          <div class="columns small-8 small-centered">
           <%= form.submit t(".submit"), class:"button expanded" %>
         <% end %>
       </div>
