@@ -32,6 +32,10 @@ en:
           instruction: The email address will be your key to the platform. An email will be sent to your email every time you wish to sign in. If you already have an account on this platform, please enter that email to sign in.
         email_form:
           submit: Send the code
+        email_option:
+          email: Email
+        sms_option:
+          sms: SMS
         email_verification:
           content: Confirm your email address by entering the confirmation code below in the field provided on the service.
           details: 'Your confirmation code is:'

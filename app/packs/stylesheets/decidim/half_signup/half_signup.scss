@@ -24,7 +24,10 @@
   &.middle_option{
     display: flex;
     align-items: center;
-    font-size: 2rem;
+    font-size: 1.6rem;
+  }
+  &.gray-image{
+    fill: currentColor;
   }
 }
 

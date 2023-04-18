@@ -3,18 +3,19 @@
     <h2><%= t(".welcome", organization: current_organization.name).html_safe %></h2>
   </div>
 </div>
-<div class="content">
-  <div class="columns large-6 medium-8 text-center large-offset-3 medium-offset-2">
+
+<div class="row">
+  <div class="columns large-6 medium-8 text-center small-centered">
     <div class="row card">
-      <div class="columns medium-10 medium-offset-1">
-        <h3><%= t(".title") %></h3>
+      <div class="columns medium-10 small-centered">
+        <h3 class="margin-top-2"><%= t(".title") %></h3>
         <h4> <em><%= t(".send_code_to") %></em></h4>
         <div class="half_signup card__content middle_option">
-          <%= render partial: "sms_option", locals: { multiple_columns: true } %>
+          <%= render partial: "email_option"%>
           <div class="small-12 medium-2 columns">
             <%= t(".or")%>
           </div>
-          <%= render partial: "email_option", locals: { multiple_columns: true }%>
+          <%= render partial: "sms_option" %>
         </div>
       </div>
     </div>

@@ -1,8 +1,11 @@
 <div class="small-6 columns medium-5">
-  <div class="row">
-    <%= image_pack_tag "media/images/mail-open-outline.svg", class: "columns small-6 small-offset-3" %>
+  <div class="comulns small-8 small-centered half_signup gray-image">
+    <svg aria-label="<%= t(".email") %>" role="img" viewBox="0 0 512 512">
+      <title><%= t(".email") %></title>
+      <use href="<%= asset_pack_path "media/images/mail-open-outline.svg" %>#mail-open-outline">
+    </svg>
   </div>
-  <div class="row">
+  <div class="row margin-top-1">
     <%= link_to t("email", scope: "decidim.half_signup.quick_auth.options"), users_quick_auth_email_path, class: "button expanded" %>
   </div>
 </div>
