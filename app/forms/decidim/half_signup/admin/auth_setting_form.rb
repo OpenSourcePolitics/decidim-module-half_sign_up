@@ -4,6 +4,7 @@ module Decidim
   module HalfSignup
     module Admin
       class AuthSettingForm < Decidim::Form
+        mimic :auth_setting
         attribute :enable_partial_sms_signup, Boolean, default: false
         attribute :enable_partial_email_signup, Boolean, default: false
         attribute :slug, String

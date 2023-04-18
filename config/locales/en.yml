@@ -5,6 +5,9 @@ en:
       sms_auth:
         phone_country: Country code
         phone_number: Phone number
+      auth_setting:
+        enable_partial_sms_signup: Enable partial signup and signin with SMS
+        enable_partial_email_signup: Enable partial signup and signin with email
   decidim:
     budgets:
       voting:
