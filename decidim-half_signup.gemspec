@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["sina.eftekhar@mainiotech.fi"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-half_signup"
-  s.required_ruby_version = ">= 3.0"
+  s.required_ruby_version = ">= 2.7"
 
   s.name = "decidim-half_signup"
   s.summary = "A decidim half_signup module"

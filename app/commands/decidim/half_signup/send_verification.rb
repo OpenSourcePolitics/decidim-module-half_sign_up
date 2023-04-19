@@ -2,7 +2,7 @@
 
 module Decidim
   module HalfSignup
-    class SendVerification < Decidim::Command
+    class SendVerification < Rectify::Command
       include Decidim::HalfSignup::QuickAuth::VerificationCodeGenerator
 
       def initialize(form)

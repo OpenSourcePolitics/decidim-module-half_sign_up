@@ -5,7 +5,7 @@ module Decidim
     module Admin
       # A command with all the business logic for updating the current
       # authentication_settings auth settings to be updated.
-      class UpdateAuthSettings < Decidim::Command
+      class UpdateAuthSettings < Rectify::Command
         # Public: Initializes the command.
         #
         # authentication_settings - The authentication_settings that will be updated.

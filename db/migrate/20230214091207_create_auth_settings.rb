@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateAuthSettings < ActiveRecord::Migration[6.1]
+class CreateAuthSettings < ActiveRecord::Migration[6.0]
   def change
     create_table :decidim_half_signup_auth_settings do |t|
       t.boolean :enable_partial_sms_signup, default: false
