@@ -9,7 +9,7 @@
     <div class="card__content">
       <div class="columns medium-10 small-centered maximum-width half_signup">
         <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
-        <div class="columns small-10 small-offset-1">
+        <div class="columns columns medium-10 medium-offset-1">
           <p class="text-center">
             <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
           <%= auth_link_generator %>
@@ -17,7 +17,7 @@
         </div>
         <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
           <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
-          <div class="columns medium-10 medium-centered">
+          <div class="columns small-12 smallmedium-8 medium-10 small-centered">
             <div id="verification" class="row small-up-<%= auth_code_length %>">
               <% auth_code_length.times do  |ind| %>
                 <div class="column column-block half_signup custom-input">

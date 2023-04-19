@@ -60,10 +60,10 @@
     @include breakpoint(small){
       padding: 0 10px;
     }
-    @include breakpoint(smallmedium){
-     height: 3.25rem;
-     padding: 0 25px;
-    }
+    // @include breakpoint(smallmedium){
+    //  height: 3.25rem;
+    //  padding: 0 10px;
+    // }
     @include breakpoint(medium){
       padding: 0 15px;
     }
