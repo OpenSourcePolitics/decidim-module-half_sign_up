@@ -29,10 +29,10 @@ describe "Manage sms sign in", type: :system do
             within ".ss-list" do
               find("div", text: /Finland/).select_option
             end
-            click_button "SEND THE CODE"
+            click_button "Send the code"
             expect(page).to have_content "There's an error in this field."
             fill_in "Phone number", with: phone
-            click_button "SEND THE CODE"
+            click_button "Send the code"
             expect(page).to have_current_path(decidim_half_signup.users_quick_auth_verify_path)
           end
         end
@@ -44,7 +44,7 @@ describe "Manage sms sign in", type: :system do
               find("div", text: /Finland/).select_option
             end
             fill_in "Phone number", with: phone
-            click_button "SEND THE CODE"
+            click_button "Send the code"
           end
 
           it "renders the verify page" do
@@ -81,7 +81,7 @@ describe "Manage sms sign in", type: :system do
             find("div", text: /Finland/).select_option
           end
           fill_in "Phone number", with: phone
-          click_button "SEND THE CODE"
+          click_button "Send the code"
           code = page.find("#hint").text
           fill_in_code(code, "digit")
           click_button "Verify"
@@ -103,14 +103,14 @@ describe "Manage sms sign in", type: :system do
 
       it "renders the select page" do
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
-        click_link "TO YOUR PHONE"
+        click_link "To your phone"
         expect(page).to have_content("Use Another method")
         find("span.arrow-down").click
         within ".ss-list" do
           find("div", text: /Finland/).select_option
         end
         fill_in "Phone number", with: phone
-        click_button "SEND THE CODE"
+        click_button "Send the code"
         expect(page).to have_content("incorrect phone number?")
         click_link "(incorrect phone number?)"
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_sms_path)
@@ -126,7 +126,7 @@ describe "Manage sms sign in", type: :system do
           find("div", text: /Finland/).select_option
         end
         fill_in "Phone number", with: phone
-        click_button "SEND THE CODE"
+        click_button "Send the code"
       end
 
       it "renders 5 input field and send 5 digit code" do
@@ -145,7 +145,7 @@ describe "Manage sms sign in", type: :system do
           find("div", text: /Finland/).select_option
         end
         fill_in "Phone number", with: phone
-        click_button "SEND THE CODE"
+        click_button "Send the code"
         code = page.find("#hint").text
         fill_in_code(code, "digit")
         click_button "Verify"

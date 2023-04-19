@@ -109,13 +109,13 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       let!(:method) { "sms" }
 
       before do
-        allow(SecureRandom).to receive(:random_number).and_return("123456")
+        allow(SecureRandom).to receive(:random_number).and_return("1234")
       end
 
       it "sends a verification code and redirects to verify action" do
         post :verification, params: { auth_method: "sms", phone_number: "457787874", phone_country: "FI", organization: organization }
 
-        expect(auth_session).to include("method" => "sms", "code" => "123456", "country" => "FI", "phone" => 4_577_878_74)
+        expect(auth_session).to include("method" => "sms", "code" => "1234", "country" => "FI", "phone" => 4_577_878_74)
         expect(response).to redirect_to(action: "verify")
       end
 
@@ -131,13 +131,13 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       let!(:method) { "email" }
 
       before do
-        allow(SecureRandom).to receive(:random_number).and_return("123456")
+        allow(SecureRandom).to receive(:random_number).and_return("1234")
       end
 
       it "sends a verification code and redirects to verify action" do
         post :verification, params: { auth_method: "email", email: "someone@example.com" }
 
-        expect(auth_session).to include("method" => "email", "code" => "123456", "email" => "someone@example.com")
+        expect(auth_session).to include("method" => "email", "code" => "1234", "email" => "someone@example.com")
         expect(response).to redirect_to(action: "verify")
       end
 

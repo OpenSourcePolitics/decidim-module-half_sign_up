@@ -37,7 +37,7 @@ describe "Sign in and sign up page", type: :system do
 
       it "redirects the user to the quick_auth email_path" do
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_email_path)
-        expect(page).to have_button("SEND THE CODE")
+        expect(page).to have_button("Send the code")
         expect(page).to have_content("Please enter your email:")
       end
     end
@@ -71,7 +71,7 @@ describe "Sign in and sign up page", type: :system do
 
       it "redirects the user to the quick_auth_sms_path" do
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_sms_path)
-        expect(page).to have_button("SEND THE CODE")
+        expect(page).to have_button("Send the code")
         expect(page).to have_content("Please enter your phone number:")
       end
     end
@@ -92,8 +92,8 @@ describe "Sign in and sign up page", type: :system do
 
       it "redirects the user to the quick_auth_path" do
         expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
-        expect(page).to have_link("TO YOUR PHONE")
-        expect(page).to have_link("TO YOUR EMAIL")
+        expect(page).to have_link("To your phone")
+        expect(page).to have_link("To your email")
       end
     end
   end

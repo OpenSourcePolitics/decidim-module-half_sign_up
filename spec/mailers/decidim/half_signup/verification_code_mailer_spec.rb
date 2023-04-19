@@ -22,11 +22,13 @@ module Decidim
         end
 
         it "sets a subject" do
-          expect(mail.subject).to eq("Your verification code")
+          expect(mail.subject).to eq("Your verification code is: 11223344")
         end
 
         it "sets the content" do
-          expect(mail).to have_content("Your verification code is 11223344")
+          expect(mail).to have_content("Confirm your email address by entering the confirmation code below in the field provided on the service.")
+          expect(mail).to have_content("Your confirmation code is:")
+          expect(mail).to have_content(verification)
         end
       end
     end

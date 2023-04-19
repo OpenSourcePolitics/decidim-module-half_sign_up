@@ -33,11 +33,15 @@ describe "Admin manage auth settings", type: :system do
     options.each do |option|
       expect(option).not_to be_checked
     end
-    check "Enable partial sms signup"
+    check "Enable partial sign up and sign in using SMS verification"
     click_button "Update"
     expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
     within ".callout-wrapper" do
       expect(page).to have_content("Organization updated successfully.")
+    end
+    expect(page).to have_content("Settings available through code")
+    within "code" do
+      expect(page).to have_content("Decidim::HalfSignup.configure do |config|")
     end
     expect(page.find("#auth_setting_enable_partial_sms_signup")).to be_checked
     auth_settings = Decidim::HalfSignup::AuthSetting.last

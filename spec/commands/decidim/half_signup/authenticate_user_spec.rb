@@ -7,7 +7,7 @@ module Decidim
       subject { command.call }
       let!(:organization) { create(:organization) }
       let(:command) { described_class.new(form: form, data: data) }
-      let(:verification) { "1234567" }
+      let(:verification) { "1234" }
       let(:valid) { true }
       let(:form) do
         double(
@@ -19,7 +19,7 @@ module Decidim
       end
       let!(:data) do
         {
-          "code" => "1234567",
+          "code" => "1234",
           "country" => nil,
           "phone" => nil,
           "email" => nil,

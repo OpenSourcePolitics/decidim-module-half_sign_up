@@ -7,7 +7,7 @@ describe "Manage sms sign in", type: :system do
   let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_email_signup: true) }
   let(:decidim_half_signup) { Decidim::HalfSignup::Engine.routes.url_helpers }
   let(:email) { "someone@example.org" }
-  let!(:user) { create(:user, :confirmed, email: "anotherone@example.org", organization: auth_settings.organization) }
+  let!(:user) { create(:user, :confirmed, email: "anotherone@example.org", organization: organization) }
   let(:code) { "1234" }
 
   before do
@@ -28,10 +28,10 @@ describe "Manage sms sign in", type: :system do
       context "when enter email" do
         it "enters the email" do
           expect(page).to have_current_path(decidim_half_signup.users_quick_auth_email_path)
-          click_button "SEND THE CODE"
+          click_button "Send the code"
           expect(page).to have_content "There's an error in this field."
           fill_in "Email", with: email
-          click_button "SEND THE CODE"
+          click_button "Send the code"
           expect(page).to have_current_path(decidim_half_signup.users_quick_auth_verify_path)
         end
       end
@@ -39,7 +39,7 @@ describe "Manage sms sign in", type: :system do
       context "when verify" do
         before do
           fill_in "Email", with: email
-          click_button "SEND THE CODE"
+          click_button "Send the code"
         end
 
         it "renders the verify page" do
@@ -71,7 +71,7 @@ describe "Manage sms sign in", type: :system do
       before do
         allow(SecureRandom).to receive(:random_number).and_return(code)
         fill_in "Email", with: "anotherone@example.org"
-        click_button "SEND THE CODE"
+        click_button "Send the code"
         fill_in_code(code, "digit")
         click_button "Verify"
       end
@@ -87,7 +87,7 @@ describe "Manage sms sign in", type: :system do
       before do
         allow(Decidim::HalfSignup.config).to receive(:auth_code_length).and_return(5)
         fill_in "Email", with: email
-        click_button "SEND THE CODE"
+        click_button "Send the code"
       end
 
       it "generates the correct length code and verifies the user" do
@@ -100,7 +100,7 @@ describe "Manage sms sign in", type: :system do
         allow(SecureRandom).to receive(:random_number).and_return(code)
         allow(Decidim::HalfSignup.config).to receive(:show_tos_page_after_signup).and_return(false)
         fill_in "Email", with: email
-        click_button "SEND THE CODE"
+        click_button "Send the code"
         fill_in_code(code, "digit")
         click_button "Verify"
       end
@@ -122,11 +122,11 @@ describe "Manage sms sign in", type: :system do
 
     it "shows auick_auth select page and proper links" do
       expect(page).to have_current_path(decidim_half_signup.users_quick_auth_path)
-      click_link "TO YOUR EMAIL"
+      click_link "To your email"
       expect(page).to have_current_path(decidim_half_signup.users_quick_auth_email_path)
       expect(page).to have_link("Use Another method", href: decidim_half_signup.users_quick_auth_path)
       fill_in "Email", with: email
-      click_button "SEND THE CODE"
+      click_button "Send the code"
       expect(page).to have_current_path(decidim_half_signup.users_quick_auth_verify_path)
       expect(page).to have_link("(incorrect address?)")
     end

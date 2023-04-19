@@ -5,7 +5,7 @@ require "spec_helper"
 describe Decidim::HalfSignup::SendVerification, type: :command do
   let!(:organization) { create(:organization) }
   let(:command) { described_class.new(form) }
-  let(:verification) { "1234567" }
+  let(:verification) { "1234" }
   let(:email) { nil }
   let(:phone_number) { nil }
   let(:phone_country) { nil }
