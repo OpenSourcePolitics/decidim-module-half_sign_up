@@ -1,4 +1,4 @@
-name: "[CI] MSAD"
+name: "[CI] HalfSignup"
 on: [push, pull_request]
 
 env:
