@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,lib}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
   s.add_dependency "countries", "~> 5.1", ">= 5.1.2"
-  s.add_dependency "decidim-core", Decidim::HalfSignup.version
+  s.add_dependency "decidim-core", Decidim::HalfSignup.decidim_version
   s.metadata["rubygems_mfa_required"] = "true"
 end
