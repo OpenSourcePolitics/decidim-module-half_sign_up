@@ -5,6 +5,7 @@ require "spec_helper"
 module Decidim::HalfSignup
   describe VerificationCodeForm do
     subject(:form) { described_class.from_params(attributes) }
+
     let(:organization) { create(:organization) }
     let(:verification) { "dummy verification" }
     let(:current_locale) { "en" }

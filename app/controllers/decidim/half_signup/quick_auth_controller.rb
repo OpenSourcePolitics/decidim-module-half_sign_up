@@ -7,16 +7,15 @@ module Decidim
       include Decidim::HalfSignup::PartialSignupSettings
 
       before_action :ensure_authorized, only: [:sms, :email, :verify, :options]
-      # before_action :store_user_location!, if: :storable_location?
+      before_action :ensure_email_enabled, only: [:email]
+      before_action :ensure_sms_enabled, only: [:sms]
 
       def sms
-        ensure_enabled_auth("sms")
         @form = form(SmsAuthForm).instance
         init_sessions!({ auth_method: "sms" })
       end
 
       def email
-        ensure_enabled_auth("email")
         @form = form(EmailAuthForm).instance
         init_sessions!({ auth_method: "email" })
       end
@@ -142,7 +141,23 @@ module Decidim
       end
 
       def ensure_authorized
-        return true if current_user.blank?
+        return true if current_user.blank? && handlers_count.positive?
+
+        flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
+        redirect_to decidim.root_path
+        false
+      end
+
+      def ensure_email_enabled
+        return true if alf_signup_handlers.include?("email")
+
+        flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
+        redirect_to decidim.root_path
+        false
+      end
+
+      def ensure_sms_enabled
+        return true if alf_signup_handlers.include?("sms")
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
         redirect_to decidim.root_path

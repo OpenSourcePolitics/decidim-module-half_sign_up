@@ -5,6 +5,7 @@ require "spec_helper"
 module Decidim::HalfSignup
   describe EmailAuthForm do
     subject(:form) { described_class.from_params(attributes) }
+
     let(:email) { "invalid_email@example" }
     let(:attributes) do
       {

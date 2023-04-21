@@ -5,6 +5,7 @@ require "spec_helper"
 module Decidim::HalfSignup
   describe SmsAuthForm do
     subject(:form) { described_class.from_params(attributes) }
+
     let(:organization) { create(:organization) }
     let(:phone_number) { 45_423_456 }
     let(:phone_country) { "FI" }

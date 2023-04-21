@@ -5,6 +5,7 @@ require "spec_helper"
 module Decidim::HalfSignup
   describe AuthForm do
     subject(:form) { described_class.from_params(attributes) }
+
     let(:organization) { create(:organization) }
     let(:auth_method) { "sms" }
     let(:attributes) do

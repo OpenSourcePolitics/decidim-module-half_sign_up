@@ -5,6 +5,7 @@ module Decidim
   module HalfSignup
     describe AuthenticateUser, type: :command do
       subject { command.call }
+
       let!(:organization) { create(:organization) }
       let(:command) { described_class.new(form: form, data: data) }
       let(:verification) { "1234" }
