@@ -47,9 +47,16 @@ module Decidim
             phone_number = phone_with_country_code(form.phone_country, form.phone_number)
             # We need to provide  the organization if the gateway is twilio.
             if twilio_gateway?
-              Decidim.config.sms_gateway_service.constantize.new(phone_number, verification_code, organization: set_organization)
+              Decidim.config.sms_gateway_service.constantize.new(
+                phone_number,
+                I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code),
+                organization: set_organization
+              )
             else
-              Decidim.config.sms_gateway_service.constantize.new(phone_number, verification_code)
+              Decidim.config.sms_gateway_service.constantize.new(
+                phone_number,
+                I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code)
+              )
             end
           end
       end

@@ -90,6 +90,7 @@ en:
           invalid_to_number: The phone number you provided is not correct. Please
             check that you entered your phone number correctly.
           success: Verification code sent to %{phone}.
+          text_message: "Use code %{verification} to sign in to the platform."
           unknown: An error occured which has been logged, please try again. If the
             error persists, please contact the platform support for further help.
         verify:
