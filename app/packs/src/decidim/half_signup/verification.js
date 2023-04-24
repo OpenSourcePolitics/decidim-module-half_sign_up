@@ -1,5 +1,6 @@
 $(() => {
-  const verificationInputs = document.querySelectorAll('#verification input[type="text"]');
+  const verificationInputs = document.querySelectorAll("#verification input[type='text']");
+  const verificationForm = document.querySelector("#verification").closest("form");
   verificationInputs.forEach((input, ind) => {
     input.setAttribute("maxlength", "1");
     input.addEventListener("click", () => {
@@ -17,8 +18,8 @@ $(() => {
       if (nextInput) {
         nextInput.focus();
         nextInput.select();
-      }else{
-        input.blur();
+      } else {
+        verificationForm.querySelector("button[type='submit']").focus();
       }
     })
 
