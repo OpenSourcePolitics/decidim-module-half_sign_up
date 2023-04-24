@@ -111,12 +111,12 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
       context "when another gateway configured" do
         let(:foo_gateway) do
           Class.new do
-            attr_reader :number, :message, :organization
+            attr_reader :number, :message, :context
 
-            def initialize(number, message, organization:)
+            def initialize(number, message, context = {})
               @number = number
               @message = message
-              @organization = organization
+              @context = context
             end
 
             def deliver_code
@@ -138,7 +138,17 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         it "sets the correct values" do
           expect(gateway.number).to eq("+358#{phone_number}")
           expect(gateway.message).to eq("Use code #{verification} to sign in to the platform.")
-          expect(gateway.organization).to eq(organization)
+          expect(gateway.context).to eq({})
+        end
+
+        context "when not in development or test" do
+          before do
+            allow(Rails.env).to receive(:test?).and_return(false)
+          end
+
+          it "sets the organization within the context" do
+            expect(gateway.context).to eq({ organization: organization })
+          end
         end
       end
     end
