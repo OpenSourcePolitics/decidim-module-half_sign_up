@@ -69,8 +69,14 @@
 
     input{
       margin: 0 auto;
+      height: 2.5rem;
       width: 2.5rem;
       text-align: center;
+
+      @include breakpoint(smallmedium up){
+        height: 3rem;
+        width: 3rem;
+      }
     }
   }
 }
