@@ -59,6 +59,7 @@ module Decidim
       # We can provide organization if the gateway allows extra parameters.
       # This is required by some of the gateways, such as Twilio.
       def gateway_context
+        return {} if Rails.env.development? || Rails.env.test?
         return {} unless custom_gateway?
 
         { organization: form.organization }
