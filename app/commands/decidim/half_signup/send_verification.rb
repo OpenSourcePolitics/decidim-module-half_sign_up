@@ -32,9 +32,7 @@ module Decidim
       end
 
       def send_sms_verification!
-        sms_gateway.deliver_code
-
-        return verification_code if sms_gateway.deliver_code
+        verification_code if sms_gateway.deliver_code
       rescue Decidim::HalfSignup::GatewayError => e
         @sms_gateway_error_code = e&.error_code
 
@@ -45,12 +43,14 @@ module Decidim
         @sms_gateway ||=
           begin
             phone_number = phone_with_country_code(form.phone_country, form.phone_number)
-            # We need to provide  the organization if the gateway is twilio.
-            if twilio_gateway?
+
+            # We can provide organization if the gateway allows extra parameters.
+            # This is required by some of the gateways, such as Twilio.
+            if custom_gateway?
               Decidim.config.sms_gateway_service.constantize.new(
                 phone_number,
                 I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code),
-                organization: set_organization
+                organization: form.organization
               )
             else
               Decidim.config.sms_gateway_service.constantize.new(
@@ -61,14 +61,7 @@ module Decidim
           end
       end
 
-      def set_organization
-        return form.organization unless twilio_gateway?
-        return nil if Rails.env.test? || Rails.env.development?
-
-        form.organization
-      end
-
-      def twilio_gateway?
+      def custom_gateway?
         Decidim.config.sms_gateway_service.constantize.instance_method(:initialize).parameters.count > 2
       end
 
