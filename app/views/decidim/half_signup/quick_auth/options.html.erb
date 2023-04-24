@@ -1,21 +1,24 @@
-<div class="row collapse margin-top-3">
-  <div class="columns large-6 large-centered text-center page-title">
-    <h1><%= t(".welcome", organization: current_organization.name).html_safe %></h1>
-  </div>
-</div>
-
-<div class="row">
-  <div class="columns large-6 medium-8 text-center small-centered">
-    <div class="row card">
-      <div class="columns medium-10 small-centered">
-        <h3 class="margin-top-2"><%= t(".title") %></h3>
-        <h4> <em><%= t(".send_code_to") %></em></h4>
-        <div class="half_signup card__content middle_option">
-          <%= render partial: "email_option"%>
-          <div class="small-12 medium-2 columns">
-            <%= t(".or")%>
+<div class="content">
+  <div class="wrapper">
+    <div class="row">
+      <div class="columns medium-12 large-10 text-center small-centered page-title">
+        <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns large-6 medium-8 text-center small-centered">
+        <div class="row card">
+          <div class="columns medium-10 small-centered">
+            <h3 class="margin-top-2"><%= t(".title") %></h3>
+            <h4> <em><%= t(".send_code_to") %></em></h4>
+            <div class="half_signup card__content middle_option">
+              <%= render partial: "email_option"%>
+              <div class="small-12 medium-2 columns">
+                <%= t(".or")%>
+              </div>
+              <%= render partial: "sms_option" %>
+            </div>
           </div>
-          <%= render partial: "sms_option" %>
         </div>
       </div>
     </div>
