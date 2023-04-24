@@ -65,7 +65,7 @@ en:
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
         options:
-          welcome: "Welcome to the <br><strong>%{organization} Platform!</strong>"
+          welcome: "Welcome to the <br><strong>%{organization} platform!</strong>"
           email: To your email
           not_allowed: You are not allowed to perform this action.
           or: OR
