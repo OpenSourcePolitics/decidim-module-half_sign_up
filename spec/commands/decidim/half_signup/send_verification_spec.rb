@@ -3,6 +3,8 @@
 require "spec_helper"
 
 describe Decidim::HalfSignup::SendVerification, type: :command do
+  subject { command.call }
+
   let!(:organization) { create(:organization) }
   let(:command) { described_class.new(form) }
   let(:verification) { "1234" }
@@ -26,8 +28,6 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
   end
 
   describe "when email" do
-    subject { command.call }
-
     let!(:auth_method) { "email" }
 
     context "when form is not valid" do
@@ -57,73 +57,78 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.on_queue("mailers").twice
       end
     end
+  end
 
-    describe "when sms" do
-      subject { command.call }
+  describe "when sms" do
+    let!(:auth_method) { "sms" }
+    let(:gateway) { command.send(:sms_gateway) }
 
-      let!(:auth_method) { "sms" }
+    context "when form is not valid" do
+      before do
+        allow(form).to receive(:valid?).and_return(false)
+      end
 
-      context "when form is not valid" do
-        before do
-          allow(form).to receive(:valid?).and_return(false)
+      it "broadcasts :invalid" do
+        expect(gateway).not_to receive(:deliver_code)
+        expect(subject).to broadcast(:invalid)
+      end
+    end
+
+    context "when form is valid" do
+      let!(:phone_number) { 4_577_886_622 }
+      let!(:phone_country) { "FI" }
+
+      context "when default gateway" do
+        context "when delivers the code" do
+          it "delivers the verification code" do
+            allow(gateway).to receive(:deliver_code).and_return(true)
+            expect(subject).to broadcast(:ok, verification)
+          end
+
+          # Note that this spec does not expect any broadcast message to avoid
+          # wisper-rspec calling the command by itself.
+          it "is only called once" do
+            expect(gateway).to receive(:deliver_code).once.and_return(true)
+            subject
+          end
         end
 
-        it "broadcasts :invlid" do
-          expect(subject).to broadcast(:invalid)
-          expect(Decidim.config.sms_gateway_service.constantize).not_to receive(:call)
+        context "when fails to deliver" do
+          it "delivers the verification code" do
+            allow(gateway).to receive(:deliver_code).and_return(false)
+            expect(subject).to broadcast(:invalid)
+          end
+
+          # Note that this spec does not expect any broadcast message to avoid
+          # wisper-rspec calling the command by itself.
+          it "is only called once" do
+            expect(gateway).to receive(:deliver_code).once.and_return(false)
+            subject
+          end
         end
       end
 
-      context "when form is valid" do
-        let!(:phone_number) { 4_577_886_622 }
-        let!(:phone_country) { "FI" }
-
-        context "when default gateway" do
-          let(:gatewayer) { Decidim::Verifications::Sms::ExampleGateway }
-
-          context "when delivers the code" do
-            before do
-              allow_any_instance_of(gatewayer).to receive(:deliver_code).and_return(true) # rubocop:disable Rspec/AnyInstance
+      context "when another gateway configured" do
+        let(:foo_gateway) do
+          Class.new do
+            def initialize(bar, bas, organization:)
+              # a dummy method for initialize
             end
 
-            it "delivers the verification code" do
-              expect(subject).to broadcast(:ok, verification)
-            end
-          end
-
-          context "when fails to deliver" do
-            before do
-              allow_any_instance_of(gatewayer).to receive(:deliver_code).and_return(false) # rubocop:disable Rspec/AnyInstance
-            end
-
-            it "delivers the verification code" do
-              expect(subject).to broadcast(:invalid)
+            def deliver_code
+              false
             end
           end
         end
 
-        context "when another gateway configured" do
-          let(:foo_gateway) do
-            Class.new do
-              def initialize(bar, bas, organization:)
-                # a dummy method for initialize
-              end
+        before do
+          # rubocop:disable Rspec/MessageChain
+          allow(Decidim.config).to receive_message_chain(:sms_gateway_service, :constantize).and_return(foo_gateway)
+          # rubocop:enable Rspec/MessageChain
+        end
 
-              def deliver_code
-                false
-              end
-            end
-          end
-
-          before do
-            # rubocop:disable Rspec/MessageChain
-            allow(Decidim.config).to receive_message_chain(:sms_gateway_service, :constantize).and_return(foo_gateway)
-            # rubocop:enable Rspec/MessageChain
-          end
-
-          it "does not deliver the verification code" do
-            expect(subject).to broadcast(:invalid)
-          end
+        it "does not deliver the verification code" do
+          expect(subject).to broadcast(:invalid)
         end
       end
     end
