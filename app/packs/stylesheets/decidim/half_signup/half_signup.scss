@@ -51,29 +51,26 @@
     fill: currentColor;
   }
   &.maximum-width{
-    max-width: 420px;
+    max-width: 535px;
   }
   &.input-padding{
     padding: 8px 4px;
   }
   &.custom-input{
     @include breakpoint(small){
-      padding: 0 10px;
+      padding: 0 6%;
     }
-    // @include breakpoint(smallmedium){
-    //  height: 3.25rem;
-    //  padding: 0 10px;
-    // }
+    @include breakpoint(smallmedium){
+     padding: 0 6%;
+    }
     @include breakpoint(medium){
-      padding: 0 15px;
-    }
-    @include breakpoint(mediumlarge){
-      padding: 0 20px;
+      padding: 0 7%;
     }
     @include breakpoint(large){
       padding: 0 15px;
     }
     @include breakpoint(xxlarge){
+      padding: 0 20px;
       height: 3.2rem;
     }
   }
