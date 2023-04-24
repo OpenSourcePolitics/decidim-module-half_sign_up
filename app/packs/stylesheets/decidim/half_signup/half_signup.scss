@@ -1,5 +1,9 @@
 @import "vendor/slim-select/slimselect";
 
+.ss-main.country-select{
+  margin: 0 0 $form-spacing;
+}
+
 .ss-main.country-select .ss-single-selected,
 .ss-content .ss-list .ss-option{
   .country-flag{

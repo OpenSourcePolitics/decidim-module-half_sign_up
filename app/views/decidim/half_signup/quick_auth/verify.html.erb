@@ -1,43 +1,42 @@
 <div class="content">
   <div class="wrapper">
-    <div class="row collapse">
-      <div class="columns small-12 smallmedium-10 medium-8 large-6 text-center page-title margin-top-3">
+    <div class="row">
+      <div class="columns medium-12 large-10 text-center small-centered page-title">
         <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
       </div>
-      <div class="row">
-        <div class="columns small-12 smallmedium-10 medium-8 large-6 small-centered" id="select-wrapper">
-          <div class="card">
-            <div class="card__content">
-              <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
-              <div class="columns small-10 small-offset-1 text-center">
-                <p>
-                  <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
-                <%= auth_link_generator %>
-                </p>
+    </div>
+    <div class="row">
+      <div class="columns small-12 smallmedium-10 mediumlarge-8 large-6 small-centered" id="select-wrapper">
+        <div class="card">
+          <div class="card__content">
+            <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
+            <p class="text-center">
+              <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
+              <br>
+              <%= auth_link_generator %>
+            </p>
+            <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
+              <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
+              <div class="columns small-12 smallmedium-10 medium-8 small-centered">
+                <div id="verification" class="row small-up-<%= auth_code_length %>">
+                  <% auth_code_length.times do  |ind| %>
+                    <div class="column column-block half_signup custom-input">
+                      <input type="text" name="<%= "digit#{ind + 1}" %>" class="half_signup input-padding text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+                    </div>
+                  <% end %>
+                </div>
               </div>
-              <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
-                <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
-                <div class="columns small-12 smallmedium-10 medium-8 small-centered">
-                  <div id="verification" class="row small-up-<%= auth_code_length %>">
-                    <% auth_code_length.times do  |ind| %>
-                      <div class="column column-block half_signup custom-input">
-                        <input type="text" name="<%= "digit#{ind + 1}" %>" class="half_signup input-padding text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
-                      </div>
-                    <% end %>
-                  </div>
-                </div>
-                <br/>
-                <span class="form-error is-invisible" role="alert" id="verification-error"><%= t("decidim.forms.errors.error") %></span>
-                <%= form.hidden_field :verification %>
-                <div class="columns small-8 small-centered">
-                  <%= form.submit t(".submit"), class:"button expanded" %>
-                </div>
-              <% end %>
-              <p class="text-center">
-                <%= t(".have_not_received") %>
-                <%= link_to t(".resend_code"), users_quick_auth_resend_path %>
-              </p>
-            </div>
+              <br/>
+              <span class="form-error is-invisible" role="alert" id="verification-error"><%= t("decidim.forms.errors.error") %></span>
+              <%= form.hidden_field :verification %>
+              <div class="columns small-8 small-centered">
+                <%= form.submit t(".submit"), class:"button expanded" %>
+              </div>
+            <% end %>
+            <p class="text-center">
+              <%= t(".have_not_received") %>
+              <%= link_to t(".resend_code"), users_quick_auth_resend_path %>
+            </p>
           </div>
         </div>
       </div>
