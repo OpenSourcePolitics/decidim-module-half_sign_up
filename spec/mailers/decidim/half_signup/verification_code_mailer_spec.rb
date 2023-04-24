@@ -22,7 +22,7 @@ module Decidim
         end
 
         it "sets a subject" do
-          expect(mail.subject).to eq("Your sing in code is: 11223344")
+          expect(mail.subject).to eq("Your sign in code is: 11223344")
         end
 
         it "sets the content" do
