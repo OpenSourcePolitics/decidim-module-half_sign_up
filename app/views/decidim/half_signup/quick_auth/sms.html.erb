@@ -8,10 +8,10 @@
         <div class="columns small-12 smallmedium-10 medium-8 large-6 small-centered margin-bottom-3" id="select-wrapper">
           <div class="card">
             <div class="card__content">
-            <h2 class="text-center"><%= t(".enter_phone") %></h2>
-            <div class="columns small-10 small-offset-1 text-center margin-top-2 margin-bottom-2">
-              <p><%= t("instruction", scope:"decidim.half_signup.quick_auth.sms") %></p>
-            </div>
+              <h2 class="text-center"><%= t(".enter_phone") %></h2>
+              <div class="columns small-10 small-offset-1 text-center margin-top-2">
+                <p><%= t("instruction", scope:"decidim.half_signup.quick_auth.sms") %></p>
+              </div>
               <%= decidim_form_for(@form, url: users_quick_auth_verification_path, method: :post) do |form| %>
                 <%= render partial: "phone_form", locals: { form: form } %>
               <% end %>
