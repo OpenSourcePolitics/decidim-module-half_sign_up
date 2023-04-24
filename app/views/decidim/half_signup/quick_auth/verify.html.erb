@@ -18,10 +18,10 @@
             <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
               <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
               <div class="columns small-12 smallmedium-10 medium-8 small-centered">
-                <div id="verification" class="row small-up-<%= auth_code_length %>">
-                  <% auth_code_length.times do  |ind| %>
-                    <div class="column column-block half_signup custom-input">
-                      <input type="text" name="<%= "digit#{ind + 1}" %>" class="half_signup input-padding text-center" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+                <div id="verification" class="flex-digits">
+                  <% auth_code_length.times do |ind| %>
+                    <div class="flex-digits-input">
+                      <input type="text" name="<%= "digit#{ind + 1}" %>" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
                     </div>
                   <% end %>
                 </div>

@@ -57,25 +57,20 @@
   &.maximum-width{
     max-width: 535px;
   }
-  &.input-padding{
-    padding: 8px 4px;
-  }
-  &.custom-input{
-    @include breakpoint(small){
-      padding: 0 6%;
-    }
-    @include breakpoint(smallmedium){
-     padding: 0 6%;
-    }
-    @include breakpoint(medium){
-      padding: 0 7%;
-    }
-    @include breakpoint(large){
-      padding: 0 15px;
-    }
-    @include breakpoint(xxlarge){
-      padding: 0 20px;
-      height: 3.2rem;
+}
+
+.flex-digits{
+  display: flex;
+  justify-content: space-between;
+
+  .flex-digits-input{
+    display: flex;
+    flex: 0 0 auto;
+
+    input{
+      margin: 0 auto;
+      width: 2.5rem;
+      text-align: center;
     }
   }
   &.input_height{
