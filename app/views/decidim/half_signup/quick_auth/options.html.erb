@@ -10,10 +10,10 @@
         <div class="row card">
           <div class="columns medium-10 small-centered">
             <h3 class="margin-top-2"><%= t(".title") %></h3>
-            <h4> <em><%= t(".send_code_to") %></em></h4>
-            <div class="half_signup card__content middle_option">
+            <h4><em><%= t(".send_code_to") %></em></h4>
+            <div class="half-signup-methods">
               <%= render partial: "email_option"%>
-              <div class="small-12 medium-2 columns">
+              <div class="half-signup-methods-item half-signup-methods-item-or">
                 <%= t(".or")%>
               </div>
               <%= render partial: "sms_option" %>
