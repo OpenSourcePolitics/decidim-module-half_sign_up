@@ -51,16 +51,16 @@ en:
         sms_option:
           sms: SMS
         email_verification:
-          content: Confirm your email address by entering the confirmation code below in the field provided on the service.
-          details: 'Your confirmation code is:'
+          content: Confirm your email address by entering the sign in code below in the field provided on the service.
+          details: 'Your sign in code is:'
           subject: Email confirmation
           verify_email: Confirm email address
           welcome: 'Welcome to the platform!'
-          body: Your verification code is %{verification}
+          body: "Your sign in code is: %{verification}"
           error: An error occured while trying to send the verification to your email
             address, please try again. If the error persists, please contact the platform
             support for further help.
-          subject: "Your verification code is: %{verification}"
+          subject: "Your sign in code is: %{verification}"
           success: Verification code sent to %{email}.
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
