@@ -149,7 +149,7 @@ module Decidim
       end
 
       def ensure_email_enabled
-        return true if alf_signup_handlers.include?("email")
+        return true if half_signup_handlers.include?("email")
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
         redirect_to decidim.root_path
@@ -157,7 +157,7 @@ module Decidim
       end
 
       def ensure_sms_enabled
-        return true if alf_signup_handlers.include?("sms")
+        return true if half_signup_handlers.include?("sms")
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
         redirect_to decidim.root_path

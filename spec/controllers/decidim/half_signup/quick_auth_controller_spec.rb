@@ -43,7 +43,8 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       context "when the sms_auth_settings is disabled" do
         it "renders the :sms template" do
           get :sms
-          expect(response).to redirect_to(decidim_half_signup.users_quick_auth_path)
+          expect(response).to redirect_to("/")
+          expect(flash[:error]).to eq("You are not allowed to perform this action.")
         end
       end
 
@@ -76,8 +77,9 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
 
       context "when the email_auth_settings is disabled" do
         it "renders the :sms template" do
-          get :sms
-          expect(response).to redirect_to(decidim_half_signup.users_quick_auth_path)
+          get :email
+          expect(response).to redirect_to("/")
+          expect(flash[:error]).to eq("You are not allowed to perform this action.")
         end
       end
 
@@ -151,6 +153,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   end
 
   describe "GET#verify" do
+    let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
     let!(:method) { "sms" }
     let!(:country) { "FI" }
     let!(:phone) { 4_576_776_517 }
