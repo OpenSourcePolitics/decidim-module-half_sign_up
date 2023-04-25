@@ -44,25 +44,25 @@ module Decidim
           begin
             phone_number = phone_with_country_code(form.phone_country, form.phone_number)
 
-            # We can provide organization if the gateway allows extra parameters.
-            # This is required by some of the gateways, such as Twilio.
-            if custom_gateway?
-              Decidim.config.sms_gateway_service.constantize.new(
-                phone_number,
-                I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code),
-                organization: form.organization
-              )
-            else
-              Decidim.config.sms_gateway_service.constantize.new(
-                phone_number,
-                I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code)
-              )
-            end
+            Decidim.config.sms_gateway_service.constantize.new(
+              phone_number,
+              I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code),
+              **gateway_context
+            )
           end
       end
 
       def custom_gateway?
         Decidim.config.sms_gateway_service.constantize.instance_method(:initialize).parameters.count > 2
+      end
+
+      # We can provide organization if the gateway allows extra parameters.
+      # This is required by some of the gateways, such as Twilio.
+      def gateway_context
+        return {} if Rails.env.development? || Rails.env.test?
+        return {} unless custom_gateway?
+
+        { organization: form.organization }
       end
 
       def formatted_phone_number(form)

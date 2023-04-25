@@ -1,11 +1,11 @@
-<div class="small-6 columns medium-5">
-    <div class="comulns small-8 small-centered half_signup gray-image">
-      <svg aria-label="<%= t(".sms") %>" role="img" viewBox="0 0 512 512">
-        <title><%= t(".sms") %></title>
-        <use href="<%= asset_pack_path "media/images/chatbubble-sms-outline.svg" %>#chatbubble-sms-outline">
-      </svg>
-    </div>
-  <div class="row margin-top-1">
+<div class="half-signup-methods-item">
+  <div class="text-center gray-image">
+    <svg aria-label="<%= t(".sms") %>" role="img" viewBox="0 0 512 512">
+      <title><%= t(".sms") %></title>
+      <use href="<%= asset_pack_path "media/images/chatbubble-sms-outline.svg" %>#chatbubble-sms-outline">
+    </svg>
+  </div>
+  <div class="button-wrapper">
     <%= link_to t("sms", scope: "decidim.half_signup.quick_auth.options"), users_quick_auth_sms_path, class: "button expanded" %>
   </div>
 </div>
