@@ -53,13 +53,15 @@ module Decidim
       end
 
       def verify
+        return redirect_to decidim_half_signup.users_quick_auth_path unless auth_session
+
         @form = form(VerificationCodeForm).instance
         @verification_code = auth_session["code"]
         @info = set_contact_info
       end
 
       def authenticate
-        redirect_to(action: "verify") && return unless ensure_attempts_threshold
+        return redirect_to(action: "verify") unless ensure_attempts_threshold
 
         @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
 
