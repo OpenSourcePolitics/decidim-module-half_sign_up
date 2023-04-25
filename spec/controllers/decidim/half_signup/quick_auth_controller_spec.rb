@@ -152,7 +152,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     end
   end
 
-  describe "GET#verify" do
+  describe "GET #verify" do
     let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
     let!(:method) { "sms" }
     let!(:country) { "FI" }
@@ -162,9 +162,19 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
       get :verify
       expect(response).to render_template(:verify)
     end
+
+    context "when the auth session is not available" do
+      let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true, enable_partial_email_signup: true) }
+      let(:auth_session) { nil }
+
+      it "redirects to the options view" do
+        get :verify
+        expect(response).to redirect_to(action: "options")
+      end
+    end
   end
 
-  describe "POST#authenticate" do
+  describe "POST #authenticate" do
     context "when sms auth" do
       let!(:method) { "sms" }
       let!(:phone) { "123456789" }
@@ -266,7 +276,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     end
   end
 
-  describe "Get#resend" do
+  describe "GET #resend" do
     context "when sms auth" do
       let!(:method) { "sms" }
       let!(:phone) { "457832145" }
