@@ -12,17 +12,19 @@ module Decidim
 
       def half_signup_enabled?(organization)
         auth_settings = authentication_settings(organization)
-        return unless auth_settings
+        return false unless auth_settings
 
         auth_settings&.enable_partial_email_signup || auth_settings&.enable_partial_sms_signup
       end
 
       def half_signup_handlers
-        settings = authentication_settings(current_organization)
+        @half_signup_handlers ||= begin
+          settings = authentication_settings(current_organization)
 
-        [].tap do |array|
-          array << "email" if settings&.enable_partial_email_signup
-          array << "sms" if settings&.enable_partial_sms_signup
+          [].tap do |array|
+            array << "email" if settings&.enable_partial_email_signup
+            array << "sms" if settings&.enable_partial_sms_signup
+          end
         end
       end
 

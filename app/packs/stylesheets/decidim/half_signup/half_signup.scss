@@ -1,5 +1,9 @@
 @import "vendor/slim-select/slimselect";
 
+.ss-main.country-select{
+  margin: 0 0 $form-spacing;
+}
+
 .ss-main.country-select .ss-single-selected,
 .ss-content .ss-list .ss-option{
   .country-flag{
@@ -40,38 +44,69 @@
   }
 }
 
-.half_signup{
-  &.middle_option{
-    display: flex;
-    align-items: center;
-    font-size: 1.6rem;
+.half-signup-methods{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem;
+
+  @include breakpoint(smallmedium up){
+    flex-direction: row;
   }
 
-  &.gray-image{
-    fill: currentColor;
+  .half-signup-methods-item{
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin: 0 1rem;
+    font-size: 1.6rem;
+    text-align: center;
+    align-self: center;
+
+    &.half-signup-methods-item-or{
+      margin: 1.5rem 0;
+    }
+
+    svg{
+      width: 5rem;
+      fill: currentColor;
+
+      @include breakpoint(smallmedium up){
+        width: 6rem;
+      }
+    }
+
+    .button-wrapper{
+      @include breakpoint(smallmedium up){
+        margin-top: 1rem;
+      }
+    }
+
+    .button{
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
-  &.maximum-width{
-    max-width: 535px;
-  }
-  &.input-padding{
-    padding: 8px 4px;
-  }
-  &.custom-input{
-    @include breakpoint(small){
-      padding: 0 6%;
-    }
-    @include breakpoint(smallmedium){
-     padding: 0 6%;
-    }
-    @include breakpoint(medium){
-      padding: 0 7%;
-    }
-    @include breakpoint(large){
-      padding: 0 15px;
-    }
-    @include breakpoint(xxlarge){
-      padding: 0 20px;
-      height: 3.2rem;
+}
+
+.flex-digits{
+  display: flex;
+  justify-content: space-between;
+
+  .flex-digits-input{
+    display: flex;
+    flex: 0 0 auto;
+
+    input{
+      margin: 0 auto;
+      height: 2.5rem;
+      width: 2.5rem;
+      text-align: center;
+
+      @include breakpoint(smallmedium up){
+        height: 3rem;
+        width: 3rem;
+      }
     }
   }
 }
