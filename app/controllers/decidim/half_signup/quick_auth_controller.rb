@@ -75,7 +75,7 @@ module Decidim
           end
 
           on(:invalid) do |validation_message|
-            add_failed_attempt if validation.presents?
+            add_failed_attempt if validation_message.present?
             flash.now[:error] = validation_message
             render :verify
           end
@@ -159,7 +159,7 @@ module Decidim
         return if half_signup_handlers.include? option
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
-        redirect_to decidim_half_signup.users_quick_auth_path
+        redirect_to decidim.root_path
       end
 
       def ensure_authorized
