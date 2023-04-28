@@ -9,6 +9,10 @@ en:
         enable_partial_sms_signup: Enable partial sign up and sign in using SMS verification
         enable_partial_email_signup: Enable partial sign up and sign in using email verification
   decidim:
+    account:
+      change_phone_number:
+        update: Update your phone number
+        add: Add your phone number
     budgets:
       voting:
         index:
@@ -36,7 +40,9 @@ en:
         another_method: Use Another method
         authenticate_user:
           error: Verification failed. Please try again.
+          phone_exist: This phone number is bined to another account. Please use another phone number, or contact administration.
           signed_in: Signed in successfully.
+          updated: User account updated successfully.
           threshold_exceeded: Too many failed attempts. Please try again later.
         development_hint:
           hint_notification: "(This message only appears in development mode)"
@@ -64,6 +70,7 @@ en:
           success: Verification code sent to %{email}.
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
+        back: Back to account
         options:
           welcome: "Welcome to the <br><strong>%{organization} platform!</strong>"
           email: To your email

@@ -6,7 +6,7 @@ module Decidim
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
       include Decidim::HalfSignup::PartialSignupSettings
 
-      before_action :ensure_authorized, only: [:sms, :email, :verify, :options]
+      before_action :ensure_authorized, only: [:email, :options]
       # before_action :store_user_location!, if: :storable_location?
 
       def sms
@@ -72,6 +72,25 @@ module Decidim
             flash[:notice] = I18n.t("signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
             reset_auth_session
             sign_in_and_redirect user, event: :authentication
+          end
+
+          on(:invalid) do |validation_message|
+            add_failed_attempt if validation.presents?
+            flash.now[:error] = validation_message
+            render :verify
+          end
+        end
+      end
+
+      def update_phone
+        @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
+
+        @verification_code = auth_session["code"]
+        UpdateUserPhone.call(form: @form, data: auth_session, user: current_user) do
+          on(:ok) do
+            flash[:notice] = I18n.t("updated", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            reset_auth_session
+            redirect_to decidim.account_path
           end
 
           on(:invalid) do |validation|
