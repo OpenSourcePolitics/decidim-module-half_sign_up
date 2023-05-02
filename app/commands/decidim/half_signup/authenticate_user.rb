@@ -10,7 +10,7 @@ module Decidim
 
       def call
         return broadcast(:invalid) unless form.valid?
-        return broadcast(:invalid, "invalid") unless validate!
+        return broadcast(:invalid, verification_failed) unless validate!
 
         user = find_or_create_user!
         broadcast(:ok, user)
@@ -73,6 +73,10 @@ module Decidim
 
       def generate_email(country, phone)
         EmailGenerator.new(form.organization, country, phone).generate
+      end
+
+      def verification_failed
+        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
 
       def sms_auth?

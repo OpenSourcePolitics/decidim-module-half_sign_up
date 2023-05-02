@@ -19,7 +19,7 @@ module Decidim
           )
           namespace :users_quick_auth, path: "users/quick_auth", module: "quick_auth" do
             get :sms, :email, :resend, :verify
-            post :verification, :authenticate
+            post :verification, :authenticate, :update_phone
           end
         end
       end
@@ -40,6 +40,13 @@ module Decidim
 
       initializer "decidim_half_signup.add_customizations", after: "decidim.action_controller" do
         config.to_prepare do
+          # this has to be added because of a bug in decidim core, other 'valid_email2' gem will not be
+          # available through the account form, which leads an error.
+          Decidim::User # rubocop:disable Lint/Void
+
+          # forms
+          Decidim::AccountForm.include(Decidim::HalfSignup::AccountFormExtensions)
+
           # controller
           Decidim::Devise::SessionsController.include(
             Decidim::HalfSignup::SessionsExtensions

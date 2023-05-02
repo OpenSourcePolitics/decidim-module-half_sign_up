@@ -15,7 +15,11 @@
               <br>
               <%= auth_link_generator %>
             </p>
+<<<<<<< HEAD
             <%= decidim_form_for(@form, url: users_quick_auth_authenticate_path, method: :post) do |form| %>
+=======
+            <%= decidim_form_for(@form, url: current_user.present? ? users_quick_auth_update_phone_path : users_quick_auth_authenticate_path, method: :post) do |form| %>
+>>>>>>> main
               <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
               <div class="columns small-12 smallmedium-10 medium-8 small-centered">
                 <div id="verification" class="flex-digits">
