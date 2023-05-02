@@ -49,11 +49,10 @@ The following configurations are availble through hard-coding (from lib/decidim/
 The default country to be shown for sms authentication is set to the US by default, but you can change it to any other country by providing two-letter country codes defined in ISO 3166-1,  as defult countri(es) like:
 ```ruby
 config_accessor :default_countries do
+# change this to the country/countries you want to be shown at the top(the first option will be selected by default)
       [:fi, :se]
     end
 ```
-
-In the above, we changed the default selected country to Finland, followed by Sweden in the list of countries in SMS authentication views.
 
 #### Show tos agreement for the signup
 
@@ -61,6 +60,7 @@ This is the configuration to enable or disable agree to the terms and condition 
 
 ```ruby
   config_accessor :show_tos_page_after_signup do
+  # change this to false, if you dont want to redirect the user to the tos agreement page
       true
     end
 ```
@@ -68,6 +68,13 @@ This is the configuration to enable or disable agree to the terms and condition 
 #### Auth code length
 
 You can define the length of generated authentication code; The default value is set to 4, which means every time the user requests a verification code, a four-digit code is generated and being sent to the user. It is suggested to set this value between 4 and 7, due to possible breaking in the view.
+
+```ruby
+config_accessor :auth_code_length do
+# change this to other values if you want to change the length of generated code (be advised to remain in an acceptable limits for the sake of best performance)
+      4
+    end
+```
 
 ## Testing
 
