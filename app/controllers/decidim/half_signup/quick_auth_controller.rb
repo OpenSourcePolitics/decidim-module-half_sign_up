@@ -6,16 +6,17 @@ module Decidim
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
       include Decidim::HalfSignup::PartialSignupSettings
 
-      before_action :ensure_authorized, only: [:sms, :email, :verify, :options]
-      before_action :ensure_email_enabled, only: [:email]
-      before_action :ensure_sms_enabled, only: [:sms]
+      before_action :ensure_authorized, only: [:email, :options]
+      # before_action :store_user_location!, if: :storable_location?
 
       def sms
+        ensure_enabled_auth("sms")
         @form = form(SmsAuthForm).instance
         init_sessions!({ auth_method: "sms" })
       end
 
       def email
+        ensure_enabled_auth("email")
         @form = form(EmailAuthForm).instance
         init_sessions!({ auth_method: "email" })
       end
@@ -73,9 +74,28 @@ module Decidim
             sign_in_and_redirect user, event: :authentication
           end
 
+          on(:invalid) do |validation_message|
+            add_failed_attempt if validation_message.present?
+            flash.now[:error] = validation_message
+            render :verify
+          end
+        end
+      end
+
+      def update_phone
+        @form = form(VerificationCodeForm).from_params(params.merge(current_locale: current_locale, organization: current_organization))
+
+        @verification_code = auth_session["code"]
+        UpdateUserPhone.call(form: @form, data: auth_session, user: current_user) do
+          on(:ok) do
+            flash[:notice] = I18n.t("updated", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            reset_auth_session
+            redirect_to decidim.account_path
+          end
+
           on(:invalid) do |validation|
-            add_failed_attempt if validation == "invalid"
-            flash.now[:error] = I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            add_failed_attempt if validation == I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            flash.now[:error] = validation
             render :verify
           end
         end
@@ -139,7 +159,7 @@ module Decidim
         return if half_signup_handlers.include? option
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
-        redirect_to decidim_half_signup.users_quick_auth_path
+        redirect_to decidim.root_path
       end
 
       def ensure_authorized
