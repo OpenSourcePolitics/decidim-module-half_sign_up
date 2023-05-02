@@ -4,7 +4,7 @@ Module that enables half signup/signin.
 
 ## Usage
 
-This module adds a configuration option in admin pannel, enbaling users to signin/signup to the platform, without going through the barriers of  account creation process(for the case of signup) and normal flow of authentication through combination of username/email and password (for the case of signing in). Instead, users will receive an email/sms containing a verification code, bywhich they will be authorized and signed in/up. This feature aims at particularly easing the process of participation during voting phase. This feature is configurable in admin pannel.
+This module adds a configuration option in admin panel, enabling users to signin/signup to the platform, without going through the barriers of  account creation process(for the case of signup) and normal flow of authentication through combination of username/email and password (for the case of signing in). Instead, users will receive an email/sms containing a verification code, by which they will be authorized and signed in/up. This feature aims at particularly easing the process of participation during voting phase. This feature is configurable in admin pannel.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Add the following to your application's Gemfile:
 gem "decidim-half_signup", github: "OpenSourcePolitics/decidim-module-half_sign_up", branch: "main"
 ```
 
-By the time of providing this documentation, this gem was not added to reby gem. If the gem has been added to the
+By the time of providing this documentation, this gem was not added to ruby gem. If the gem has been added to the
 rubygems, you can add it from the rubygem instead:
 
 ```ruby
@@ -46,7 +46,7 @@ The following configurations are availble through hard-coding (from lib/decidim/
 
 #### Default country/countries
 
-The default country to be shown for sms authentication is set to the US by default, but you can change it to any other country by providing two-letter country codes defined in ISO 3166-1,  as defult countri(es) like:
+The default country to be shown for sms authentication is set to the US by default, but you can change it to any other country by providing two-letter country codes defined in ISO 3166-1,  as default country/countries like:
 ```ruby
 config_accessor :default_countries do
 # change this to the country/countries you want to be shown at the top(the first option will be selected by default)
@@ -56,7 +56,7 @@ config_accessor :default_countries do
 
 #### Show tos agreement for the signup
 
-This is the configuration to enable or disable agree to the terms and condition pages for new users who create their account. The default is set to true, meaning that new users will be redirected to the agree to the terms and conditions page after creting the account.
+This is the configuration to enable or disable agree to the terms and conditions page for new users who create their account. The default is set to true, meaning that new users will be redirected to the agree to the terms and conditions page after creting the account.
 
 ```ruby
   config_accessor :show_tos_page_after_signup do
@@ -67,7 +67,7 @@ This is the configuration to enable or disable agree to the terms and condition 
 
 #### Auth code length
 
-You can define the length of generated authentication code; The default value is set to 4, which means every time the user requests a verification code, a four-digit code is generated and being sent to the user. It is suggested to set this value between 4 and 7, due to possible breaking in the view.
+You can define the length of generated authentication code; The default value is set to 4, which means every time the user requests a verification code, a four-digit code is generated and being sent to the user. It is recommended to set the value between 4 and 7, as choosing a value higher than 7 could potentially cause unexpected design issues and negatively impact the website's layout.
 
 ```ruby
 config_accessor :auth_code_length do
