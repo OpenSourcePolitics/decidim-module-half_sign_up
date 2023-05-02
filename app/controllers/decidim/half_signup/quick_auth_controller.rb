@@ -94,8 +94,8 @@ module Decidim
           end
 
           on(:invalid) do |validation|
-            add_failed_attempt if validation == "invalid"
-            flash.now[:error] = I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            add_failed_attempt if validation == I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+            flash.now[:error] = validation
             render :verify
           end
         end

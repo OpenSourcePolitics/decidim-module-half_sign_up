@@ -39,6 +39,7 @@ en:
           unnamed_user: Unnamed user
         another_method: Use Another method
         authenticate_user:
+          unauthorized: You are not authorized to perform this action.
           error: Verification failed. Please try again.
           phone_exist: This phone number is bined to another account. Please use another phone number, or contact administration.
           signed_in: Signed in successfully.

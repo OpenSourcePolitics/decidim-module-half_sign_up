@@ -10,6 +10,7 @@ module Decidim
       end
 
       def call
+        return broadcast(:invalid, unauthorized) if user.blank?
         return broadcast(:invalid) unless form.valid?
 
         return broadcast(:invalid, verification_failed) unless validate_code!
@@ -41,6 +42,8 @@ module Decidim
       end
 
       def validate_user!
+        return false if user.blank?
+
         registered_user = Decidim::User.find_by(
           phone_number: data["phone"],
           phone_country: data["country"],
@@ -62,6 +65,10 @@ module Decidim
 
       def cant_be_updated
         I18n.t("phone_exist", scope: "decidim.half_signup.quick_auth.authenticate_user")
+      end
+
+      def unauthorized
+        I18n.t("unauthorized", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
     end
   end

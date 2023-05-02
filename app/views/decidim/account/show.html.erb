@@ -14,7 +14,7 @@
       <%= f.text_field :name %>
       <%= f.text_field :nickname %>
       <%= f.email_field :email %>
-      <%= render partial: "change_phone_number", locals: { f: f, account: @account } %>
+      <%= render partial: "change_phone_number", locals: { f: f, account: @account }  if half_signup_handlers.include?("sms") %>
       <%= f.url_field :personal_url %>
       <%= f.text_area :about, rows: 5 %>
 
