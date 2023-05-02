@@ -20,7 +20,7 @@ module Decidim
     autoload :GatewayError, "decidim/half_signup/gateway"
 
     # The country or countries to be selected in country selection
-    # during sms verification/authentication. The default is being set to nil
+    # during sms verification/authentication. The default is being set to the US.
     config_accessor :default_countries do
       [:us]
     end
