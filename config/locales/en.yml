@@ -2,17 +2,18 @@
 en:
   activemodel:
     attributes:
+      auth_setting:
+        enable_partial_email_signup: Enable partial sign up and sign in using email
+          verification
+        enable_partial_sms_signup: Enable partial sign up and sign in using SMS verification
       sms_auth:
         phone_country: Country code
         phone_number: Phone number
-      auth_setting:
-        enable_partial_sms_signup: Enable partial sign up and sign in using SMS verification
-        enable_partial_email_signup: Enable partial sign up and sign in using email verification
   decidim:
     account:
       change_phone_number:
-        update: Update your phone number
         add: Add your phone number
+        update: Update your phone number
     budgets:
       voting:
         index:
@@ -23,63 +24,65 @@ en:
     half_signup:
       admin:
         auth_settings:
+          description: The module provides some settings through module configurations
+            that can be set from the code. Use the following code sample in an initializer
+            with the comments that explain what each setting does.
           edit:
             title: Half signup module
             update: Update
-          sms:
-            help_text: This option allows users to sign up and sign in to the platform using their email address by receiving a verification code by SMS.
           email:
-            help_text: This option allows users to sign up and sign in to the platform using their email address by receiving a verification through email.
+            help_text: This option allows users to sign up and sign in to the platform
+              using their email address by receiving a verification through email.
+          sms:
+            help_text: This option allows users to sign up and sign in to the platform
+              using their email address by receiving a verification code by SMS.
           title: Settings available through code
-          description: The module provides some settings through module configurations that can be set from the code. Use the following code sample in an initializer with the comments that explain what each setting does.
       menu:
         auth_settings: Authentication settings
       quick_auth:
+        another_method: Use Another method
         authenticate:
           unnamed_user: Unnamed user
-        another_method: Use Another method
         authenticate_user:
-          unauthorized: You are not authorized to perform this action.
           error: Verification failed. Please try again.
-          phone_exist: This phone number is bined to another account. Please use another phone number, or contact administration.
+          phone_exist: This phone number is bined to another account. Please use another
+            phone number, or contact administration.
           signed_in: Signed in successfully.
-          updated: User account updated successfully.
           threshold_exceeded: Too many failed attempts. Please try again later.
+          unauthorized: You are not authorized to perform this action.
+          updated: User account updated successfully.
+        back: Back to account
         development_hint:
           hint_notification: "(This message only appears in development mode)"
           verification_code: 'The verificaiton code is: '
         email:
           enter_email: 'Please enter your email:'
-          instruction: The email address will be your key to the platform. An email will be sent to your email every time you wish to sign in. If you already have an account on this platform, please enter that email to sign in.
+          instruction: The email address will be your key to the platform. An email
+            will be sent to your email every time you wish to sign in. If you already
+            have an account on this platform, please enter that email to sign in.
         email_form:
           submit: Send the code
         email_option:
           email: Email
-        sms_option:
-          sms: SMS
         email_verification:
-          content: Confirm your email address by entering the sign in code below in the field provided on the service.
+          content: Confirm your email address by entering the sign in code below in
+            the field provided on the service.
           details: 'Your sign in code is:'
-          subject: Email confirmation
-          verify_email: Confirm email address
-          welcome: 'Welcome to the platform!'
-          body: "Your sign in code is: %{verification}"
           error: An error occured while trying to send the verification to your email
             address, please try again. If the error persists, please contact the platform
             support for further help.
-          subject: "Your sign in code is: %{verification}"
+          subject: 'Your sign in code is: %{verification}'
           success: Verification code sent to %{email}.
+          welcome: Welcome to the platform!
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
-        back: Back to account
         options:
-          welcome: "Welcome to the <br><strong>%{organization} platform!</strong>"
           email: To your email
           not_allowed: You are not allowed to perform this action.
           or: OR
+          send_code_to: 'Should we send the code to:'
           sms: To your phone
           title: You need to authenticate to vote.
-          send_code_to: "Should we send the code to:"
         phone_form:
           submit: Send the code
         resend_code:
@@ -89,6 +92,8 @@ en:
           instruction: The phone number will be your key to the platform. Unless you
             add a password to your accout, an SMS will be sent to your phone number
             every time you wish to sign in.
+        sms_option:
+          sms: SMS
         sms_verification:
           invalid_from_number: The sender number is not correctly configured or is
             not able to send messages. Please contact the platform support for further
@@ -98,18 +103,16 @@ en:
           invalid_to_number: The phone number you provided is not correct. Please
             check that you entered your phone number correctly.
           success: Verification code sent to %{phone}.
-          text_message: "Use code %{verification} to sign in to the platform."
+          text_message: Use code %{verification} to sign in to the platform.
           unknown: An error occured which has been logged, please try again. If the
             error persists, please contact the platform support for further help.
         verify:
           have_not_received: Haven't received the code?
-          resend_code: Send it again.
-          submit: Verify
           incorrect_email: "(incorrect address?)"
           incorrect_phone: "(incorrect phone number?)"
           inputs:
             one: First digit
             other: digit %{count}
-          first_input: Please enter your verification code. Character 1
-          other_inputs: Character %{num}
+          resend_code: Send it again.
+          submit: Verify
         welcome: Welcome to the <br><strong>%{organization} platform!</strong>
