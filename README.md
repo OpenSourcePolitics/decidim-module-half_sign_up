@@ -12,7 +12,7 @@ After successfully installing the module, you should be able to see "Authenticat
 Add the following to your application's Gemfile:
 
 ```ruby
-gem "decidim-half_signup", github: "OpenSourcePolitics/decidim-module-half_sign_up", branch: "main"
+gem "decidim-half_signup", github: "OpenSourcePolitics/decidim-module-half_sign_up", branch: "release/0.26-stable"
 ```
 
 By the time of providing this documentation, this gem was not added to ruby gem. If the gem has been added to the
