@@ -92,7 +92,6 @@ describe "Add/update phone number", type: :system do
           fill_in "Phone number", with: "4578878784"
           click_button "Send the code"
           code = page.find("#hint").text
-          puts "the code is: #{code}"
           fill_in_code(code, "digit")
           click_button "Verify"
         end

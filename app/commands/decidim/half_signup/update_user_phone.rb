@@ -2,7 +2,7 @@
 
 module Decidim
   module HalfSignup
-    class UpdateUserPhone < Decidim::Command
+    class UpdateUserPhone < Rectify::Command
       def initialize(form:, data:, user:)
         @form = form
         @data = data

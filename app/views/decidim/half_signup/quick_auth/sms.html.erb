@@ -14,23 +14,16 @@
           <%= decidim_form_for(@form, url: users_quick_auth_verification_path, method: :post) do |form| %>
             <%= render partial: "phone_form", locals: { form: form } %>
           <% end %>
-<<<<<<< HEAD
-          <% if handlers_count > 1 %>
-=======
           <% if handlers_count > 1 && !current_user %>
->>>>>>> main
             <p class="text-center">
               <%= link_to t("another_method", scope:"decidim.half_signup.quick_auth"), decidim_half_signup.users_quick_auth_path, class: "text-center" %>
             </p>
           <% end %>
-<<<<<<< HEAD
-=======
           <% if current_user.present? %>
             <p class="text-center">
               <%= link_to t("back", scope:"decidim.half_signup.quick_auth"), decidim.account_path, class: "text-center" %>
             </p>
           <% end %>
->>>>>>> main
         </div>
       </div>
     </div>
