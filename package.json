@@ -6,7 +6,8 @@
   "author": "Sina Eftekhar <sina.eftekhar@mainiotech.fi>",
   "license": "AGPL-3.0",
   "scripts": {
-    "lint": "eslint -c .eslintrc.json --no-error-on-unmatched-pattern --ignore-pattern app/packs/vendor --ext .js app/packs"
+    "lint": "eslint -c .eslintrc.json --no-error-on-unmatched-pattern --ignore-pattern app/packs/vendor --ext .js app/packs",
+    "stylelint": "stylelint app/packs/**/*.scss"
   },
   "dependencies": {
     "@decidim/webpacker": "^0.26.5"
