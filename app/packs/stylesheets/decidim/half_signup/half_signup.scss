@@ -26,7 +26,7 @@
     border: $input-border;
     box-shadow: $input-shadow;
 
-    .placeholder {
+    .placeholder{
       white-space: unset;
 
       .country-flag{
@@ -112,7 +112,7 @@
 }
 
 form input[type='number']::-webkit-outer-spin-button,
-form input[type='number']::-webkit-inner-spin-button {
-   -webkit-appearance: none;
-   margin: 0;
+form input[type='number']::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
 }
