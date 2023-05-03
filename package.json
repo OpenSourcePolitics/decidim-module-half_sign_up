@@ -8,11 +8,14 @@
   "scripts": {
     "lint": "eslint -c .eslintrc.json --no-error-on-unmatched-pattern --ignore-pattern app/packs/vendor --ext .js app/packs"
   },
+  "dependencies": {
+    "@decidim/webpacker": "^0.26.5"
+  },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
-    "@decidim/dev": "^0.27.2",
-    "@decidim/eslint-config": "^0.27.2",
-    "@decidim/stylelint-config": "^0.27.2",
+    "@decidim/dev": "^0.26.5",
+    "@decidim/eslint-config": "^0.26.5",
+    "@decidim/stylelint-config": "^0.26.5",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.2.0",
     "eslint-config-standard": "^11.0.0",
