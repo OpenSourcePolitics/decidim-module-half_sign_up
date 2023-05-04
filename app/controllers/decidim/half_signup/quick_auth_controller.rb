@@ -7,7 +7,6 @@ module Decidim
       include Decidim::HalfSignup::PartialSignupSettings
 
       before_action :ensure_authorized, only: [:email, :options]
-      # before_action :store_user_location!, if: :storable_location?
 
       def sms
         ensure_enabled_auth("sms")
@@ -141,20 +140,6 @@ module Decidim
 
       private
 
-      # Its important that the location is NOT stored if:
-      # - The request method is not GET (non idempotent)
-      # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an
-      #    infinite redirect loop.
-      # - The request is an Ajax request as this can lead to very unexpected behaviour.
-      def storable_location?
-        request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
-      end
-
-      def store_user_location!
-        # :user is the scope we are authenticating
-        store_location_for(:user, request.fullpath)
-      end
-
       def ensure_enabled_auth(option)
         return if half_signup_handlers.include? option
 
@@ -164,22 +149,6 @@ module Decidim
 
       def ensure_authorized
         return true if current_user.blank? && handlers_count.positive?
-
-        flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
-        redirect_to decidim.root_path
-        false
-      end
-
-      def ensure_email_enabled
-        return true if half_signup_handlers.include?("email")
-
-        flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
-        redirect_to decidim.root_path
-        false
-      end
-
-      def ensure_sms_enabled
-        return true if half_signup_handlers.include?("sms")
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
         redirect_to decidim.root_path
