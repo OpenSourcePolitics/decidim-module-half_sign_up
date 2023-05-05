@@ -78,11 +78,14 @@ en:
         instruction: You should have received the code to %{contact_info}
         options:
           email: To your email
+          with_email: With your email
           not_allowed: You are not allowed to perform this action.
           or: OR
           send_code_to: 'Should we send the code to:'
           sms: To your phone
+          with_sms: With your phone
           title: You need to authenticate to vote.
+          select: Please select how you would like to sign in.
         phone_form:
           submit: Send the code
         resend_code:

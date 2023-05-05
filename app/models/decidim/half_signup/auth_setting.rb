@@ -12,6 +12,13 @@ module Decidim
         slug
       end
 
+      def available_methods
+        [].tap do |array|
+          array << "email" if self[:enable_partial_email_signup]
+          array << "sms" if self[:enable_partial_sms_signup]
+        end
+      end
+
       private
 
       def set_slug
