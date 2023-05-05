@@ -172,6 +172,7 @@ describe "Sign in and sign up page", type: :system do
   end
 
   private
+
   def click_a_project
     visit decidim_budgets.budget_projects_path(budget.id)
     button = find("#project-vote-button-#{projects.first.id}")
