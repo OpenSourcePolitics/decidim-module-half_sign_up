@@ -12,11 +12,11 @@
             <h3 class="margin-top-2"><%= t(".title") %></h3>
             <h4><em><%= t(".send_code_to") %></em></h4>
             <div class="half-signup-methods">
-              <%= render partial: "email_option"%>
+              <%= render partial: "email_option", locals: { modify_button_text: false }%>
               <div class="half-signup-methods-item half-signup-methods-item-or">
                 <%= t(".or")%>
               </div>
-              <%= render partial: "sms_option" %>
+              <%= render partial: "sms_option", locals: { modify_button_text: false } %>
             </div>
           </div>
         </div>
