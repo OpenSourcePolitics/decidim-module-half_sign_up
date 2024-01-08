@@ -21,7 +21,7 @@
                 <div id="verification" class="flex-digits">
                   <% auth_code_length.times do |ind| %>
                     <div class="flex-digits-input">
-                      <input type="text" name="<%= "digit#{ind + 1}" %>" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
+                      <input type="text" name="<%= "digit#{ind + 1}" %>" autocomplete="one-time-code" aria-label="<%= t(".inputs", count: ind + 1) %>">
                     </div>
                   <% end %>
                 </div>
