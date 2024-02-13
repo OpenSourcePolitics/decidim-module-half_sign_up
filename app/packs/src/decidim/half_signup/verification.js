@@ -1,5 +1,5 @@
 $(() => {
-  const verificationInputs = document.querySelectorAll("#verification input[type='text']");
+  const verificationInputs = document.querySelectorAll("#verification input[type='number']");
   const verificationForm = document.querySelector("#verification").closest("form");
   verificationInputs.forEach((input, ind) => {
     input.setAttribute("maxlength", "1");
