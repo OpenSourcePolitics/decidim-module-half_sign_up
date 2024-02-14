@@ -9,17 +9,40 @@ $(() => {
     input.addEventListener("input", () => {
       const val = input.value
 
-      if (!(/\d/).test(val)) {
-        input.value = ""
+      if (val.trim() === "") {
         return
       }
-      const nextInput = verificationInputs[ind + 1];
 
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.select();
+      if (val.length > 1) {
+        let jj = 0;
+        for (let ii = ind; ii < verificationInputs.length; ii += 1) {
+          if (jj > val.length) {
+            return;
+          }
+          if (val.substr(jj, 1)) {
+            verificationInputs[ii].value = val.substr(jj, 1);
+            verificationInputs[ii].focus();
+            jj += 1
+          }
+        }
       } else {
-        verificationForm.querySelector("button[type='submit']").focus();
+        if (!(/\d/).test(val)) {
+          input.value = ""
+          return
+        }
+
+        if (verificationInputs[ind].value.trim() !== "") {
+          verificationInputs[ind].value = val;
+        }
+
+        const nextInput = verificationInputs[ind + 1];
+
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.select();
+        } else {
+          verificationForm.querySelector("button[type='submit']").focus();
+        }
       }
     })
 
