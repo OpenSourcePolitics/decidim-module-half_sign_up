@@ -6,33 +6,39 @@ $(() => {
     input.addEventListener("click", () => {
       input.select();
     })
-    input.addEventListener("input", () => {
-      const val = input.value
+    input.addEventListener("input", (event) => {
+      event.preventDefault();
 
-      if (val.trim() === "") {
+      const valueToInsert = event.data;
+      const val = input.value.trim();
+
+      if (val.length > 1) {
+        input.value = val.substr(0, 1);
+      }
+
+      if (valueToInsert === null || valueToInsert.trim() === "") {
         return
       }
 
-      if (val.length > 1) {
+      if (valueToInsert.length > 1 && val === "") {
         let jj = 0;
         for (let ii = ind; ii < verificationInputs.length; ii += 1) {
-          if (jj > val.length) {
+          if (jj > valueToInsert.length) {
             return;
           }
-          if (val.substr(jj, 1)) {
-            verificationInputs[ii].value = val.substr(jj, 1);
+          if (valueToInsert.substr(jj, 1)) {
+            verificationInputs[ii].value = valueToInsert.substr(jj, 1);
             verificationInputs[ii].focus();
             jj += 1
           }
         }
       } else {
-        if (!(/\d/).test(val)) {
+        if (!(/\d/).test(valueToInsert)) {
           input.value = ""
           return
         }
-
-        if (verificationInputs[ind].value.trim() !== "") {
-          verificationInputs[ind].value = val;
+        if (verificationInputs[ind].value.trim().length > 0) {
+          verificationInputs[ind].value = valueToInsert;
         }
 
         const nextInput = verificationInputs[ind + 1];
@@ -49,7 +55,6 @@ $(() => {
     input.addEventListener("paste", (event) => {
       const clipboardData = event.clipboardData || window.clipboardData;
       const pastedData = clipboardData.getData("text").trim();
-
       // find the first empty input field and paste the data there
       let jj = 0;
       for (let ii = ind; ii < verificationInputs.length; ii += 1) {
