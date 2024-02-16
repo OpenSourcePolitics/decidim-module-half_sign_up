@@ -5,6 +5,11 @@ require "capybara"
 
 require "simplecov"
 SimpleCov.start
+ENV["ENGINE_ROOT"] = File.dirname(__dir__)
+
+Decidim::Dev.dummy_app_path = File.expand_path(File.join("spec", "decidim_dummy_app"))
+
+require "decidim/dev/test/base_spec_helper"
 
 Capybara.register_driver :headless_chrome do |app|
   options = ::Selenium::WebDriver::Chrome::Options.new
@@ -22,12 +27,6 @@ Capybara.register_driver :headless_chrome do |app|
     capabilities: [options]
   )
 end
-
-ENV["ENGINE_ROOT"] = File.dirname(__dir__)
-
-Decidim::Dev.dummy_app_path = File.expand_path(File.join("spec", "decidim_dummy_app"))
-
-require "decidim/dev/test/base_spec_helper"
 
 RSpec.configure do |config|
   config.before do
