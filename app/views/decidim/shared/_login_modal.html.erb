@@ -49,19 +49,31 @@
     <% else %>
       <div class="row">
         <div class="columns large-10 medium-8 text-center small-centered">
-          <div class="row card">
-            <div class="columns medium-10 small-centered">
-              <% if methods.length > 1 %>
-                <h3 class="margin-top-2"><%= t("select", scope: "decidim.half_signup.quick_auth.options") %></h3>
-              <% end %>
-              <div class="half-signup-methods">
-                <%= render partial: "decidim/half_signup/quick_auth/email_option", locals: { modify_button_text: true } if methods.include?("email") %>
+          <div class="column card">
+            <div class="row">
+              <div class="columns medium-10 small-centered">
                 <% if methods.length > 1 %>
-                  <div class="half-signup-methods-item half-signup-methods-item-or">
-                    <%= t("or", scope: "decidim.half_signup.quick_auth.options")%>
-                  </div>
+                  <h3 class="margin-top-2"><%= t("select", scope: "decidim.half_signup.quick_auth.options") %></h3>
                 <% end %>
-                <%= render partial: "decidim/half_signup/quick_auth/sms_option", locals: { modify_button_text: true } if methods.include?("sms") %>
+                <div class="half-signup-methods">
+                  <%= render partial: "decidim/half_signup/quick_auth/email_option", locals: { modify_button_text: true } if methods.include?("email") %>
+                  <% if methods.length > 1 %>
+                    <div class="half-signup-methods-item half-signup-methods-item-or">
+                      <%= t("or", scope: "decidim.half_signup.quick_auth.options")%>
+                    </div>
+                  <% end %>
+                  <%= render partial: "decidim/half_signup/quick_auth/sms_option", locals: { modify_button_text: true } if methods.include?("sms") %>
+                </div>
+              </div>
+            </div>
+            <div class="half-signup-methods-item half-signup-methods-item-or">
+              <%= t("or", scope: "decidim.half_signup.quick_auth.options")%>
+            </div>
+            <div class="row margin-1">
+              <div class="columns medium-10 small-centered">
+                <div class="half-signup-methods-item">
+                  <%= link_to t("classic_connection", scope: "decidim.half_signup.quick_auth.options"), decidim.new_user_session_path, class: "button expanded" %>
+                </div>
               </div>
             </div>
           </div>
