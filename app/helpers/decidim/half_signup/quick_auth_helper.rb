@@ -13,12 +13,29 @@ module Decidim
       end
 
       def sorted_countries
-        unsorted = ::ISO3166::Country.all.map do |c|
-          next if Decidim::HalfSignup.default_countries&.include?(c.alpha2)
+        unsorted = if Decidim::HalfSignup.default_countries.blank?
+                     ::ISO3166::Country.all.reject { |c| Decidim::HalfSignup.default_countries&.include?(c.alpha2) }.map { |c| generate_data(c) }
+                   else
+                     Decidim::HalfSignup.default_countries.reject { |alph2| Decidim::HalfSignup.default_countries&.include?(alph2) }.map do |alph2|
+                       country = ::ISO3166::Country.find_country_by_alpha2(alph2)
+                       generate_data(country)
+                     end
+                   end
 
-          generate_data(c)
-        end
         unshift_defaults(unsorted)
+      end
+
+      def phone_unique_country
+        return if Decidim::HalfSignup.default_countries.blank?
+
+        country = ::ISO3166::Country.find_country_by_alpha2(Decidim::HalfSignup.default_countries.first)
+        generate_data(country)
+      end
+
+      def unique_country?
+        return false if Decidim::HalfSignup.default_countries.blank?
+
+        Decidim::HalfSignup.default_countries.size == 1
       end
 
       def current_phone_number

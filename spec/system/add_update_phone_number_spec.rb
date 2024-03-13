@@ -13,6 +13,7 @@ describe "Add/update phone number", type: :system do
     sign_in user
     switch_to_host(organization.host)
     visit decidim.account_path
+    allow(Decidim::HalfSignup.config).to receive(:default_countries).and_return([])
   end
 
   context "when sms_auth is not enabled" do

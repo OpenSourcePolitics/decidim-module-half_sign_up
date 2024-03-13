@@ -1,7 +1,12 @@
 <div class="row">
   <div class="columns large-4">
     <div class="field">
-      <%= form.select :phone_country, phone_country_options(form.object.phone_country), { id: "omniauth_country", include_blank: true }, class: "country-select" %>
+      <% if !unique_country? %>
+        <%= form.select :phone_country, phone_country_options(form.object.phone_country), { id: "omniauth_country", include_blank: true }, class: "country-select" %>
+      <% else %>
+        <%= form.text_field :phone_country, value: phone_unique_country[0], class: "country-select", readonly: true, style: "padding-left: 30px; background-image: url(#{phone_unique_country[2][:data][:flag_image]}); background-repeat: no-repeat; background-position: 5px center; background-size: 20px auto;" %>
+        <%= hidden_field_tag 'phone_country_code', phone_unique_country[1] %>
+      <% end %>
     </div>
   </div>
   <div class="columns large-8">
