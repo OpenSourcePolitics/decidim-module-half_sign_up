@@ -22,7 +22,7 @@ module Decidim
     # The country or countries to be selected in country selection
     # during sms verification/authentication. The default is being set to the US.
     config_accessor :default_countries do
-      [:us, :fr]
+      [:us]
     end
 
     # Configuration to enable or disable agree to the terms and condition pages
