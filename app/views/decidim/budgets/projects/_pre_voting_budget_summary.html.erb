@@ -17,6 +17,7 @@
       <p>
         <%= description_text %>
         <% if current_user %>
+          <%= button_to vote_text, budget_voting_index_path, class: "button hollow button--sc pull-right", method: :get, disabled: !voting_open? %>
         <% else %>
           <%= link_to vote_text, "#",  class: "button hollow button--sc pull-right", data: { toggle: "halfSignupLoginModal" } %>
         <% end %>
