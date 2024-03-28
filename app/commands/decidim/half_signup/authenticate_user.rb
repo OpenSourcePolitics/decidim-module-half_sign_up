@@ -38,6 +38,13 @@ module Decidim
 
       def find_or_create_user!
         user = if sms_auth?
+                 # If we are in a test env we don't check the session
+                 if !Rails.env.test? && session.present? && session[:user_id].present?
+                   Decidim::User.find(session[:user_id]).update!(
+                     phone_number: data["phone"],
+                     phone_country: data["country"]
+                   )
+                 end
                  Decidim::User.find_by(
                    phone_number: data["phone"],
                    phone_country: data["country"],

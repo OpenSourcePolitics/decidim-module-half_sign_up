@@ -10,11 +10,19 @@ en:
         phone_country: Country code
         phone_number: Phone number
   decidim:
+    shared:
+      half_signup_login_modal:
+        please_sign_in: Please sign in
+        close_modal: Close
+
     account:
       change_phone_number:
         add: Add your phone number
         update: Update your phone number
     budgets:
+      projects:
+        pre_voting_budget_summary:
+          sign_in_first: You need to sign in to start voting.
       voting:
         index:
           sign_in_first: You need to sign in to start voting.

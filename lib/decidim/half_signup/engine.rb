@@ -54,6 +54,10 @@ module Decidim
           Decidim::Menu.include(Decidim::HalfSignup::MenuExtensions)
         end
       end
+
+      initializer "decidim_half_signup.middleware" do |app|
+        app.middleware.use Decidim::HalfSignup::HalfSignupMiddleware
+      end
     end
   end
 end
