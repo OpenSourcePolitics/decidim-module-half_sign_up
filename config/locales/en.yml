@@ -10,20 +10,22 @@ en:
         phone_country: Country code
         phone_number: Phone number
   decidim:
-    shared:
-      half_signup_login_modal:
-        please_sign_in: Please sign in
-        close_modal: Close
-
     account:
       change_phone_number:
         add: Add your phone number
         update: Update your phone number
     budgets:
       projects:
+        budget_confirm:
+          half_signup:
+            warning: This action will disconnect you at the end of the process and
+              you won't be able to change your vote
+        cancel_voting_modal:
+          quick_auth_warning: This action will disconnect you at the end of the process
         pre_voting_budget_summary:
           sign_in_first: You need to sign in to start voting.
       voting:
+        phone_number_required×: You need to add your phone number to vote.
         index:
           sign_in_first: You need to sign in to start voting.
     components:
@@ -87,14 +89,14 @@ en:
         options:
           classic_connection: Connect using the classic method
           email: To your email
-          with_email: With your email
           not_allowed: You are not allowed to perform this action.
           or: OR
+          select: Please select how you would like to sign in.
           send_code_to: 'Should we send the code to:'
           sms: To your phone
-          with_sms: With your phone
           title: You need to authenticate to vote.
-          select: Please select how you would like to sign in.
+          with_email: With your email
+          with_sms: With your phone
         phone_form:
           submit: Send the code
         resend_code:
@@ -128,3 +130,7 @@ en:
           resend_code: Send it again.
           submit: Verify
         welcome: Welcome to the <br><strong>%{organization} platform!</strong>
+    shared:
+      half_signup_login_modal:
+        close_modal: Close
+        please_sign_in: Please sign in
