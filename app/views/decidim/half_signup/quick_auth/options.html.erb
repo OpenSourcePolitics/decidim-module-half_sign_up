@@ -7,18 +7,38 @@
     </div>
     <div class="row">
       <div class="columns large-6 medium-8 text-center small-centered">
-        <div class="row card">
-          <div class="columns medium-10 small-centered">
-            <h3 class="margin-top-2"><%= t(".title") %></h3>
-            <h4><em><%= t(".send_code_to") %></em></h4>
-            <div class="half-signup-methods">
-              <%= render partial: "email_option", locals: { modify_button_text: false }%>
-              <div class="half-signup-methods-item half-signup-methods-item-or">
-                <%= t(".or")%>
+        <div class="column card">
+          <div class="row">
+            <div class="columns medium-10 small-centered">
+              <h3 class="margin-top-2"><%= t(".title") %></h3>
+              <h4><em><%= t(".send_code_to") %></em></h4>
+              <div class="half-signup-methods">
+                <% if half_signup_handlers.include?("email") %>
+                  <%= render partial: "email_option", locals: { modify_button_text: false }%>
+                <% end %>
+                <% if half_signup_handlers.include?("sms") && half_signup_handlers.include?("email") %>
+                  <div class="half-signup-methods-item half-signup-methods-item-or">
+                    <%= t(".or")%>
+                  </div>
+                <% end %>
+                <% if half_signup_handlers.include?("sms") %>
+                  <%= render partial: "sms_option", locals: { modify_button_text: false } %>
+                <% end %>
               </div>
-              <%= render partial: "sms_option", locals: { modify_button_text: false } %>
             </div>
           </div>
+          <div class="half-signup-methods-item half-signup-methods-item-or">
+            <%= t(".or")%>
+          </div>
+          <div class="row margin-1">
+            <div class="columns medium-10 small-centered">
+              <div class="half-signup-methods-item">
+                <%= link_to t(".classic_connection"), decidim.new_user_session_path, class: "button expanded" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
         </div>
       </div>
     </div>
