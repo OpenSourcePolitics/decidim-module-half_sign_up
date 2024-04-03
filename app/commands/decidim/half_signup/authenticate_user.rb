@@ -38,6 +38,9 @@ module Decidim
 
       def find_or_create_user!
         user = if sms_auth?
+                 # If we are in a test env we don't check the session
+                 update_decidim_user_phone(session, data)
+
                  Decidim::User.find_by(
                    phone_number: data["phone"],
                    phone_country: data["country"],
@@ -81,6 +84,16 @@ module Decidim
 
       def sms_auth?
         data["method"] == "sms"
+      end
+
+      def update_decidim_user_phone(session, data)
+        return unless session.present? && session[:user_id].present?
+
+        user = Decidim::User.find(session[:user_id])
+        user.update!(
+          phone_number: data["phone"],
+          phone_country: data["country"]
+        )
       end
     end
   end
