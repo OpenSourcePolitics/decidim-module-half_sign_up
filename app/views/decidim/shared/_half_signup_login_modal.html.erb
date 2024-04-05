@@ -7,7 +7,7 @@
     </button>
   </div>
 
-  <% methods = current_organization.auth_setting.available_methods %>
+  <% methods = current_organization.auth_setting.available_methods unless current_organization.auth_setting.blank? %>
 
   <% if current_organization.sign_in_enabled? %>
     <% if methods.blank? %>
