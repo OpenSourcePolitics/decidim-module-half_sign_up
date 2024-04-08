@@ -69,6 +69,7 @@ module Decidim
 
       def validate_user_session
         if current_user.email.exclude?("quick_auth")
+          session[:has_validated] = true
           sign_out current_user
           flash[:warning] = t("decidim.budgets.voting.phone_number_required")
           redirect_to decidim_half_signup.users_quick_auth_sms_path

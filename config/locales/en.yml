@@ -132,5 +132,6 @@ en:
         welcome: Welcome to the <br><strong>%{organization} platform!</strong>
     shared:
       half_signup_login_modal:
+        sign_up: Sign up
         close_modal: Close
         please_sign_in: Please sign in

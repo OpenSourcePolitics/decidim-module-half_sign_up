@@ -20,7 +20,7 @@
       <p>
         <%= description_text %>
 
-        <% if methods.empty? || current_user %>
+        <% if methods.blank? || current_user %>
           <%= button_to vote_text, budget_voting_index_path, class: "button hollow button--sc pull-right", method: :get, disabled: !voting_open? %>
         <% elsif methods.length == 1 %>
           <% if methods.include?("email") %>
