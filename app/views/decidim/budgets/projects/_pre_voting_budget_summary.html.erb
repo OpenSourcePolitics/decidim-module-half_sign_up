@@ -1,6 +1,6 @@
 <div class="card budget-summary" data-progress-reference data-safe-url="<%= budget_url(budget) %>">
 
-  <% methods = current_organization.auth_setting.available_methods unless current_organization.auth_setting.blank? %>
+  <% methods = current_organization.auth_setting&.available_methods %>
 
   <div class="card__content">
     <% if current_order_checked_out? %>
@@ -20,16 +20,16 @@
       <p>
         <%= description_text %>
 
-        <% if methods.length === 0 || current_user %>
+        <% if methods.empty? || current_user %>
           <%= button_to vote_text, budget_voting_index_path, class: "button hollow button--sc pull-right", method: :get, disabled: !voting_open? %>
-        <% elsif methods.length === 1 %>
+        <% elsif methods.length == 1 %>
           <% if methods.include?("email") %>
-             <%= link_to vote_text, decidim_half_signup.users_quick_auth_email_path(redirect_url: budget_voting_index_path), class: "button hollow button--sc pull-right" %>
+            <%= link_to vote_text, decidim_half_signup.users_quick_auth_email_path(redirect_url: budget_voting_index_path), class: "button hollow button--sc pull-right" %>
           <% elsif methods.include?("sms") %>
             <%= link_to vote_text, decidim_half_signup.users_quick_auth_sms_path(redirect_url: budget_voting_index_path), class: "button hollow button--sc pull-right" %>
           <% end %>
-      <% else %>
-          <%= link_to vote_text, "#",  class: "button hollow button--sc pull-right", data: { toggle: "halfSignupLoginModal" } %>
+        <% else %>
+          <%= link_to vote_text, "#", class: "button hollow button--sc pull-right", data: { toggle: "halfSignupLoginModal" } %>
         <% end %>
       </p>
     <% end %>

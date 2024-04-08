@@ -90,12 +90,16 @@ module Decidim
 
         user = Decidim::User.find(session[:user_id])
 
-        return if user.phone_number.present? && !(user.phone_number == data["phone"] && user.phone_country == data["country"])
+        return if check_phone_difference
 
         user.update!(
           phone_number: data["phone"],
           phone_country: data["country"]
         )
+      end
+
+      def check_phone_difference
+        user.phone_number.present? && user.phone_number != data["phone"] && user.phone_country != data["country"]
       end
     end
   end
