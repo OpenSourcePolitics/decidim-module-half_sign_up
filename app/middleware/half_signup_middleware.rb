@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HalfSignupMiddleware
-  ALLOWED_PATHS = %w(/quick_auth /users /terms-and-conditions).freeze
+  ALLOWED_PATHS = %w(/quick_auth /users /terms-and-conditions /rails/active_storage).freeze
   REGEXP_PAGE = %r{/budgets/\d+/voting}
   REGEXP_VOTE = %r{/budgets/\d+/order}
 

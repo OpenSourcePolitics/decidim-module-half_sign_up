@@ -25,7 +25,7 @@ en:
         pre_voting_budget_summary:
           sign_in_first: You need to sign in to start voting.
       voting:
-        phone_number_required×: You need to add your phone number to vote.
+        phone_number_required: You need to add your phone number to vote.
         index:
           sign_in_first: You need to sign in to start voting.
     components:

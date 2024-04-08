@@ -19,6 +19,7 @@ module Decidim
 
       def index
         enforce_permission_to :vote, :project, project: budget.projects.first, budget: budget, workflow: current_workflow
+        session[:has_validated] = false
       end
 
       private
