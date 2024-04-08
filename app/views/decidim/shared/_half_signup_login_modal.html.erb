@@ -7,7 +7,7 @@
     </button>
   </div>
 
-  <% methods = current_organization.auth_setting.available_methods %>
+  <% methods = current_organization.auth_setting&.available_methods %>
 
   <% if current_organization.sign_in_enabled? %>
     <% if methods.blank? %>
@@ -66,16 +66,7 @@
                 </div>
               </div>
             </div>
-            <div class="half-signup-methods-item half-signup-methods-item-or">
-              <%= t("or", scope: "decidim.half_signup.quick_auth.options")%>
-            </div>
-            <div class="row margin-1">
-              <div class="columns medium-10 small-centered">
-                <div class="half-signup-methods-item">
-                  <%= link_to t("classic_connection", scope: "decidim.half_signup.quick_auth.options"), decidim.new_user_session_path(redirect_url: redirect_path), class: "button expanded" %>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

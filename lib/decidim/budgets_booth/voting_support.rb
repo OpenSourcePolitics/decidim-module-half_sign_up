@@ -62,12 +62,18 @@ module Decidim
       end
 
       def ensure_user_phone_number
-        return true if current_user.try(:phone_number).present?
+        session[:user_id] = current_user.id if current_user.id.present? && current_user.email.exclude?("quick-auth")
 
-        session[:user_id] = current_user.id
-        sign_out current_user
-        flash[:warning] = t("decidim.budgets.voting.phone_number_required")
-        redirect_to decidim_half_signup.users_quick_auth_sms_path
+        validate_user_session if session[:has_validated].blank? || !session[:has_validated]
+      end
+
+      def validate_user_session
+        if current_user.email.exclude?("quick_auth")
+          session[:has_validated] = true
+          sign_out current_user
+          flash[:warning] = t("decidim.budgets.voting.phone_number_required")
+          redirect_to decidim_half_signup.users_quick_auth_sms_path
+        end
       end
 
       # maximum_budgets_to_vote_on is being set by the admin. the default is zero, which means users can

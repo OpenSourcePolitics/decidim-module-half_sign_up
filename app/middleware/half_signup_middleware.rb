@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HalfSignupMiddleware
-  ALLOWED_PATHS = %w(/quick_auth /users /terms-and-conditions).freeze
+  ALLOWED_PATHS = %w(/quick_auth /users /terms-and-conditions /rails/active_storage).freeze
   REGEXP_PAGE = %r{/budgets/\d+/voting}
   REGEXP_VOTE = %r{/budgets/\d+/order}
 
@@ -41,7 +41,7 @@ class HalfSignupMiddleware
   end
 
   def half_signup_user?(user)
-    user.email.include?("quick_auth") && user.name == "Unnamed user"
+    user.email.include?("quick_auth") || user.name == I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
   end
 
   def sign_out_user(request)
