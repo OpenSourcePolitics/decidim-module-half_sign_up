@@ -158,6 +158,46 @@ describe "Manage sms sign in", type: :system do
     end
   end
 
+  context "when custom settings" do
+    context "when only one country" do
+      before do
+        allow(Decidim::HalfSignup.config).to receive(:default_countries).and_return([:fi])
+        switch_to_host(organization.host)
+        visit decidim.root_path
+        click_link "Sign In"
+      end
+
+      it "renders the select page with the default country" do
+        expect(page).to have_current_path(decidim_half_signup.users_quick_auth_sms_path)
+        expect(page).not_to have_content("Select your country")
+        expect(page).to have_css("input[readonly][value='(+358) Finland']")
+      end
+    end
+
+    context "when multiple countries" do
+      before do
+        allow(Decidim::HalfSignup.config).to receive(:default_countries).and_return([:fi, :se])
+        switch_to_host(organization.host)
+        visit decidim.root_path
+        click_link "Sign In"
+      end
+
+      it "renders the select page with the default country" do
+        expect(page).to have_current_path(decidim_half_signup.users_quick_auth_sms_path)
+        find("span.arrow-down").click
+        within ".ss-list" do
+          expect(page).not_to have_css("div", text: "(+33) France")
+          find("div", text: /Sweden/).select_option
+        end
+        fill_in "Phone number", with: phone
+        click_button "Send the code"
+        code = page.find("#hint").text
+        fill_in_code(code, "digit")
+        click_button "Verify"
+      end
+    end
+  end
+
   private
 
   def fill_in_code(code, element)
