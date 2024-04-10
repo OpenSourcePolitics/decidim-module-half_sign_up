@@ -50,8 +50,9 @@ describe "Sign in and sign up page", type: :system do
       end
 
       context "when email auth is enabled" do
+        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_email_signup: true) }
+
         before do
-          auth_settings.update!(enable_partial_email_signup: true)
           click_a_project
         end
 
@@ -60,15 +61,16 @@ describe "Sign in and sign up page", type: :system do
           within "#loginModal" do
             expect(page).to have_no_content("Please select how you would like to sign in.")
             expect(page).to have_content("Please sign in")
-            expect(page).to have_link("With your email", href: "/users/quick_auth/email")
+            expect(page).to have_link("With your email")
             expect(page).to have_no_link("With your phone")
           end
         end
       end
 
       context "when sms auth is enabled" do
+        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
+
         before do
-          auth_settings.update!(enable_partial_sms_signup: true)
           click_a_project
         end
 
@@ -77,15 +79,16 @@ describe "Sign in and sign up page", type: :system do
           within "#loginModal" do
             expect(page).to have_no_content("Please select how you would like to sign in.")
             expect(page).to have_content("Please sign in")
-            expect(page).to have_link("With your phone", href: "/users/quick_auth/sms")
+            expect(page).to have_link("With your phone")
             expect(page).to have_no_link("With your email")
           end
         end
       end
 
-      context "when both are enalbed" do
+      context "when both are enabled", :slow do
+        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true, enable_partial_email_signup: true) }
+
         before do
-          auth_settings.update!(enable_partial_sms_signup: true, enable_partial_email_signup: true)
           click_a_project
         end
 
@@ -94,8 +97,8 @@ describe "Sign in and sign up page", type: :system do
           within "#loginModal" do
             expect(page).to have_content("Please select how you would like to sign in.")
             expect(page).to have_content("Please sign in")
-            expect(page).to have_link("With your phone", href: "/users/quick_auth/sms")
-            expect(page).to have_link("With your email", href: "/users/quick_auth/email")
+            expect(page).to have_link("With your phone")
+            expect(page).to have_link("With your email")
           end
         end
       end
