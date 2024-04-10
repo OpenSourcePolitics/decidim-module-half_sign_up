@@ -38,6 +38,8 @@ module Decidim
 
       def find_or_create_user!
         user = if sms_auth?
+                 update_decidim_user_phone(session, data)
+
                  Decidim::User.find_by(
                    phone_number: data["phone"],
                    phone_country: data["country"],
@@ -81,6 +83,23 @@ module Decidim
 
       def sms_auth?
         data["method"] == "sms"
+      end
+
+      def update_decidim_user_phone(session, data)
+        return unless session.present? && session[:user_id].present?
+
+        user = Decidim::User.find(session[:user_id])
+
+        return if check_phone_difference(user)
+
+        user.update!(
+          phone_number: data["phone"],
+          phone_country: data["country"]
+        )
+      end
+
+      def check_phone_difference(user)
+        user.phone_number.present? && user.phone_number != data["phone"] && user.phone_country != data["country"]
       end
     end
   end

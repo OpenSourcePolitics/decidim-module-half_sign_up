@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/OpenSourcePolitics/decidim-module-ptp.git
+  revision: 0aa2d9a3fc9aee3279d9272a8347ca4d22cac728
+  branch: feature/0.26/zip-code-voting
+  specs:
+    decidim-budgets_booth (0.26.0)
+      decidim-budgets (~> 0.26.0)
+      decidim-core (~> 0.26.0)
+
 PATH
   remote: .
   specs:
@@ -784,6 +793,7 @@ DEPENDENCIES
   byebug (~> 11.0)
   codecov
   decidim (~> 0.26.0)
+  decidim-budgets_booth!
   decidim-dev (~> 0.26.0)
   decidim-half_signup!
   faker (~> 2.14)

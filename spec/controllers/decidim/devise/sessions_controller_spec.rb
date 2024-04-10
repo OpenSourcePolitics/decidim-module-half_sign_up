@@ -17,20 +17,10 @@ module Decidim
         # half_signup is disabled by default
         let!(:auth_settings) { create(:auth_setting, organization: organization) }
 
-        it "redirects user to the auick_auth path" do
+        it "redirects user to the quick_auth path" do
           get :new
           expect(response).to have_http_status(:ok)
           expect(subject).to render_template("decidim/devise/sessions/new")
-        end
-      end
-
-      context "when half signup is enabled" do
-        # half_signup is disabled by default
-        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
-
-        it "redirects user to the auick_auth path" do
-          get :new
-          expect(response).to redirect_to(decidim_half_signup.users_quick_auth_path)
         end
       end
 
