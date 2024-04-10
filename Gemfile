@@ -12,7 +12,6 @@ require_relative "#{base_path}lib/decidim/half_signup/version"
 
 DECIDIM_VERSION = Decidim::HalfSignup.decidim_version
 gem "decidim", DECIDIM_VERSION
-gem "decidim-budgets_booth", github: "OpenSourcePolitics/decidim-module-ptp", branch: "feature/0.26/zip-code-voting"
 gem "decidim-half_signup", path: "."
 
 gem "bootsnap", "~> 1.4"

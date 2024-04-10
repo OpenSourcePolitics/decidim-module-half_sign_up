@@ -1,86 +1,26 @@
-<div class="reveal" id="halfSignupLoginModal" data-reveal role="dialog" aria-modal="true" aria-labelledby="loginModal-label">
-  <div class="reveal__header">
-    <h2 id="loginModal-label" class="reveal__title"><%= t(".please_sign_in") %></h2>
-    <button class="close-button" data-close aria-label="<%= t(".close_modal") %>"
-            type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <% methods = current_organization.auth_setting&.available_methods %>
-
-  <% if current_organization.sign_in_enabled? %>
-    <% if methods.blank? %>
-      <% cache current_organization do %>
-        <%= render "decidim/devise/shared/omniauth_buttons_mini" %>
-      <% end %>
-      <div class="row">
-        <div class="columns medium-8 medium-centered">
-          <%
-            path = if content_for(:redirect_after_login)
-                     session_path(:user, redirect_url: content_for(:redirect_after_login))
-                   else
-                     session_path(:user)
-                   end
-          %>
-          <%= decidim_form_for(Decidim::User.new, namespace: "login", as: :user, url: path, html: { class: "register-form new_user" }) do |f| %>
-            <div>
-              <div class="field">
-                <%= f.email_field :email %>
-              </div>
-              <div class="field">
-                <%= f.password_field :password, autocomplete: "off" %>
-              </div>
-            </div>
-            <div class="actions">
-              <%= f.submit t("devise.sessions.new.sign_in"), class: "button expanded" %>
-            </div>
-          <% end %>
-          <% if current_organization.sign_up_enabled? %>
-            <p class="text-center">
-              <%= link_to t(".sign_up"), decidim.new_user_registration_path, class: "sign-up-link" %>
-            </p>
-          <% end %>
-          <p class="text-center">
-            <%= link_to t("devise.shared.links.forgot_your_password"), new_password_path(:user) %>
-          </p>
-        </div>
+<div class="content">
+  <div class="wrapper">
+    <div class="row">
+      <div class="columns medium-12 large-10 text-center small-centered page-title">
+        <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
       </div>
-    <% else %>
-      <div class="row">
-        <div class="columns large-10 medium-8 text-center small-centered">
-          <div class="column card">
-            <div class="row">
-              <div class="columns medium-10 small-centered">
-                <% if methods.length > 1 %>
-                  <h3 class="margin-top-2"><%= t("select", scope: "decidim.half_signup.quick_auth.options") %></h3>
-                <% end %>
-                <div class="half-signup-methods">
-                  <%= render partial: "decidim/half_signup/quick_auth/email_option", locals: { modify_button_text: true , redirect_path: redirect_path } if methods.include?("email") %>
-                  <% if methods.length > 1 %>
-                    <div class="half-signup-methods-item half-signup-methods-item-or">
-                      <%= t("or", scope: "decidim.half_signup.quick_auth.options")%>
-                    </div>
-                  <% end %>
-                  <%= render partial: "decidim/half_signup/quick_auth/sms_option", locals: { modify_button_text: true, redirect_path: redirect_path } if methods.include?("sms") %>
-                </div>
+    </div>
+    <div class="row">
+      <div class="columns large-6 medium-8 text-center small-centered">
+        <div class="row card">
+          <div class="columns medium-10 small-centered">
+            <h3 class="margin-top-2"><%= t(".title") %></h3>
+            <h4><em><%= t(".send_code_to") %></em></h4>
+            <div class="half-signup-methods">
+              <%= render partial: "email_option", locals: { modify_button_text: false }%>
+              <div class="half-signup-methods-item half-signup-methods-item-or">
+                <%= t(".or")%>
               </div>
+              <%= render partial: "sms_option", locals: { modify_button_text: false } %>
             </div>
-
           </div>
         </div>
       </div>
-    <% end %>
-  <% else %>
-    <div class="row">
-      <div class="columns medium-8 medium-centered">
-        <p>
-          <%= t("sign_in_disabled", scope: "decidim.devise.sessions.new") %>
-        </p>
-      </div>
     </div>
-    <% cache current_organization do %>
-      <%= render "decidim/devise/shared/omniauth_buttons" %>
-    <% end %>
-  <% end %>
+  </div>
 </div>

@@ -64,9 +64,6 @@ module Decidim
               data["phone"] = user.phone_number
               data["country"] = user.phone_country
               data["method"] = "sms"
-              # rubocop:disable RSpec/AnyInstance
-              allow_any_instance_of(described_class).to receive(:session).and_return({ user_id: user.id })
-              # rubocop:enable RSpec/AnyInstance
             end
 
             it "returns the user" do

@@ -7,9 +7,9 @@
   </div>
   <div class="button-wrapper">
     <% if modify_button_text %>
-      <%= link_to t("with_sms", scope: "decidim.half_signup.quick_auth.options"), decidim_half_signup.users_quick_auth_sms_path(redirect_url: redirect_path), class: "button expanded" %>
+      <%= link_to t("with_sms", scope: "decidim.half_signup.quick_auth.options"), decidim_half_signup.users_quick_auth_sms_path, class: "button expanded" %>
     <% else %>
-      <%= link_to t("sms", scope: "decidim.half_signup.quick_auth.options"), decidim_half_signup.users_quick_auth_sms_path(redirect_url: redirect_path), class: "button expanded" %>
+      <%= link_to t("sms", scope: "decidim.half_signup.quick_auth.options"), decidim_half_signup.users_quick_auth_sms_path, class: "button expanded" %>
     <% end %>
   </div>
 </div>

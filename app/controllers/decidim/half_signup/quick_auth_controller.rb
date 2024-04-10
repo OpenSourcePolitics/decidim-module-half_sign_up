@@ -129,7 +129,13 @@ module Decidim
       end
 
       def options
-        nil
+        if handlers_count == 1
+          if half_signup_handlers.include?("sms")
+            redirect_to action: "sms"
+          else
+            redirect_to action: "email"
+          end
+        end
       end
 
       private

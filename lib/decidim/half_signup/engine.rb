@@ -47,16 +47,21 @@ module Decidim
           # forms
           Decidim::AccountForm.include(Decidim::HalfSignup::AccountFormExtensions)
 
+          # controller
+          Decidim::Devise::SessionsController.include(
+            Decidim::HalfSignup::SessionsExtensions
+          )
+
+          Decidim::Devise::RegistrationsController.include(
+            Decidim::HalfSignup::RegisterationsExtensions
+          )
+
           Decidim::Organization.include(
             Decidim::HalfSignup::OrganizationModelExtensions
           )
 
           Decidim::Menu.include(Decidim::HalfSignup::MenuExtensions)
         end
-      end
-
-      initializer "decidim_half_signup.middleware" do |app|
-        app.middleware.use Decidim::HalfSignup::HalfSignupMiddleware
       end
     end
   end
