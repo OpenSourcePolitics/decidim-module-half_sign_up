@@ -62,9 +62,16 @@ module Decidim
       end
 
       def ensure_user_phone_number
+        return unless current_user
+
         session[:user_id] = current_user.id if current_user.id.present? && current_user.email.exclude?("quick-auth")
 
-        validate_user_session if session[:has_validated].blank? || !session[:has_validated]
+        return validate_user_session if session[:has_validated].blank? || !session[:has_validated]
+
+        if current_user.phone_number.blank?
+          sign_out current_user
+          redirect_to decidim_half_signup.users_quick_auth_sms_path
+        end
       end
 
       def validate_user_session

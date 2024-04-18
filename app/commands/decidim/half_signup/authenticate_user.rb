@@ -92,6 +92,8 @@ module Decidim
 
         return if check_phone_difference(user)
 
+        session[:has_validated] = true
+
         user.update!(
           phone_number: data["phone"],
           phone_country: data["country"]
