@@ -12,7 +12,6 @@ require_relative "#{base_path}lib/decidim/half_signup/version"
 
 DECIDIM_VERSION = Decidim::HalfSignup.decidim_version
 gem "decidim", DECIDIM_VERSION
-gem "decidim-budgets_booth", github: "Pipeline-to-Power/decidim-module-ptp", branch: "main"
 gem "decidim-half_signup", path: "."
 
 gem "bootsnap", "~> 1.4"
