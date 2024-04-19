@@ -62,9 +62,9 @@ module Decidim
       end
 
       def ensure_user_phone_number
-        return unless current_user
+        return unless current_organization.half_signup_enabled? && current_organization.auth_setting.enable_partial_sms_signup
 
-        session[:user_id] = current_user.id if current_user.id.present? && current_user.email.exclude?("quick-auth")
+        session[:user_id] = current_user.id if current_user.present? && current_user.id.present? && current_user.email.exclude?("quick-auth")
 
         return validate_user_session if session[:has_validated].blank? || !session[:has_validated]
 
@@ -107,6 +107,11 @@ module Decidim
       # This configuration option can be set in component settings, the dfault url when the user cancels voting is the root path.
       def cancel_redirect_path
         component_settings.try(:vote_cancel_url).presence || decidim.root_path
+      end
+
+      def default_redirect_path
+        session[:has_validated] = false
+        decidim_budgets.budgets_path
       end
 
       def hide_unvoted?(budget)
