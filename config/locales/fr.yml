@@ -23,6 +23,9 @@ fr:
         pre_voting_budget_summary:
           sign_in_first: Vous devez vous connecter pour commencer à voter.
       voting:
+        checkout:
+          error: Une erreur s'est produite lors de la tentative de traitement de votre vote. Veuillez réessayer.
+          success: Votre vote a été enregistré avec succès.
         phone_number_required: Vous devez ajouter votre numéro de téléphone pour voter.
         index:
           sign_in_first: Vous devez vous connecter pour commencer à voter.
