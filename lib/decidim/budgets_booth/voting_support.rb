@@ -64,7 +64,7 @@ module Decidim
       def ensure_user_phone_number
         return unless current_organization.half_signup_enabled? && current_organization.auth_setting.enable_partial_sms_signup
 
-        session[:user_id] = current_user.id if current_user.id.present? && current_user.email.exclude?("quick-auth")
+        session[:user_id] = current_user.id if current_user.present? && current_user.id.present? && current_user.email.exclude?("quick-auth")
 
         return validate_user_session if session[:has_validated].blank? || !session[:has_validated]
 
