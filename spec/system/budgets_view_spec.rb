@@ -56,6 +56,52 @@ describe "Budgets view", type: :system do
       end
     end
 
+    context "when signed in" do
+      before { sign_in user, scope: :user }
+
+      # customizations for Half signup x budget booth
+      context "when half signup sms is enabled" do
+        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
+
+        before do
+          visit decidim_budgets.budget_path(budgets.first)
+        end
+
+        context "and user has no phone_number" do
+          it "redirects user to the half signup sms page" do
+            find("button.hollow:nth-child(1)").click
+            expect(page).to have_content("Sign In")
+            expect(page).to have_content("Please enter your phone number:")
+          end
+
+          context "when user fills half signup sms form" do
+            before do
+              find("button.hollow:nth-child(1)").click
+              fill_in :sms_auth_phone_number, with: "4578878784"
+              click_button "Send the code"
+            end
+
+            it "redirects user to the half signup sms page" do
+              expect(page).to have_content("You should have received the code")
+              code = page.find("#hint").text
+              fill_in_code(code, "digit")
+              click_button "Verify"
+              expect(page).to have_content("You are now in the voting booth")
+            end
+          end
+        end
+
+        context "and user has phone_number" do
+          let(:user) { create(:user, :confirmed, organization: organization, phone_number: "4578878784", phone_country: "US") }
+
+          it "redirects user to the budget booth" do
+            find("button.hollow:nth-child(1)").click
+            expect(page).to have_content("You are now in the voting booth")
+          end
+        end
+      end
+    end
+
     context "when workflow" do
       include_context "with zip_code workflow"
 
