@@ -4,7 +4,7 @@ require "decidim/dev/common_rake"
 
 def install_module(path)
   Dir.chdir(path) do
-    system("bundle exec rake decidim_half_signup:install:migrations")
+    system("bundle exec rails railties:install:migrations")
     system("bundle exec rake db:migrate")
 
     # Temporary fix to overcome the issue with sass-embedded, see:
