@@ -48,3 +48,8 @@ RSpec.configure do |config|
     )
   end
 end
+def fill_in_code(code, element)
+  code.length.times do |ind|
+    fill_in "#{element}#{ind + 1}", with: code[ind]
+  end
+end

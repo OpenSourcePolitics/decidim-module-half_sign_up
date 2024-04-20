@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe "Budgets view", type: :system do
+  let(:decidim_half_signup_admin) { Decidim::HalfSignup::AdminEngine.routes.url_helpers }
   let(:projects_count) { 1 }
   let(:decidim_budgets) { Decidim::EngineRouter.main_proxy(component) }
   let(:user) { create(:user, :confirmed, organization: organization) }
@@ -21,6 +22,37 @@ describe "Budgets view", type: :system do
         expect(page).to have_link(translated(budgets.first.title), href: decidim_budgets.budget_path(budgets.first))
         expect(page).to have_selector("a", text: /show/i, count: 3)
         expect(page).to have_content("€100,000")
+      end
+
+      # customizations for Half signup x budget booth
+      context "when half signup sms is enabled" do
+        let!(:auth_settings) { create(:auth_setting, organization: organization, enable_partial_sms_signup: true) }
+
+        before do
+          visit decidim_budgets.budget_path(budgets.first)
+        end
+
+        it "redirects user to the half signup sms page" do
+          find("a.hollow:nth-child(1)").click
+          expect(page).to have_content("Please enter your phone number:")
+        end
+
+        context "when user fills half signup sms form" do
+          before do
+            find("a.hollow:nth-child(1)").click
+            fill_in :sms_auth_phone_number, with: "4578878784"
+            click_button "Send the code"
+          end
+
+          it "redirects user to the half signup sms page" do
+            expect(page).to have_content("You should have received the code")
+            code = page.find("#hint").text
+            fill_in_code(code, "digit")
+            click_button "Verify"
+            click_button "I agree with these terms"
+            expect(page).to have_content("You are now in the voting booth")
+          end
+        end
       end
     end
 
