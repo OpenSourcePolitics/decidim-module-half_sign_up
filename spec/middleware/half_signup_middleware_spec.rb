@@ -11,7 +11,7 @@ RSpec.describe HalfSignupMiddleware do
   let(:name) { "Anonymous user" }
 
   def session_double(key)
-    { "warden.user.user.key" => [[key, nil]] }
+    { "warden.user.user.key" => [key, nil] }
   end
 
   def env_with_path(path)
@@ -23,8 +23,7 @@ RSpec.describe HalfSignupMiddleware do
       let(:env) { env_with_path("/some_path") }
 
       before do
-        allow_any_instance_of(Rack::Request).to receive(:session).and_return(session_double([1, nil]))
-        allow(Decidim::User).to receive(:find).and_return(user)
+        allow_any_instance_of(Rack::Request).to receive(:session).and_return(session_double([user.id, nil]))
       end
 
       it "handles half signup request" do
@@ -38,8 +37,21 @@ RSpec.describe HalfSignupMiddleware do
       let(:env) { env_with_path("/some_path") }
 
       before do
-        allow_any_instance_of(Rack::Request).to receive(:session).and_return(session_double([1, nil]))
+        allow_any_instance_of(Rack::Request).to receive(:session).and_return(session_double([user.id, nil]))
         allow(Decidim::User).to receive(:find).and_return(user)
+      end
+
+      it "does not handle half signup request" do
+        expect(middleware).not_to receive(:handle_half_signup_request)
+        middleware.call(env)
+      end
+    end
+
+    context "when user is not found" do
+      let(:env) { env_with_path("/some_path") }
+
+      before do
+        allow_any_instance_of(Rack::Request).to receive(:session).and_return(session_double([999, nil]))
       end
 
       it "does not handle half signup request" do
@@ -56,6 +68,16 @@ RSpec.describe HalfSignupMiddleware do
       it "calls the next middleware" do
         expect(app).to receive(:call).with(env)
         middleware.send(:handle_half_signup_request, env)
+      end
+
+      context "and path is in query string" do
+        let(:env) { env_with_path("/invalid?some_param=/quick_auth") }
+
+        it "signs out" do
+          expect(middleware).to receive(:sign_out_user)
+          expect(app).to receive(:call).with(env)
+          middleware.send(:handle_half_signup_request, env)
+        end
       end
     end
 
@@ -80,7 +102,5 @@ RSpec.describe HalfSignupMiddleware do
       end
     end
   end
-
-  # Add more specs as needed for other methods
 end
 # rubocop:enable RSpec/AnyInstance
