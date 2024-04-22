@@ -11,6 +11,7 @@ module Decidim
           raise ActionController::RoutingError, "Not Found" unless budget
 
           raise ActionController::RoutingError, "Not Found" unless allow_access?
+
           session[:has_validated] = false if session[:has_validated].blank? || session[:has_validated]
         end
 
@@ -18,6 +19,7 @@ module Decidim
           raise ActionController::RoutingError, "Not Found" unless budget
           raise ActionController::RoutingError, "Not Found" unless project
           raise ActionController::RoutingError, "Not Found" unless allow_access?
+
           session[:has_validated] = false if session[:has_validated].blank? || session[:has_validated]
         end
       end
