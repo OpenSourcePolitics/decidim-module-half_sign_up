@@ -32,7 +32,7 @@ module Decidim
         def destroy
           session[:has_validated] = false
 
-          CancelOrder.call(current_order) do
+          Decidim::Budgets::CancelOrder.call(current_order) do
             on(:ok) do
               flash[:notice] = I18n.t("orders.destroy.success", scope: "decidim")
               redirect_to redirect_path

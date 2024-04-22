@@ -110,7 +110,6 @@ module Decidim
       end
 
       def default_redirect_path
-        session[:has_validated] = false
         decidim_budgets.budgets_path
       end
 

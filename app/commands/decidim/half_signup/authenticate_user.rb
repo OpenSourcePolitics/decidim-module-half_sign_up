@@ -40,6 +40,8 @@ module Decidim
         user = if sms_auth?
                  update_decidim_user_phone(session, data)
 
+                 session[:has_validated] = true
+
                  Decidim::User.find_by(
                    phone_number: data["phone"],
                    phone_country: data["country"],
