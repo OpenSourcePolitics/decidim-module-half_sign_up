@@ -21,6 +21,7 @@ class HalfSignupMiddleware
   def handle_half_signup_request(env)
     request = Rack::Request.new(env)
 
+    sign_out_user(request) if bypass_with_query_string?(request.query_string)
     return @app.call(env) if path_allowed?(request.path_info)
 
     sign_out_user(request) unless voting_or_order_page?(request.path_info)
@@ -29,6 +30,11 @@ class HalfSignupMiddleware
 
   def path_allowed?(path_info)
     ALLOWED_PATHS.any? { |path| path_info.include?(path) }
+  end
+
+  # Ensure visitor won't be able to bypass the half signup process by adding the path to the query string
+  def bypass_with_query_string?(query_string)
+    ALLOWED_PATHS.any? { |path| query_string.include?(path) } || voting_or_order_page?(query_string)
   end
 
   def voting_or_order_page?(path_info)

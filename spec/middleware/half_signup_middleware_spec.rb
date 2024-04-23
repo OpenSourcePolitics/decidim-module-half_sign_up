@@ -14,8 +14,8 @@ RSpec.describe HalfSignupMiddleware do
     { "warden.user.user.key" => [key, nil] }
   end
 
-  def env_with_path(path)
-    { "REQUEST_METHOD" => "GET", "PATH_INFO" => path, "rack.session" => {} }
+  def env_with_path(path, query_string = "")
+    { "REQUEST_METHOD" => "GET", "PATH_INFO" => path, "QUERY_STRING" => query_string, "rack.session" => {} }
   end
 
   describe "#call" do
@@ -71,10 +71,10 @@ RSpec.describe HalfSignupMiddleware do
       end
 
       context "and path is in query string" do
-        let(:env) { env_with_path("/invalid?some_param=/quick_auth") }
+        let(:env) { env_with_path("/invalid", "some_param=/quick_auth") }
 
         it "signs out" do
-          expect(middleware).to receive(:sign_out_user)
+          expect(middleware).to receive(:sign_out_user).at_least(:once)
           expect(app).to receive(:call).with(env)
           middleware.send(:handle_half_signup_request, env)
         end
