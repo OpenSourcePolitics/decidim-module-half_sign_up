@@ -94,9 +94,10 @@ describe "Budgets view", type: :system do
         context "and user has phone_number" do
           let(:user) { create(:user, :confirmed, organization: organization, phone_number: "4578878784", phone_country: "US") }
 
-          it "redirects user to the budget booth" do
+          it "redirects user to the half signup sms page" do
             find("button.hollow:nth-child(1)").click
-            expect(page).to have_content("You are now in the voting booth")
+            expect(page).to have_content("Sign In")
+            expect(page).to have_content("Please enter your phone number:")
           end
         end
       end
