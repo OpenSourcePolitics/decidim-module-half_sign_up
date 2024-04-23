@@ -44,8 +44,6 @@ class HalfSignupMiddleware
   def find_user(env)
     session_key = Rack::Request.new(env).session["warden.user.user.key"]
     Decidim::User.find(session_key.first.first) if session_key
-  rescue ActiveRecord::RecordNotFound
-    sign_out_user(Rack::Request.new(env))
   end
 
   def half_signup_user?(user)
