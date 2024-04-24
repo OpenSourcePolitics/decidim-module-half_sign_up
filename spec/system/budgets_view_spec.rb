@@ -283,6 +283,7 @@ describe "Budgets view", type: :system do
     before do
       sign_in user
       component.update(settings: component_settings.merge(workflow: "zip_code"))
+      allow_any_instance_of(Decidim::BudgetsBooth::ProjectsControllerExtensions).to receive(:allow_access?).and_return(true)
       visit decidim_budgets.budgets_path
     end
 
