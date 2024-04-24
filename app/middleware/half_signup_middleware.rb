@@ -21,6 +21,7 @@ class HalfSignupMiddleware
   def handle_half_signup_request(env)
     request = Rack::Request.new(env)
 
+    sign_out_user(request) if bypass_with_query_string?(request.query_string)
     return @app.call(env) if path_allowed?(request.path_info)
 
     sign_out_user(request) unless voting_or_order_page?(request.path_info)
@@ -31,6 +32,11 @@ class HalfSignupMiddleware
     ALLOWED_PATHS.any? { |path| path_info.include?(path) }
   end
 
+  # Ensure visitor won't be able to bypass the half signup process by adding the path to the query string
+  def bypass_with_query_string?(query_string)
+    ALLOWED_PATHS.any? { |path| query_string.include?(path) } || voting_or_order_page?(query_string)
+  end
+
   def voting_or_order_page?(path_info)
     path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE)
   end
@@ -38,6 +44,8 @@ class HalfSignupMiddleware
   def find_user(env)
     session_key = Rack::Request.new(env).session["warden.user.user.key"]
     Decidim::User.find(session_key.first.first) if session_key
+  rescue ActiveRecord::RecordNotFound
+    sign_out_user(Rack::Request.new(env))
   end
 
   def half_signup_user?(user)

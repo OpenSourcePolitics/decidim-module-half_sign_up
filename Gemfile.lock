@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/OpenSourcePolitics/decidim-module-ptp.git
+  revision: 18c7422633b743ff6fe63e1dda90bb3480d741a8
+  specs:
+    decidim-budgets_booth (0.27.0)
+      decidim-budgets (~> 0.27.0)
+      decidim-core (~> 0.27.0)
+
 PATH
   remote: .
   specs:
@@ -511,6 +519,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
+    nokogiri (1.14.3-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     oauth (1.1.0)
@@ -798,6 +808,7 @@ GEM
     zeitwerk (2.6.8)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
@@ -805,6 +816,7 @@ DEPENDENCIES
   byebug (~> 11.0)
   codecov
   decidim (~> 0.27.0)
+  decidim-budgets_booth!
   decidim-dev (~> 0.27.0)
   decidim-half_signup!
   faker (~> 2.14)
