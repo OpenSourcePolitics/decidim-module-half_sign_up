@@ -280,12 +280,14 @@ describe "Budgets view", type: :system do
     include_context "with single scoped budget"
     let!(:user_data) { create(:user_data, component: component, user: user, metadata: { zip_code: "10004" }) }
 
+    # rubocop:disable RSpec/AnyInstance
     before do
       sign_in user
       component.update(settings: component_settings.merge(workflow: "zip_code"))
       allow_any_instance_of(Decidim::BudgetsBooth::ProjectsControllerExtensions).to receive(:allow_access?).and_return(true)
       visit decidim_budgets.budgets_path
     end
+    # rubocop:enable RSpec/AnyInstance
 
     it "shows the budgets list when visit budgets list" do
       expect(page).to have_current_path(decidim_budgets.budgets_path)
