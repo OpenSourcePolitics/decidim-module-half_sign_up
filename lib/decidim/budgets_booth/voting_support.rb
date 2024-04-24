@@ -64,10 +64,16 @@ module Decidim
       def ensure_user_phone_number
         return unless current_organization.half_signup_enabled? && current_organization.auth_setting.enable_partial_sms_signup
 
+        return if half_signup_email_user?
+
         session[:user_id] = current_user.id if current_user.present? && current_user.id.present? && current_user.email.exclude?("quick-auth")
 
         return validate_user_session if session[:has_validated].blank? || !session[:has_validated]
 
+        handle_sign_out_user
+      end
+
+      def handle_sign_out_user
         if current_user.phone_number.blank?
           sign_out current_user
           redirect_to decidim_half_signup.users_quick_auth_sms_path
@@ -125,6 +131,10 @@ module Decidim
 
       def voted_this?(budget)
         current_workflow.status(budget) == :voted
+      end
+
+      def half_signup_email_user?
+        current_user.email.exclude?("quick_auth") && current_user.name == I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
       end
     end
   end
