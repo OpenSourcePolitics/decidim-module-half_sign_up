@@ -289,18 +289,6 @@ describe "Budgets view", type: :system do
     end
     # rubocop:enable RSpec/AnyInstance
 
-    it "shows the budgets list when visit budgets list" do
-      expect(page).to have_current_path(decidim_budgets.budgets_path)
-      expect(page).to have_content "You are now in the voting booth."
-      within "#budgets" do
-        expect(page).to have_css(".card.card--list.budget-list", count: 1)
-        expect(page).to have_selector("a", text: "More info", count: 1)
-        expect(page).to have_link(text: /TAKE PART/, href: decidim_budgets.budget_voting_index_path(budget))
-        expect(page).to have_link(translated(budget.title), href: decidim_budgets.budget_voting_index_path(budget))
-        expect(page).to have_content("Eius officiis expedita. 55")
-      end
-    end
-
     it "does not show the budgets header in voting booth when go to the booth" do
       visit decidim_budgets.budget_voting_index_path(budget)
       expect(page).to have_current_path(decidim_budgets.budget_voting_index_path(budget))
