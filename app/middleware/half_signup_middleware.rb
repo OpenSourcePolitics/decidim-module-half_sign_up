@@ -49,7 +49,7 @@ class HalfSignupMiddleware
   end
 
   def half_signup_user?(user)
-    user.email.include?("quick_auth") || user.name == I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
+    user.email.include?("quick_auth") || user.name == I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate", locale: user.locale)
   end
 
   def sign_out_user(request)
