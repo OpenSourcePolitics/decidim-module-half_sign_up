@@ -280,14 +280,12 @@ describe "Budgets view", type: :system do
     include_context "with single scoped budget"
     let!(:user_data) { create(:user_data, component: component, user: user, metadata: { zip_code: "10004" }) }
 
-    # rubocop:disable RSpec/AnyInstance
     before do
       sign_in user
       component.update(settings: component_settings.merge(workflow: "zip_code"))
       allow_any_instance_of(Decidim::BudgetsBooth::ProjectsControllerExtensions).to receive(:allow_access?).and_return(true)
       visit decidim_budgets.budgets_path
     end
-    # rubocop:enable RSpec/AnyInstance
 
     it "does not show the budgets header in voting booth when go to the booth" do
       visit decidim_budgets.budget_voting_index_path(budget)

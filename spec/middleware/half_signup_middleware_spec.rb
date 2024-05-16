@@ -2,7 +2,6 @@
 
 require "spec_helper"
 
-# rubocop:disable RSpec/AnyInstance
 RSpec.describe HalfSignupMiddleware do
   let(:app) { ->(_env) { [200, {}, ["Hello, world!"]] } }
   let(:middleware) { HalfSignupMiddleware.new(app) }
@@ -103,4 +102,3 @@ RSpec.describe HalfSignupMiddleware do
     end
   end
 end
-# rubocop:enable RSpec/AnyInstance

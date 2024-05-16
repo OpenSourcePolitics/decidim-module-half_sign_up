@@ -38,15 +38,13 @@ module Decidim
 
       def find_or_create_user!
         user = if sms_auth?
-                 update_decidim_user_phone(session, data)
+                 if session.present? && session[:user_id].present?
+                   existing_user = update_decidim_user_phone(session, data)
 
-                 session[:has_validated] = true
-
-                 Decidim::User.find_by(
-                   phone_number: data["phone"],
-                   phone_country: data["country"],
-                   organization: form.organization
-                 )
+                   existing_user.presence || find_user_by_phone_country(data)
+                 else
+                   find_user_by_phone_country(data)
+                 end
                else
                  Decidim::User.find_by(
                    email: data["email"],
@@ -88,8 +86,6 @@ module Decidim
       end
 
       def update_decidim_user_phone(session, data)
-        return unless session.present? && session[:user_id].present?
-
         user = Decidim::User.find(session[:user_id])
 
         return if check_phone_difference(user)
@@ -100,10 +96,21 @@ module Decidim
           phone_number: data["phone"],
           phone_country: data["country"]
         )
+        user
+      rescue ActiveRecord::RecordNotFound
+        nil
       end
 
       def check_phone_difference(user)
-        user.phone_number.present? && user.phone_number != data["phone"] && user.phone_country != data["country"]
+        user.phone_number.present? && (user.phone_number != data["phone"].to_s || user.phone_country != data["country"])
+      end
+
+      def find_user_by_phone_country(data)
+        Decidim::User.find_by(
+          organization: form.organization,
+          phone_number: data["phone"],
+          phone_country: data["country"]
+        )
       end
     end
   end
