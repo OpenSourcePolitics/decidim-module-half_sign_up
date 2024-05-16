@@ -41,11 +41,7 @@ module Decidim
                  if session.present? && session[:user_id].present?
                    existing_user = update_decidim_user_phone(session, data)
 
-                   if existing_user.blank?
-                      find_user_by_phone_country(data)
-                    else
-                      existing_user
-                   end
+                   existing_user.presence || find_user_by_phone_country(data)
                  else
                    find_user_by_phone_country(data)
                  end
