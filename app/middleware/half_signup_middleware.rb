@@ -10,16 +10,17 @@ class HalfSignupMiddleware
   end
 
   def call(env)
-    request = Rack::Request.new(env)
-    user = find_user(request)
+    user = find_user(env)
     return @app.call(env) unless user && half_signup_user?(user)
 
-    handle_half_signup_request(request, env)
+    handle_half_signup_request(env)
   end
 
   private
 
-  def handle_half_signup_request(request, env)
+  def handle_half_signup_request(env)
+    request = Rack::Request.new(env)
+
     sign_out_user(request) if bypass_with_query_string?(request.query_string)
     return @app.call(env) if path_allowed?(request.path_info)
 
@@ -40,12 +41,11 @@ class HalfSignupMiddleware
     path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE)
   end
 
-  def find_user(request)
-    session_key = request.session["warden.user.user.key"]
-
+  def find_user(env)
+    session_key = Rack::Request.new(env).session["warden.user.user.key"]
     Decidim::User.find(session_key.first.first) if session_key
   rescue ActiveRecord::RecordNotFound
-    sign_out_user(request)
+    sign_out_user(Rack::Request.new(env))
   end
 
   def half_signup_user?(user)
