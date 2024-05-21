@@ -19,10 +19,11 @@
               <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
               <div class="columns small-12 smallmedium-10 medium-8 small-centered">
                 <div id="verification" class="flex-digits">
-                  <% auth_code_length.times do |ind| %>
-                    <div class="flex-digits-input">
+                  <div class="flex-digits-input">
+                    <% auth_code_length.times do |ind| %>
                       <input type="number" pattern="[0-9]" name="<%= "digit#{ind + 1}" %>" autocomplete="off" aria-label="<%= t(".inputs", count: ind + 1) %>">
-                  <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
               <br/>
