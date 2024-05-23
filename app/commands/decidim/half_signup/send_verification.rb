@@ -46,7 +46,7 @@ module Decidim
 
             Decidim.config.sms_gateway_service.constantize.new(
               phone_number,
-              I18n.t("text_message", scope: "decidim.half_signup.quick_auth.sms_verification", verification: verification_code),
+              verification_code,
               **gateway_context
             )
           end

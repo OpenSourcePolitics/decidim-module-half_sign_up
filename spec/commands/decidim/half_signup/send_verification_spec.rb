@@ -35,7 +35,7 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         allow(form).to receive(:valid?).and_return(false)
       end
 
-      it "broadcasts :invlid" do
+      it "broadcasts :invalid" do
         expect(subject).to broadcast(:invalid)
         expect(Decidim::HalfSignup::VerificationCodeMailer).not_to receive(:call)
       end
@@ -111,11 +111,11 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
       context "when another gateway configured" do
         let(:foo_gateway) do
           Class.new do
-            attr_reader :number, :message, :context
+            attr_reader :number, :code, :context
 
-            def initialize(number, message, context = {})
+            def initialize(number, code, context = {})
               @number = number
-              @message = message
+              @code = code
               @context = context
             end
 
@@ -137,7 +137,7 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
 
         it "sets the correct values" do
           expect(gateway.number).to eq("+358#{phone_number}")
-          expect(gateway.message).to eq("Use code #{verification} to sign in to the platform.")
+          expect(gateway.code).to eq(verification)
           expect(gateway.context).to eq({})
         end
 
