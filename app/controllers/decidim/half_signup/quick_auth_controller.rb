@@ -6,6 +6,8 @@ module Decidim
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
       include Decidim::HalfSignup::PartialSignupSettings
 
+      helper_method :redirect_path
+
       before_action :ensure_authorized, only: [:email, :options]
 
       def sms
@@ -68,6 +70,7 @@ module Decidim
         @verification_code = auth_session["code"]
         AuthenticateUser.call(form: @form, data: auth_session) do
           on(:ok) do |user|
+            Rails.logger.info user.inspect
             flash[:notice] = I18n.t("signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
             reset_auth_session
             sign_in_and_redirect user, event: :authentication
@@ -129,6 +132,13 @@ module Decidim
       end
 
       def options
+        redirect_to action: half_signup_handlers.first && return if handlers_count == 1
+
+        render action: "choose"
+      end
+
+
+      def choose
         nil
       end
 
@@ -142,6 +152,11 @@ module Decidim
       end
 
       def ensure_authorized
+        Rails.logger.info "\n" * 20
+        Rails.logger.info current_user.inspect
+        Rails.logger.info handlers_count.inspect
+        Rails.logger.info "\n" * 20
+
         return true if current_user.blank? && handlers_count.positive?
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")
@@ -219,6 +234,10 @@ module Decidim
       def reset_attempts
         auth_session["attempts"] = 0
         auth_session["last_attempt"] = nil
+      end
+
+      def redirect_path
+        session[:user_return_to] || root_path
       end
     end
   end
