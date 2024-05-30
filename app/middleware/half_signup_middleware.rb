@@ -5,7 +5,6 @@ class HalfSignupMiddleware
   REGEXP_PAGE = %r{/budgets/\d+/voting}.freeze
   REGEXP_VOTE = %r{/budgets/\d+/order}.freeze
   PROJECTS_PAGE = %r{/budgets/\d+/projects}.freeze
-  BUDGETS_PAGE = %r{/budgets/\d+}.freeze
   ZIP_PAGE = %r{/budgets/user/zip_code(/new)?}.freeze
 
   def initialize(app)
@@ -26,14 +25,7 @@ class HalfSignupMiddleware
 
     return @app.call(env) if path_allowed?(request.path_info)
 
-    unless voting_or_order_page?(request.path_info)
-      Rails.logger.info "\n"*20
-      Rails.logger.info voting_or_order_page?(request.path_info).inspect
-      Rails.logger.info request.path_info.inspect
-      Rails.logger.info "\n"*20
-
-      sign_out_user(request)
-    end
+    sign_out_user(request) unless voting_or_order_page?(request.path_info)
     @app.call(env)
   end
 
@@ -42,7 +34,7 @@ class HalfSignupMiddleware
   end
 
   def voting_or_order_page?(path_info)
-    path_info.match?(BUDGETS_PAGE) || path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE) || path_info.match?(PROJECTS_PAGE) || path_info.match?(ZIP_PAGE)
+    path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE) || path_info.match?(PROJECTS_PAGE) || path_info.match?(ZIP_PAGE)
   end
 
   def find_user(env)

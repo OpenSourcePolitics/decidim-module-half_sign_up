@@ -133,13 +133,6 @@ module Decidim
 
       def options
         redirect_to action: half_signup_handlers.first && return if handlers_count == 1
-
-        render action: "choose"
-      end
-
-
-      def choose
-        nil
       end
 
       private
@@ -152,11 +145,6 @@ module Decidim
       end
 
       def ensure_authorized
-        Rails.logger.info "\n" * 20
-        Rails.logger.info current_user.inspect
-        Rails.logger.info handlers_count.inspect
-        Rails.logger.info "\n" * 20
-
         return true if current_user.blank? && handlers_count.positive?
 
         flash[:error] = I18n.t("not_allowed", scope: "decidim.half_signup.quick_auth.options")

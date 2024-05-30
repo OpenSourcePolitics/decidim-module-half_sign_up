@@ -70,16 +70,11 @@ module Decidim
       end
 
       def validate_user_session
-        if current_user.email.exclude?("quick_auth")
-          session[:has_validated] = true
-          Rails.logger.info "\n"*20
-          Rails.logger.info __FILE__
+        return unless current_user.email.exclude?("quick_auth")
 
-
-          sign_out current_user
-          flash[:warning] = t("decidim.budgets.voting.phone_number_required")
-          redirect_to decidim_half_signup.users_quick_auth_sms_path
-        end
+        sign_out current_user
+        flash[:warning] = t("decidim.budgets.voting.phone_number_required")
+        redirect_to decidim_half_signup.users_quick_auth_sms_path
       end
 
       # maximum_budgets_to_vote_on is being set by the admin. the default is zero, which means users can
