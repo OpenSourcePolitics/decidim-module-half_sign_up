@@ -73,7 +73,7 @@ fr:
           success: Code de vérification envoyé à %{email}.
           welcome: Bienvenue sur la plateforme !
         enter_code: 'Veuillez saisir le code :'
-        instruction: Vous devriez avoir reçu le code à %{contact_info}
+        instruction: Vous devriez avoir reçu le code à +33%{contact_info}
         options:
           classic_connection: Se connecter en utilisant la méthode classique
           email: À votre e-mail
@@ -98,7 +98,7 @@ fr:
           invalid_from_number: Le numéro de l'expéditeur n'est pas correctement configuré ou n'est pas capable d'envoyer des messages. Veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
           invalid_geo_permission: Le système n'est pas configuré pour envoyer des messages dans votre pays. Veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
           invalid_to_number: Le numéro de téléphone que vous avez fourni n'est pas correct. Veuillez vérifier que vous avez entré correctement votre numéro de téléphone.
-          success: Code de vérification envoyé à %{phone}.
+          success: Code de vérification envoyé à +33%{phone}.
           text_message: Utilisez le code %{verification} pour vous connecter à la plateforme.
           unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer. Si l'erreur persiste, veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
         verify:
