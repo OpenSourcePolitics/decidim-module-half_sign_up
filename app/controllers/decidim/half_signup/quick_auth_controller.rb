@@ -70,7 +70,6 @@ module Decidim
         @verification_code = auth_session["code"]
         AuthenticateUser.call(form: @form, data: auth_session) do
           on(:ok) do |user|
-            Rails.logger.info user.inspect
             flash[:notice] = I18n.t("signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
             reset_auth_session
             sign_in_and_redirect user, event: :authentication
@@ -133,7 +132,11 @@ module Decidim
 
       def options
         redirect_to action: half_signup_handlers.first && return if handlers_count == 1
+
+        redirect_to action: :choose
       end
+
+      def choose; end
 
       private
 
