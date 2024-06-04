@@ -6,6 +6,8 @@ module Decidim
       include Decidim::HalfSignup::QuickAuth::AuthSessionHandler
       include Decidim::HalfSignup::PartialSignupSettings
 
+      helper_method :redirect_path
+
       before_action :ensure_authorized, only: [:email, :options]
 
       def sms
@@ -129,7 +131,13 @@ module Decidim
       end
 
       def options
-        nil
+        if handlers_count == 1
+          if half_signup_handlers.include?("sms")
+            redirect_to action: "sms"
+          else
+            redirect_to action: "email"
+          end
+        end
       end
 
       private
@@ -219,6 +227,10 @@ module Decidim
       def reset_attempts
         auth_session["attempts"] = 0
         auth_session["last_attempt"] = nil
+      end
+
+      def redirect_path
+        session[:user_return_to] || root_path
       end
     end
   end

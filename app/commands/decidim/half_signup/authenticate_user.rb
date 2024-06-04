@@ -47,7 +47,7 @@ module Decidim
                  )
                else
                  Decidim::User.find_by(
-                   email: data["email"],
+                   email: [data["email"], data["email"].downcase],
                    organization: form.organization
                  )
                end

@@ -4,6 +4,8 @@ class HalfSignupMiddleware
   ALLOWED_PATHS = %w(/quick_auth /users /terms-and-conditions /rails/active_storage).freeze
   REGEXP_PAGE = %r{/budgets/\d+/voting}.freeze
   REGEXP_VOTE = %r{/budgets/\d+/order}.freeze
+  PROJECTS_PAGE = %r{/budgets/\d+/projects}.freeze
+  ZIP_PAGE = %r{/budgets/user/zip_code(/new)?}.freeze
 
   def initialize(app)
     @app = app
@@ -18,6 +20,12 @@ class HalfSignupMiddleware
 
   private
 
+  def budget_paths
+    @budget_paths ||= Decidim::Component.where(manifest_name: "budgets").map do |c|
+      Decidim::EngineRouter.main_proxy(c).root_path
+    end
+  end
+
   def handle_half_signup_request(env)
     request = Rack::Request.new(env)
 
@@ -28,11 +36,11 @@ class HalfSignupMiddleware
   end
 
   def path_allowed?(path_info)
-    ALLOWED_PATHS.any? { |path| path_info.include?(path) }
+    (budget_paths + ALLOWED_PATHS).any? { |path| path_info.include?(path) }
   end
 
   def voting_or_order_page?(path_info)
-    path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE)
+    path_info.match?(REGEXP_PAGE) || path_info.match?(REGEXP_VOTE) || path_info.match?(PROJECTS_PAGE) || path_info.match?(ZIP_PAGE)
   end
 
   def find_user(env)
