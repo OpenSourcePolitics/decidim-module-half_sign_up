@@ -1,11 +1,26 @@
-<div class="reveal" id="halfSignupLoginModal" data-reveal role="dialog" aria-modal="true" aria-labelledby="loginModal-label">
-  <div class="reveal__header">
-    <h2 id="loginModal-label" class="reveal__title"><%= t("please_sign_in", scope: "decidim.shared.half_signup_login_modal") %></h2>
-    <button class="close-button" data-close aria-label="<%= t("close_modal", scope: "decidim.shared.half_signup_login_modal") %>"
-            type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<div class="content">
+  <div class="wrapper">
+    <div class="row">
+      <div class="columns medium-12 large-10 text-center small-centered page-title">
+        <h1><%= t("welcome", scope:"decidim.half_signup.quick_auth", organization: current_organization.name).html_safe %></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns large-6 medium-8 text-center small-centered">
+        <div class="row card">
+          <div class="columns medium-10 small-centered">
+            <h3 class="margin-top-2"><%= t(".title") %></h3>
+            <h4><em><%= t(".send_code_to") %></em></h4>
+            <div class="half-signup-methods">
+              <%= render partial: "email_option", locals: { modify_button_text: false }%>
+              <div class="half-signup-methods-item half-signup-methods-item-or">
+                <%= t(".or")%>
+              </div>
+              <%= render partial: "sms_option", locals: { modify_button_text: false } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <%= render "auth_handler_list" %>
 </div>

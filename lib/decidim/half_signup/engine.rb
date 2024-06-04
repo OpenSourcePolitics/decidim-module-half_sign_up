@@ -18,7 +18,7 @@ module Decidim
             via: [:get, :post]
           )
           namespace :users_quick_auth, path: "users/quick_auth", module: "quick_auth" do
-            get :sms, :email, :resend, :verify, :choose
+            get :sms, :email, :resend, :verify
             post :verification, :authenticate, :update_phone
           end
         end

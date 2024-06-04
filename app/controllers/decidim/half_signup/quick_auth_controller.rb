@@ -131,12 +131,14 @@ module Decidim
       end
 
       def options
-        redirect_to action: half_signup_handlers.first && return if handlers_count == 1
-
-        redirect_to action: :choose
+        if handlers_count == 1
+          if half_signup_handlers.include?("sms")
+            redirect_to action: "sms"
+          else
+            redirect_to action: "email"
+          end
+        end
       end
-
-      def choose; end
 
       private
 
