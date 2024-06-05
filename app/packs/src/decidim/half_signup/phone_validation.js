@@ -4,6 +4,8 @@ $(() => {
         if ($("#sms_auth_phone_country").val() === "FR") {
             $(".button").prop("disabled", true);
 
+            $("#sms_auth_phone_number").attr("placeholder", "0621212121");
+
             $("#sms_auth_phone_number").on('input', function() {
                 const phoneNumber = $(this).val();
                 if ((phoneNumber.charAt(0) === "0" && phoneNumber.length === 10) || (phoneNumber.charAt(0) !== "0" && phoneNumber.length === 9)) {
@@ -27,14 +29,13 @@ $(() => {
         } else {
                     $(".button").prop("disabled", false);
                     $("#sms_auth_phone_number").off('input');
+                    $("#sms_auth_phone_number").attr("placeholder", "");
                 }
     };
 
     updateButtonState()
 
     $("#sms_auth_phone_country").change( function(){
-        console.log($("#sms_auth_phone_country").val())
-
         updateButtonState()
     })
 })
