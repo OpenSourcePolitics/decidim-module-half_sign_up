@@ -60,7 +60,7 @@ fr:
       quick_auth:
         another_method: Utiliser une autre méthode
         authenticate:
-          unnamed_user: Utilisateur anonyme
+          unnamed_user: anonym
         authenticate_user:
           authenticity_token: Votre session a expiré, veuillez à nouveau remplir le
             formulaire.
