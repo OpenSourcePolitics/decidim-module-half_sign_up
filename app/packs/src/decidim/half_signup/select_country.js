@@ -19,6 +19,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* eslint-disable no-new */
     new SlimSelect({select, data});
-
   });
 });
