@@ -9,7 +9,7 @@ module Decidim
       attribute :phone_country, String
 
       validates :phone_number, presence: true, numericality: true
-      validate :validate_phone_number_format, if: -> { phone_country == 'FR'}
+      validate :validate_phone_number_format, if: -> { phone_country == "FR" }
       validates :phone_country, presence: true
 
       private
@@ -17,7 +17,8 @@ module Decidim
       def validate_phone_number_format
         phone_number_str = phone_number.to_s
         return if phone_number_str.match?(/\A(0[67]|[67])\d{8}\z/)
-          errors.add(:phone_number, "Is not valid, it must start with 06 or 07 and contain 10 digits")
+
+        errors.add(:phone_number, "Is not valid, it must start with 06 or 07 and contain 10 digits")
       end
     end
   end
