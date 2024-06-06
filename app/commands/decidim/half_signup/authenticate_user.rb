@@ -16,6 +16,8 @@ module Decidim
         transaction do
           user = find_or_create_user!
         end
+
+        Rails.logger.debug { "User authenticate: #{user.inspect}" }
         return broadcast(:ok, user) if user.present?
 
         broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
