@@ -95,6 +95,7 @@ fr:
         sms:
           enter_phone: 'Veuillez saisir votre numéro de téléphone :'
           instruction: Le numéro de téléphone sera votre clé d'accès à la plateforme. À moins que vous n'ajoutiez un mot de passe à votre compte, un SMS sera envoyé à votre numéro de téléphone chaque fois que vous souhaitez vous connecter.
+          invalid_phone: "N'est pas valide, il doit commencer par 06 ou 07 et contenir 10 chiffres"
         sms_option:
           sms: SMS
         sms_verification:
