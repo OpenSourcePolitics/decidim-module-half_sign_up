@@ -12,8 +12,13 @@ module Decidim
         return broadcast(:invalid) unless form.valid?
         return broadcast(:invalid, verification_failed) unless validate!
 
-        user = find_or_create_user!
-        broadcast(:ok, user)
+        user = nil
+        transaction do
+          user = find_or_create_user!
+        end
+        return broadcast(:ok, user) if user.present?
+
+        broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
       end
 
       private
