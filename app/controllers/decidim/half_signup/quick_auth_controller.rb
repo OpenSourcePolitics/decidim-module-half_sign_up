@@ -7,7 +7,8 @@ module Decidim
       include Decidim::HalfSignup::PartialSignupSettings
 
       before_action :ensure_authorized, only: [:email, :options]
-      skip_before_action :verify_authenticity_token, only: [:authenticate], if: -> { Decidim::HalfSignup.skip_csrf? }
+
+      skip_before_action :verify_authenticity_token, only: [:authenticate] if Decidim::HalfSignup.skip_csrf
 
       def sms
         ensure_enabled_auth("sms")
