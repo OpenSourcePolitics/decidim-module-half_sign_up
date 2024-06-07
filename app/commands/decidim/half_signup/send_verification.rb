@@ -13,6 +13,8 @@ module Decidim
         return broadcast(:invalid) unless @form.valid?
 
         if @form.auth_method == "sms"
+          return broadcast(:invalid, "non disponible") if registered_user_with_same_phone_and_country?
+
           result = send_sms_verification!
           return broadcast(:invalid, @sms_gateway_error_code) unless result
         else
@@ -82,6 +84,13 @@ module Decidim
                             ).deliver_later
 
         verification_code
+      end
+
+      def registered_user_with_same_phone_and_country?
+        current_user = Decidim::User.find(session[:user_id]) if session[:user_id]
+        current_user && !current_user.phone_number && Decidim::User.where(phone_number: @form.phone_number, phone_country: @form.phone_country).where.not(
+          "decidim_users.email ILIKE ?", "%quick_auth%"
+        ).present?
       end
     end
   end

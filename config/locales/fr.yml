@@ -104,6 +104,7 @@ fr:
           success: Code de vérification envoyé à %{phone}.
           text_message: Utilisez le code %{verification} pour vous connecter à la plateforme.
           unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer. Si l'erreur persiste, veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
+          already_exists: Ce numéro de téléphone n'est pas disponible, veuillez renseigner un autre numéro.
         verify:
           have_not_received: Vous n'avez pas reçu le code ?
           incorrect_email: "(adresse incorrecte ?)"
