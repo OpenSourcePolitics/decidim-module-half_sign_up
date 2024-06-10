@@ -8,6 +8,9 @@ module Decidim
 
       before_action :ensure_authorized, only: [:email, :options]
 
+      skip_before_action :verify_authenticity_token, only: [:authenticate] if Decidim::HalfSignup.skip_csrf
+      rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_authenticity_token
+
       def sms
         ensure_enabled_auth("sms")
         @form = form(SmsAuthForm).instance
@@ -225,6 +228,11 @@ module Decidim
       def reset_attempts
         auth_session["attempts"] = 0
         auth_session["last_attempt"] = nil
+      end
+
+      def handle_invalid_authenticity_token
+        flash[:alert] = I18n.t("authenticity_token", scope: "decidim.half_signup.quick_auth.authenticate_user")
+        redirect_back(fallback_location: decidim.root_path)
       end
     end
   end
