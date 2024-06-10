@@ -40,6 +40,7 @@ describe "Budgets view", type: :system do
         context "when user fills half signup sms form" do
           before do
             find("a.hollow:nth-child(1)").click
+            select "Finland", from: :sms_auth_phone_country
             fill_in :sms_auth_phone_number, with: "4578878784"
             click_button "Send the code"
           end
@@ -77,6 +78,7 @@ describe "Budgets view", type: :system do
           context "when user fills half signup sms form" do
             before do
               find("button.hollow:nth-child(1)").click
+              select "Finland", from: :sms_auth_phone_country
               fill_in :sms_auth_phone_number, with: "4578878784"
               click_button "Send the code"
             end

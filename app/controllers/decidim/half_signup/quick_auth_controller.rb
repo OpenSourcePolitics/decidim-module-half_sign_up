@@ -70,7 +70,8 @@ module Decidim
           on(:ok) do |user|
             flash[:notice] = I18n.t("signed_in", scope: "decidim.half_signup.quick_auth.authenticate_user")
             reset_auth_session
-            sign_in_and_redirect user, event: :authentication
+            sign_in(user, event: :authentication)
+            redirect_to "/authorizations"
           end
 
           on(:invalid) do |validation_message|
