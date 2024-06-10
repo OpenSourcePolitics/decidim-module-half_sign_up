@@ -88,9 +88,7 @@ module Decidim
 
       def registered_user_with_same_phone_and_country?
         current_user = Decidim::User.find(session[:user_id]) if session[:user_id]
-        current_user && !current_user.phone_number && Decidim::User.where(phone_number: @form.phone_number, phone_country: @form.phone_country).where.not(
-          "decidim_users.email ILIKE ?", "%quick_auth%"
-        ).present?
+        current_user && !current_user.phone_number && Decidim::User.where(phone_number: @form.phone_number, phone_country: @form.phone_country).not_anonymous.present?
       end
     end
   end

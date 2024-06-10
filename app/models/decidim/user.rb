@@ -25,8 +25,8 @@ module Decidim
            :recoverable, :trackable, :lockable,
            :decidim_validatable, :decidim_newsletterable,
            :omniauthable, omniauth_providers: Decidim::OmniauthProvider.available.keys,
-           request_keys: [:env], reset_password_keys: [:decidim_organization_id, :email],
-           confirmation_keys: [:decidim_organization_id, :email]
+                          request_keys: [:env], reset_password_keys: [:decidim_organization_id, :email],
+                          confirmation_keys: [:decidim_organization_id, :email]
     devise :rememberable if Decidim.enable_remember_me
 
     has_many :identities, foreign_key: "decidim_user_id", class_name: "Decidim::Identity", dependent: :destroy
@@ -52,6 +52,7 @@ module Decidim
 
     has_one_attached :download_your_data_file
 
+    scope :not_anonymous, -> { where.not("decidim_users.email ILIKE ?", "%quick_auth%") }
     scope :not_deleted, -> { where(deleted_at: nil) }
 
     scope :managed, -> { where(managed: true) }
