@@ -44,6 +44,8 @@ en:
         authenticate:
           unnamed_user: Unnamed user
         authenticate_user:
+          authenticity_token: Your session has expired. Please try submitting the
+            form again.
           error: Verification failed. Please try again.
           phone_exist: This phone number is bined to another account. Please use another
             phone number, or contact administration.

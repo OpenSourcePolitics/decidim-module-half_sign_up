@@ -12,8 +12,15 @@ module Decidim
         return broadcast(:invalid) unless form.valid?
         return broadcast(:invalid, verification_failed) unless validate!
 
-        user = find_or_create_user!
-        broadcast(:ok, user)
+        user = nil
+        transaction do
+          user = find_or_create_user!
+        end
+
+        Rails.logger.debug { "User authenticate: #{user.inspect}" }
+        return broadcast(:ok, user) if user.present?
+
+        broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
       end
 
       private
@@ -55,8 +62,8 @@ module Decidim
         generated_password = SecureRandom.hex
         Decidim::User.create! do |record|
           record.name = I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
-          record.nickname = UserBaseEntity.nicknamize(record.name)
-          record.email = data["email"] || generate_email(data["country"], data["phone"])
+          record.nickname = UserBaseEntity.nicknamize("#{record.name}_#{SecureRandom.hex(4)}")
+          record.email = data["email"].presence || generate_email(data["country"], data["phone"])
           record.password = generated_password
           record.password_confirmation = generated_password
 

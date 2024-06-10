@@ -46,8 +46,9 @@ fr:
       quick_auth:
         another_method: Utiliser une autre méthode
         authenticate:
-          unnamed_user: Utilisateur anonyme
+          unnamed_user: anonym
         authenticate_user:
+          authenticity_token: Votre session a expiré. Veuillez essayer de soumettre à nouveau le formulaire.
           error: La vérification a échoué. Veuillez réessayer.
           phone_exist: Ce numéro de téléphone est lié à un autre compte. Veuillez utiliser un autre numéro de téléphone, ou contacter l'administration.
           signed_in: Connexion réussie.
