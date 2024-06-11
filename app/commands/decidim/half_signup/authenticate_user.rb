@@ -102,7 +102,7 @@ module Decidim
       end
 
       def check_phone_difference(user)
-        user.phone_number.present? && (user.phone_number != data["phone"].to_s || user.phone_country != data["country"])
+        user.phone_number.present? && (user.phone_number == data["phone"].to_s && user.phone_country == data["country"])
       end
 
       def find_user_by_phone_country(data)
