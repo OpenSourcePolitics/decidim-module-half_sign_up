@@ -61,11 +61,8 @@ describe "Add/update phone number", type: :system do
       it "update the phone number" do
         expect(page).to have_link("Add your phone number")
         click_link "Add your phone number"
-        find("span.arrow-down").click
-        within ".ss-list" do
-          find("div", text: /Finland/).select_option
-        end
-        fill_in "Phone number", with: phone
+        select "Finland", from: :sms_auth_phone_country
+        fill_in :sms_auth_phone_number, with: 4578878784
         click_button "Send the code"
         code = page.find("#hint").text
         fill_in_code(code, "digit")
@@ -85,11 +82,8 @@ describe "Add/update phone number", type: :system do
 
         before do
           click_link "Add your phone number"
-          find("span.arrow-down").click
-          within ".ss-list" do
-            find("div", text: /Finland/).select_option
-          end
-          fill_in "Phone number", with: "4578878784"
+          select "Finland", from: :sms_auth_phone_country
+          fill_in "Phone number", with: 4578878784
           click_button "Send the code"
           code = page.find("#hint").text
           fill_in_code(code, "digit")

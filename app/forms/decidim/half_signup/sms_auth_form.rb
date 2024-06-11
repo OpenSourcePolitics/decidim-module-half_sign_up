@@ -9,7 +9,6 @@ module Decidim
       attribute :phone_country, String
 
       validates :phone_number, numericality: { greater_than: 0 }, presence: true
-      validates :phone_number, presence: true, numericality: { greater_than: 0 }
       validate :validate_phone_number_format, if: -> { phone_country == "FR" }
       validates :phone_country, presence: true
 
