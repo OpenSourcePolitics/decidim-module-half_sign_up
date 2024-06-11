@@ -28,9 +28,9 @@ en:
         checkout:
           error: An error occurred while trying to process your vote. Please try again.
           success: Your vote has been successfully registered.
-        phone_number_required: You need to add your phone number to vote.
         index:
           sign_in_first: You need to sign in to start voting.
+        phone_number_required: You need to add your phone number to vote.
     components:
       half_signup:
         name: HalfSignup
@@ -57,6 +57,8 @@ en:
         authenticate:
           unnamed_user: Unnamed user
         authenticate_user:
+          authenticity_token: Your session has expired. Please try submitting the
+            form again.
           error: Verification failed. Please try again.
           phone_exist: This phone number is bined to another account. Please use another
             phone number, or contact administration.
@@ -136,6 +138,6 @@ en:
         welcome: Welcome to the <br><strong>%{organization} platform!</strong>
     shared:
       half_signup_login_modal:
-        sign_up: Sign up
         close_modal: Close
         please_sign_in: Please sign in
+        sign_up: Sign up
