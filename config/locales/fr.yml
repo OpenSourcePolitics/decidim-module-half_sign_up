@@ -3,8 +3,10 @@ fr:
   activemodel:
     attributes:
       auth_setting:
-        enable_partial_email_signup: Activer l'inscription partielle par vérification de l'e-mail
-        enable_partial_sms_signup: Activer l'inscription partielle par vérification SMS
+        enable_partial_email_signup: Activer l'inscription partielle par vérification
+          de l'e-mail
+        enable_partial_sms_signup: Activer l'inscription partielle par vérification
+          SMS
       sms_auth:
         phone_country: Indicatif du pays
         phone_number: Numéro de téléphone
@@ -17,44 +19,57 @@ fr:
       projects:
         budget_confirm:
           half_signup:
-            warning: Cette action vous déconnectera à la fin du processus et vous ne pourrez pas modifier votre vote
+            warning: Cette action vous déconnectera à la fin du processus et vous
+              ne pourrez pas modifier votre vote
         cancel_voting_modal:
           quick_auth_warning: Cette action vous déconnectera à la fin du processus
         pre_voting_budget_summary:
           sign_in_first: Vous devez vous connecter pour commencer à voter.
       voting:
         checkout:
-          error: Une erreur s'est produite lors de la tentative de traitement de votre vote. Veuillez réessayer.
+          error: Une erreur s'est produite lors de la tentative de traitement de votre
+            vote. Veuillez réessayer.
           success: Votre vote a été enregistré avec succès.
-        phone_number_required: Vous devez ajouter votre numéro de téléphone pour voter.
         index:
           sign_in_first: Vous devez vous connecter pour commencer à voter.
+        phone_number_required: Vous devez ajouter votre numéro de téléphone pour voter.
     components:
       half_signup:
         name: Inscription Partielle
     half_signup:
       admin:
         auth_settings:
-          description: Le module fournit quelques paramètres via des configurations de module pouvant être définies depuis le code. Utilisez l'exemple de code suivant dans un initialiseur avec les commentaires qui expliquent ce que fait chaque paramètre.
+          description: Le module fournit quelques paramètres via des configurations
+            de module pouvant être définies depuis le code. Utilisez l'exemple de
+            code suivant dans un initialiseur avec les commentaires qui expliquent
+            ce que fait chaque paramètre.
           edit:
             title: Module d'inscription partielle
             update: Mettre à jour
           email:
-            help_text: Cette option permet aux utilisateurs de s'inscrire et de se connecter à la plateforme en utilisant leur adresse e-mail en recevant une vérification par e-mail.
+            help_text: Cette option permet aux utilisateurs de s'inscrire et de se
+              connecter à la plateforme en utilisant leur adresse e-mail en recevant
+              une vérification par e-mail.
           sms:
-            help_text: Cette option permet aux utilisateurs de s'inscrire et de se connecter à la plateforme en utilisant leur adresse e-mail en recevant un code de vérification par SMS.
+            help_text: Cette option permet aux utilisateurs de s'inscrire et de se
+              connecter à la plateforme en utilisant leur adresse e-mail en recevant
+              un code de vérification par SMS.
           title: Paramètres disponibles via le code
       menu:
         auth_settings: Paramètres d'authentification
       quick_auth:
         another_method: Utiliser une autre méthode
         authenticate:
-          unnamed_user: Utilisateur anonyme
+          unnamed_user: anonym
         authenticate_user:
+          authenticity_token: Votre session a expiré, veuillez à nouveau remplir le
+            formulaire.
           error: La vérification a échoué. Veuillez réessayer.
-          phone_exist: Ce numéro de téléphone est lié à un autre compte. Veuillez utiliser un autre numéro de téléphone, ou contacter l'administration.
+          phone_exist: Ce numéro de téléphone est lié à un autre compte. Veuillez
+            utiliser un autre numéro de téléphone, ou contacter l'administration.
           signed_in: Connexion réussie.
-          threshold_exceeded: Trop de tentatives échouées. Veuillez réessayer plus tard.
+          threshold_exceeded: Trop de tentatives échouées. Veuillez réessayer plus
+            tard.
           unauthorized: Vous n'êtes pas autorisé à effectuer cette action.
           updated: Compte utilisateur mis à jour avec succès.
         back: Retour au compte
@@ -63,15 +78,21 @@ fr:
           verification_code: 'Le code de vérification est : '
         email:
           enter_email: 'Veuillez saisir votre e-mail :'
-          instruction: L'adresse e-mail sera votre clé d'accès à la plateforme. Un e-mail sera envoyé à votre adresse e-mail chaque fois que vous souhaitez vous connecter. Si vous avez déjà un compte sur cette plateforme, veuillez saisir cet e-mail pour vous connecter.
+          instruction: L'adresse e-mail sera votre clé d'accès à la plateforme. Un
+            e-mail sera envoyé à votre adresse e-mail chaque fois que vous souhaitez
+            vous connecter. Si vous avez déjà un compte sur cette plateforme, veuillez
+            saisir cet e-mail pour vous connecter.
         email_form:
           submit: Envoyer le code
         email_option:
           email: E-mail
         email_verification:
-          content: Confirmez votre adresse e-mail en saisissant le code de connexion ci-dessous dans le champ prévu sur le service.
+          content: Confirmez votre adresse e-mail en saisissant le code de connexion
+            ci-dessous dans le champ prévu sur le service.
           details: 'Votre code de connexion est :'
-          error: Une erreur s'est produite lors de la tentative d'envoi de la vérification à votre adresse e-mail, veuillez réessayer. Si l'erreur persiste, veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
+          error: Une erreur s'est produite lors de la tentative d'envoi de la vérification
+            à votre adresse e-mail, veuillez réessayer. Si l'erreur persiste, veuillez
+            contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
           subject: 'Votre code de connexion est : %{verification}'
           success: Code de vérification envoyé à %{email}.
           welcome: Bienvenue sur la plateforme !
@@ -99,12 +120,21 @@ fr:
         sms_option:
           sms: SMS
         sms_verification:
-          invalid_from_number: Le numéro de l'expéditeur n'est pas correctement configuré ou n'est pas capable d'envoyer des messages. Veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
-          invalid_geo_permission: Le système n'est pas configuré pour envoyer des messages dans votre pays. Veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
-          invalid_to_number: Le numéro de téléphone que vous avez fourni n'est pas correct. Veuillez vérifier que vous avez entré correctement votre numéro de téléphone.
+          invalid_from_number: Le numéro de l'expéditeur n'est pas correctement configuré
+            ou n'est pas capable d'envoyer des messages. Veuillez contacter le support
+            de la plateforme pour obtenir de l'aide supplémentaire.
+          invalid_geo_permission: Le système n'est pas configuré pour envoyer des
+            messages dans votre pays. Veuillez contacter le support de la plateforme
+            pour obtenir de l'aide supplémentaire.
+          invalid_to_number: Le numéro de téléphone que vous avez fourni n'est pas
+            correct. Veuillez vérifier que vous avez entré correctement votre numéro
+            de téléphone.
           success: Code de vérification envoyé à %{phone}.
-          text_message: Utilisez le code %{verification} pour vous connecter à la plateforme.
-          unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer. Si l'erreur persiste, veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
+          text_message: Utilisez le code %{verification} pour vous connecter à la
+            plateforme.
+          unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer.
+            Si l'erreur persiste, veuillez contacter le support de la plateforme pour
+            obtenir de l'aide supplémentaire.
         verify:
           have_not_received: Vous n'avez pas reçu le code ?
           incorrect_email: "(adresse incorrecte ?)"
@@ -117,6 +147,6 @@ fr:
         welcome: Bienvenue sur la <br><strong>plateforme %{organization} !</strong>
     shared:
       half_signup_login_modal:
-        sign_up: S'inscrire
         close_modal: Fermer
         please_sign_in: Veuillez vous connecter
+        sign_up: S'inscrire
