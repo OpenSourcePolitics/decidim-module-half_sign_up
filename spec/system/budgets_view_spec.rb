@@ -77,7 +77,6 @@ describe "Budgets view", type: :system do
           context "when user fills half signup sms form" do
             before do
               find("button.hollow:nth-child(1)").click
-
               fill_in :sms_auth_phone_number, with: "4578878784"
               click_button "Send the code"
             end
@@ -85,7 +84,6 @@ describe "Budgets view", type: :system do
             it "redirects user to the half signup sms page" do
               expect(page).to have_content("You should have received the code")
               code = page.find("#hint").text
-
               fill_in_code(code, "digit")
               click_button "Verify"
               expect(page).to have_content("You are now in the voting booth")
