@@ -51,7 +51,7 @@ module Decidim::HalfSignup
         it { is_expected.to be_valid }
       end
 
-      context "with phone number format is unvalid" do
+      context "with phone number format is invalid" do
         let(:phone_number) { "0112345678" }
 
         it { is_expected.not_to be_valid }
