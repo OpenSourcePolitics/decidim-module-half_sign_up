@@ -89,7 +89,7 @@ describe "Add/update phone number", type: :system do
           within ".ss-list" do
             find("div", text: /Finland/).select_option
           end
-          fill_in "Phone number", with: "4578878784"
+          fill_in "Phone number", with: phone
           click_button "Send the code"
           code = page.find("#hint").text
           fill_in_code(code, "digit")

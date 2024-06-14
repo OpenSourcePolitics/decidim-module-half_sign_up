@@ -111,6 +111,7 @@ en:
           instruction: The phone number will be your key to the platform. Unless you
             add a password to your accout, an SMS will be sent to your phone number
             every time you wish to sign in.
+          invalid_phone: 'Is not valid, it must start with 06 or 07 and contain 10 digits'
         sms_option:
           sms: SMS
         sms_verification:

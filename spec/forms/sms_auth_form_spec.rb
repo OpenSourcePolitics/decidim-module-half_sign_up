@@ -41,5 +41,21 @@ module Decidim::HalfSignup
         it { is_expected.not_to be_valid }
       end
     end
+
+    context "when phone country is FR" do
+      let!(:phone_country) { "FR" }
+
+      context "with phone number format is valid" do
+        let(:phone_number) { "0612345678" }
+
+        it { is_expected.to be_valid }
+      end
+
+      context "with phone number format is invalid" do
+        let(:phone_number) { "0112345678" }
+
+        it { is_expected.not_to be_valid }
+      end
+    end
   end
 end

@@ -7,6 +7,9 @@
   <div class="columns large-8">
     <div class="field">
       <%= form.number_field :phone_number %>
+      <span id="phone_number_invalid_message" hidden>
+      <%= t('decidim.half_signup.quick_auth.sms.invalid_phone') %>
+      </span>
     </div>
   </div>
 </div>
