@@ -99,7 +99,7 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         it "does not deliver the verification code" do
           Decidim::User.create!(email: generate(:email), name: generate(:name), nickname: generate(:nickname), organization: organization,
                                 tos_agreement: "1", phone_number:  "9876543", phone_country: "FR", password: "DecidiM123456789")
-          expect(subject).to broadcast(:invalid, "non disponible")
+          expect(subject).to broadcast(:invalid, :already_exists)
           expect(Decidim::HalfSignup::VerificationCodeMailer).not_to receive(:call)
         end
       end

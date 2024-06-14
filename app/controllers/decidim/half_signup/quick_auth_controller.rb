@@ -38,7 +38,7 @@ module Decidim
           end
 
           on(:invalid) do |error_code|
-            flash.now[:alert] = if error_code == "non disponible"
+            flash.now[:alert] = if error_code == :already_exists
                                   I18n.t("already_exists", scope: "decidim.half_signup.quick_auth.sms_verification")
                                 elsif error_code
                                   sms_sending_error(error_code)

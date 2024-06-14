@@ -13,7 +13,7 @@ module Decidim
         return broadcast(:invalid) unless @form.valid?
 
         if @form.auth_method == "sms"
-          return broadcast(:invalid, "non disponible") if registered_user_with_same_phone_and_country?
+          return broadcast(:invalid, :already_exists) if registered_user_with_same_phone_and_country?
 
           result = send_sms_verification!
           return broadcast(:invalid, @sms_gateway_error_code) unless result
