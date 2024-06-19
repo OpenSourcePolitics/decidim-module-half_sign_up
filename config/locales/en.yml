@@ -126,6 +126,7 @@ en:
           text_message: Use code %{verification} to sign in to the platform.
           unknown: An error occured which has been logged, please try again. If the
             error persists, please contact the platform support for further help.
+          already_exists: This phone number is not available, please enter another number.
         verify:
           have_not_received: Haven't received the code?
           incorrect_email: "(incorrect address?)"

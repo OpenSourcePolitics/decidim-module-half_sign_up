@@ -6,12 +6,14 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
   subject { command.call }
 
   let!(:organization) { create(:organization) }
+  let!(:user) { create(:user, :confirmed, organization: organization) }
+  let!(:session) { { user_id: user.id } }
   let(:command) { described_class.new(form) }
   let(:verification) { "1234" }
   let(:email) { nil }
+  let(:valid) { true }
   let(:phone_number) { nil }
   let(:phone_country) { nil }
-  let(:valid) { true }
   let(:form) do
     double(
       valid?: valid,
@@ -75,10 +77,37 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
     end
 
     context "when form is valid" do
-      let!(:phone_number) { 4_577_886_622 }
-      let!(:phone_country) { "FI" }
+      before do
+        allow_any_instance_of(Decidim::HalfSignup::SendVerification).to receive(:session).and_return(session)
+      end
+
+      context "and an anonymous user already exists with same phone and country" do
+        let(:phone_number) { 1_123_324_356 }
+        let(:phone_country) { "FR" }
+
+        it "delivers the verification code" do
+          Decidim::User.create!(email: "quick_auth@example.org", name: generate(:name), nickname: generate(:nickname), organization: organization,
+                                tos_agreement: "1", phone_number:  "1_123_324_356", phone_country: "FR", password: "DecidiM123456789")
+          expect(subject).to broadcast(:ok, verification)
+        end
+      end
+
+      context "and a registered user already exists with same phone and country" do
+        let(:phone_number) { 9_876_543 }
+        let(:phone_country) { "FR" }
+
+        it "does not deliver the verification code" do
+          Decidim::User.create!(email: generate(:email), name: generate(:name), nickname: generate(:nickname), organization: organization,
+                                tos_agreement: "1", phone_number:  "9876543", phone_country: "FR", password: "DecidiM123456789")
+          expect(subject).to broadcast(:invalid, :already_exists)
+          expect(Decidim::HalfSignup::VerificationCodeMailer).not_to receive(:call)
+        end
+      end
 
       context "when default gateway" do
+        let(:phone_number) { 4_577_886_622 }
+        let(:phone_country) { "FI" }
+
         context "when delivers the code" do
           it "delivers the verification code" do
             allow(gateway).to receive(:deliver_code).and_return(true)
@@ -108,7 +137,9 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
         end
       end
 
-      context "when another gateway configured" do
+      context "and another gateway is configured" do
+        let(:phone_number) { 4_577_886_622 }
+        let(:phone_country) { "FI" }
         let(:foo_gateway) do
           Class.new do
             attr_reader :number, :code, :context
