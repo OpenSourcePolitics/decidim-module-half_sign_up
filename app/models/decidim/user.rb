@@ -46,7 +46,7 @@ module Decidim
     validates :tos_agreement, acceptance: true, allow_nil: false, on: :create
     validates :tos_agreement, acceptance: true, if: :user_invited?
     validates :email, :nickname, uniqueness: { scope: :organization }, unless: -> { deleted? || managed? || nickname.blank? }
-    validates :phone_number, uniqueness: { scope: :phone_country }, unless: -> { new_record? }
+    validates :phone_number, uniqueness: { scope: :phone_country, allow_nil: true }, unless: -> { new_record? }
 
     validate :all_roles_are_valid
 
