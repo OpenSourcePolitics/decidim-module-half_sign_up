@@ -17,6 +17,7 @@ module Decidim
 
         def call
           return broadcast(:invalid) if form.invalid?
+          return broadcast(:sms_service_not_configured) if form.enable_partial_sms_signup && !check_sms_service
 
           update_auth_settings
           broadcast(:ok)
@@ -25,6 +26,10 @@ module Decidim
         private
 
         attr_reader :form
+
+        def check_sms_service
+          Decidim.config.sms_gateway_service.present?
+        end
 
         def update_auth_settings
           Decidim.traceability.update!(
