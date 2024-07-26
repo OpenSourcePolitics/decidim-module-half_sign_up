@@ -16,6 +16,7 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
   let(:attempts) { 0 }
   let!(:correct_code) { "correct code" }
   let!(:wrong_code) { "wrong code" }
+  let(:sms_gateway_service) { "Decidim::Verifications::Sms::ExampleGateway" }
   let(:auth_session) do
     {
       "code" => "correct code",
@@ -34,6 +35,10 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     request.env["decidim.current_organization"] = organization
     request.env["devise.mapping"] = ::Devise.mappings[:user]
     request.session[:auth_attempt] = auth_session
+
+    Decidim.configure do |config|
+      config.sms_gateway_service = sms_gateway_service
+    end
   end
 
   describe "GET #sms" do
