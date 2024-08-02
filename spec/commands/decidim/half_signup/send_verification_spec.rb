@@ -34,6 +34,10 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
     end
   end
 
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
+  end
+
   describe "when email" do
     let!(:auth_method) { "email" }
 

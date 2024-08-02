@@ -16,12 +16,14 @@ RSpec.describe Decidim::HalfSignup::Admin::UpdateAuthSettings do
     )
   end
   let(:command) { described_class.new(auth_settings, form) }
-  let(:sms_gateway_service) { "Decidim::Verifications::Sms::ExampleGateway" }
+  let(:sms_gateway_service) { instance_double(Decidim::Verifications::Sms::ExampleGateway, present?: true) }
 
   before do
-    Decidim.configure do |config|
-      config.sms_gateway_service = sms_gateway_service
-    end
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   describe "#call" do

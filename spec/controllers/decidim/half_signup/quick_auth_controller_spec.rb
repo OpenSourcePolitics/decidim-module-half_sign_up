@@ -36,9 +36,11 @@ RSpec.describe Decidim::HalfSignup::QuickAuthController, type: :controller do
     request.env["devise.mapping"] = ::Devise.mappings[:user]
     request.session[:auth_attempt] = auth_session
 
-    Decidim.configure do |config|
-      config.sms_gateway_service = sms_gateway_service
-    end
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   describe "GET #sms" do

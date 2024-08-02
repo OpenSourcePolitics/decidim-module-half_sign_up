@@ -15,9 +15,11 @@ describe "Admin manage auth settings", type: :system do
     switch_to_host(organization.host)
     visit decidim_admin.edit_organization_path
 
-    Decidim.configure do |config|
-      config.sms_gateway_service = sms_gateway_service
-    end
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   it "shows the menu in the admin panel in a correct place" do
@@ -54,41 +56,42 @@ describe "Admin manage auth settings", type: :system do
     expect(auth_settings.enable_partial_sms_signup).to be(true)
   end
 
-  it "shows a warning message when the SMS gateway service is not configured" do
-    Decidim.configure do |config|
-      config.sms_gateway_service = nil
-    end
-    click_link "Authentication settings"
-    expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
-    expect(page).to have_css(".is-active", text: "Authentication settings")
-    expect(page.find("#auth_setting_enable_partial_sms_signup")).to be_disabled
-    expect(page).to have_content("This option is disabled please contact the host of the platform to enable it.")
-  end
-
-  it "shows an error message when the SMS gateway service is not configured if the user tries to force the change" do
-    click_link "Authentication settings"
-    expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
-    expect(page).to have_css(".is-active", text: "Authentication settings")
-    check "Enable partial sign up and sign in using SMS verification"
-    check "Enable partial sign up and sign in using email verification"
-
-    Decidim.configure do |config|
-      config.sms_gateway_service = nil
+  context "when sms gateway service is not present" do
+    before do
+      allow(Decidim.config).to receive(:sms_gateway_service).and_return(nil)
     end
 
-    click_button "Update"
-    expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
-    within ".callout-wrapper" do
-      expect(page).not_to have_content("Organization updated successfully.")
-      expect(page).to have_content("The SMS gateway service is not defined.")
+    it "shows a warning message when the SMS gateway service is not configured" do
+      click_link "Authentication settings"
+      expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
+      expect(page).to have_css(".is-active", text: "Authentication settings")
+      expect(page.find("#auth_setting_enable_partial_sms_signup")).to be_disabled
+      expect(page).to have_content("This option is disabled please contact the host of the platform to enable it.")
     end
-    expect(page).to have_content("Settings available through code")
-    within "code" do
-      expect(page).to have_content("Decidim::HalfSignup.configure do |config|")
+
+    it "shows an error message when the SMS gateway service is not configured if the user tries to force the change" do
+      click_link "Authentication settings"
+      expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
+      expect(page).to have_css(".is-active", text: "Authentication settings")
+      check "Enable partial sign up and sign in using SMS verification"
+      check "Enable partial sign up and sign in using email verification"
+
+      allow(Decidim.config).to receive(:sms_gateway_service).and_return(nil)
+
+      click_button "Update"
+      expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
+      within ".callout-wrapper" do
+        expect(page).not_to have_content("Organization updated successfully.")
+        expect(page).to have_content("The SMS gateway service is not defined.")
+      end
+      expect(page).to have_content("Settings available through code")
+      within "code" do
+        expect(page).to have_content("Decidim::HalfSignup.configure do |config|")
+      end
+      expect(page.find("#auth_setting_enable_partial_sms_signup")).not_to be_checked
+      auth_settings = Decidim::HalfSignup::AuthSetting.last
+      expect(auth_settings.enable_partial_email_signup).to be(false)
+      expect(auth_settings.enable_partial_sms_signup).to be(false)
     end
-    expect(page.find("#auth_setting_enable_partial_sms_signup")).not_to be_checked
-    auth_settings = Decidim::HalfSignup::AuthSetting.last
-    expect(auth_settings.enable_partial_email_signup).to be(false)
-    expect(auth_settings.enable_partial_sms_signup).to be(false)
   end
 end
