@@ -71,6 +71,9 @@ describe "Admin manage auth settings", type: :system do
 
     it "shows an error message when the SMS gateway service is not configured if the user tries to force the change" do
       click_link "Authentication settings"
+      # Simplest way to simulate the behavior if the user tries to manually change the checkbox value even if sms_gateway_service is disabled)
+      allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+
       expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
       expect(page).to have_css(".is-active", text: "Authentication settings")
       check "Enable partial sign up and sign in using SMS verification"
