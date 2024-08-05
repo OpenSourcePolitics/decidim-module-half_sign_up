@@ -68,11 +68,16 @@ describe "Admin manage auth settings", type: :system do
       expect(page.find("#auth_setting_enable_partial_sms_signup")).to be_disabled
       expect(page).to have_content("This option is disabled please contact the host of the platform to enable it.")
     end
+  end
+
+  context "when user tries to force the SMS verification without configuring the SMS gateway" do
+    before do
+      # Simplest way to simulate the behavior if the user tries to manually change the checkbox value even if sms_gateway_service is disabled)
+      allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+    end
 
     it "shows an error message when the SMS gateway service is not configured if the user tries to force the change" do
       click_link "Authentication settings"
-      # Simplest way to simulate the behavior if the user tries to manually change the checkbox value even if sms_gateway_service is disabled)
-      allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
 
       expect(page).to have_current_path(decidim_half_signup_admin.edit_auth_setting_path(slug: "authentication_settings"))
       expect(page).to have_css(".is-active", text: "Authentication settings")
