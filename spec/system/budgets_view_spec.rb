@@ -7,9 +7,16 @@ describe "Budgets view", type: :system do
   let(:projects_count) { 1 }
   let(:decidim_budgets) { Decidim::EngineRouter.main_proxy(component) }
   let(:user) { create(:user, :confirmed, organization: organization) }
+  let(:sms_gateway_service) { "Decidim::Verifications::Sms::ExampleGateway" }
 
   before do
     switch_to_host(organization.host)
+
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   context "with multiple budgets" do

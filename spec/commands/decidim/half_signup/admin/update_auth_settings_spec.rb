@@ -16,6 +16,15 @@ RSpec.describe Decidim::HalfSignup::Admin::UpdateAuthSettings do
     )
   end
   let(:command) { described_class.new(auth_settings, form) }
+  let(:sms_gateway_service) { instance_double(Decidim::Verifications::Sms::ExampleGateway, present?: true) }
+
+  before do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
+  end
 
   describe "#call" do
     subject { command.call }
@@ -46,6 +55,14 @@ RSpec.describe Decidim::HalfSignup::Admin::UpdateAuthSettings do
 
       it "does broadcasts :invalid" do
         expect(subject).to broadcast(:invalid)
+      end
+    end
+
+    context "when the sms gateway is not defined" do
+      let(:sms_gateway_service) { nil }
+
+      it "broadcasts :sms_service_not_configured" do
+        expect(subject).to broadcast(:sms_service_not_configured)
       end
     end
   end
