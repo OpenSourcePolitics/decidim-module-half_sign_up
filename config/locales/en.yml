@@ -78,6 +78,7 @@ en:
           welcome: Welcome to the platform!
         enter_code: 'Please enter the code:'
         instruction: You should have received the code to %{contact_info}
+        instruction_email: You should have received the code to %{contact_info}
         options:
           email: To your email
           not_allowed: You are not allowed to perform this action.
