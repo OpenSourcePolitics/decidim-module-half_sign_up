@@ -61,6 +61,7 @@ module Decidim
         @form = form(VerificationCodeForm).instance
         @verification_code = auth_session["code"]
         @info = set_contact_info
+        @mail = auth_session["email"] == @info
       end
 
       def authenticate

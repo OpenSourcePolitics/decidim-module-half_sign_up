@@ -11,7 +11,11 @@
           <div class="card__content">
             <h2 class="text-center"><%= t("enter_code", scope: "decidim.half_signup.quick_auth") %></h2>
             <p class="text-center">
-              <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
+              <% if @mail %>
+                <%= t("instruction_email", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
+              <% else  %>
+                <%= t("instruction", scope:"decidim.half_signup.quick_auth", contact_info: @info) %>
+              <% end %>
               <br>
               <%= auth_link_generator %>
             </p>

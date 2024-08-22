@@ -94,6 +94,7 @@ fr:
           welcome: Bienvenue sur la plateforme !
         enter_code: 'Veuillez saisir le code :'
         instruction: Vous devriez avoir reçu le code à +33%{contact_info}
+        instruction_email: Vous devriez avoir reçu le code à %{contact_info}
         options:
           classic_connection: Se connecter en utilisant la méthode classique
           email: À votre e-mail
