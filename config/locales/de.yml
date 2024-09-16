@@ -1,0 +1,127 @@
+---
+de:
+  activemodel:
+    attributes:
+      auth_setting:
+        enable_partial_email_signup: Aktivieren Sie die Teilanmeldung durch Verifizierung
+        enable_partial_sms_signup: Teilweise Anmeldung durch Verifizierung aktivieren
+      sms_auth:
+        phone_country: Landesvorwahl
+        phone_number: Telefonnummer
+  decidim:
+    account:
+      change_phone_number:
+        add: Telefonnummer hinzufügen
+        update: Telefonnummer aktualisieren
+    budgets:
+      projects:
+        budget_confirm:
+          half_signup:
+            warning: Durch diese Aktion werden Sie am Ende des Prozesses abgemeldet und können Ihre Stimme nicht mehr abgeben.
+        cancel_voting_modal:
+          quick_auth_warning: Diese Aktion loggt Sie am Ende des Prozesses aus.
+        pre_voting_budget_summary:
+          sign_in_first: Sie müssen eingeloggt sein, um abstimmen zu können.
+      voting:
+        checkout:
+          error: Bei der Verarbeitung Ihrer Stimme ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.
+          success: Ihre Stimme wurde erfolgreich registriert.
+        index:
+          sign_in_first: Sie müssen sich einloggen, um abstimmen zu können.
+        phone_number_required: ie müssen Ihre Telefonnummer angeben, um abstimmen zu können.
+    components:
+      half_signup:
+        name: Teilanmeldung
+    half_signup:
+      admin:
+        auth_settings:
+          description: Das Modul stellt einige Parameter über Modulkonfigurationen zur Verfügung, die im Code definiert werden können. Verwenden Sie den Beispielcode in einem Initialisierer mit Kommentaren, die die Bedeutung der einzelnen Parameter erläutern.
+          edit:
+            title:  Modul für Teilanmeldung
+            update: Aktualisieren
+          email:
+            help_text: Diese Option ermöglicht es den Benutzern, sich mit ihrer E-Mail-Adresse zu registrieren und sich auf der Plattform einzuloggen, nachdem sie eine Verifizierung per E-Mail erhalten haben.
+          sms:
+            help_text: Diese Option ermöglicht es den Benutzern, sich mit ihrer E-Mail-Adresse zu registrieren und sich auf der Plattform einzuloggen, indem sie einen Verifizierungscode per SMS erhalten.
+          sms_disabled:
+            help_text: Diese Funktion ist deaktiviert. Bitte kontaktieren Sie den Host der Plattform, um sie zu aktivieren.
+          sms_gateway_service_not_defined: Der SMS-Gateway-Dienst ist nicht definiert.
+          title: Einstellungen über Code verfügbar
+      menu:
+        auth_settings: Einstellungen zur Authentifizierung
+      quick_auth:
+        another_method: Andere Methode verwenden
+        authenticate:
+          unnamed_user: Unbenannter Benutzer
+        authenticate_user:
+          authenticity_token:  Ihre Sitzung ist abgelaufen. Bitte versuchen Sie erneut, das Formular abzusenden.
+          error: Die Verifizierung ist fehlgeschlagen. Bitte versuchen Sie es erneut.
+          phone_exist: Diese Telefonnummer gehört zu einem anderen Konto. Bitte verwenden Sie eine andere Telefonnummer oder kontaktieren Sie den Administrator.
+          signed_in: Der Login war erfolgreich.
+          threshold_exceeded: Zu viele Fehlversuche. Bitte versuchen Sie es später erneut.
+          unauthorized: Sie sind nicht berechtigt, diese Aktion auszuführen.
+          updated: Das Benutzerkonto wurde erfolgreich aktualisiert.
+        back: Kehren Sie zu Ihrem Konto zurück
+        development_hint:
+          hint_notification: "(Diese Meldung erscheint nur im Entwicklungsmodus)"
+          verification_code: 'Der Verifizierungscode lautet: '
+        email:
+          enter_email: 'Bitte geben Sie Ihre E-Mail-Adresse ein:'
+          instruction: Die E-Mail-Adresse ist Ihr Zugangsschlüssel zur Plattform. Jedes Mal, wenn Sie sich einloggen möchten, wird eine E-Mail an Ihre E-Mail-Adresse gesendet. Wenn Sie bereits ein Konto auf dieser Plattform haben, geben Sie bitte diese E-Mail-Adresse ein, um sich anzumelden.
+        email_form:
+          submit: Code senden
+        email_option:
+          email: E-Mail-Adresse
+        email_verification:
+          content: Bestätigen Sie Ihre E-Mail-Adresse, indem Sie den unten stehenden Login-Code in das dafür vorgesehene Feld eingeben.
+          details: 'Ihr Login-Code lautet:'
+          error: Beim Versuch, den Bestätigungscode an Ihre E-Mail-Adresse zu senden, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut. Wenn der Fehler weiterhin auftritt, wenden Sie sich bitte an den Support der Plattform, um weitere Hilfe zu erhalten.
+          subject: 'Ihr Anmeldecode lautet: %{verification}'
+          success: Verifizierungscode an %{email} gesendet.
+          welcome: Willkommen auf der Plattform!
+        enter_code: 'Bitte Code eingeben:'
+        instruction: Sie sollten den Code an %{contact_info} erhalten haben.
+        options:
+          classic_connection: Registrieren Sie sich mit der klassischen Methode.
+          email: An Ihre E-Mail-Adresse
+          not_allowed: Sie sind nicht berechtigt, diese Aktion auszuführen.
+          or: ODER
+          select: Bitte wählen Sie aus, wie Sie sich registrieren möchten.
+          send_code_to: 'Sollen wir den Code senden an:'
+          sms: An Ihre Telefonnumm
+          title: Sie müssen sich authentifizieren, um abstimmen zu können.
+          with_email: Mit Ihrer E-Mail-Adresse
+          with_sms: Mit Ihrer Telefonnummer
+        phone_form:
+          submit: Code senden
+        resend_code:
+          not_allowed: Bitte warten Sie mindestens 1 Minute, bevor Sie den Code erneut senden.
+        sms:
+          enter_phone: 'Bitte geben Sie Ihre Telefonnummer ein:'
+          instruction: Die Telefonnummer ist Ihr Zugangsschlüssel zur Plattform. Wenn Sie Ihrem Konto kein Passwort hinzufügen, wird jedes Mal, wenn Sie sich einloggen möchten, eine SMS an Ihre Telefonnummer gesendet.
+          invalid_phone: 'Is not valid, it must start with 06 or 07 and contain 10 digits'
+        sms_option:
+          sms: SMS
+        sms_verification:
+          invalid_from_number: Die Absendernummer ist nicht richtig konfiguriert oder kann keine Nachrichten versenden. Bitte wenden Sie sich an den Support der Plattform, um weitere Hilfe zu erhalten.
+          invalid_geo_permission: Das System ist nicht für den Versand von Nachrichten in Ihrem Land konfiguriert. Bitte kontaktieren Sie den Support der Plattform für weitere Hilfe.
+          invalid_to_number: Die eingegebene Telefonnummer ist nicht korrekt. Bitte überprüfen Sie, ob Sie Ihre Telefonnummer korrekt eingegeben haben.
+          success: Verifizierungscode wurde an +49%{phone} gesendet.
+          text_message: Verwenden Sie den Code %{verification}, um sich auf der Plattform einzuloggen.
+          unknown: Ein Fehler ist aufgetreten und wurde protokolliert, bitte versuchen Sie es erneut. Sollte der Fehler weiterhin bestehen, wenden Sie sich bitte an den Support der Plattform.
+          already_exists: This phone number is not available, please enter another number.
+        verify:
+          have_not_received: Code nicht erhalten?
+          incorrect_email: "(falsche E-Mail Adresse?)"
+          incorrect_phone: "(falsche Telefonnummer?)"
+          inputs:
+            one: Erste Ziffer
+            other: Ziffer %{count}
+          resend_code: Erneut schicken.
+          submit: Prüfen
+        welcome: Willkommen auf der <br><strong>Plattform %{organization} !</strong>
+    shared:
+      half_signup_login_modal:
+        close_modal: Schließen
+        please_sign_in: Bitte loggen Sie sich ein
+        sign_up: Registrieren
