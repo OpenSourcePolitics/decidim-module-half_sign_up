@@ -54,6 +54,11 @@ fr:
             help_text: Cette option permet aux utilisateurs de s'inscrire et de se
               connecter à la plateforme en utilisant leur adresse e-mail en recevant
               un code de vérification par SMS.
+          sms_disabled:
+            help_text: Cette option est désactivée, veuillez contacter l'hôte de
+              la plateforme pour l'activer.
+          sms_gateway_service_not_defined: Le service de passerelle SMS n'est pas
+            défini.
           title: Paramètres disponibles via le code
       menu:
         auth_settings: Paramètres d'authentification

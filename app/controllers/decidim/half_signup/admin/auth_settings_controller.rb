@@ -28,6 +28,11 @@ module Decidim
               flash.now[:alert] = I18n.t("organization.update.error", scope: "decidim.admin")
               render :edit
             end
+
+            on(:sms_service_not_configured) do
+              flash[:alert] = I18n.t("sms_gateway_service_not_defined", scope: "decidim.half_signup.admin.auth_settings")
+              redirect_to action: :edit
+            end
           end
         end
       end

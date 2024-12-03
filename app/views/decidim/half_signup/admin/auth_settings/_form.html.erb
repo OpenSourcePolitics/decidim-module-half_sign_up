@@ -1,7 +1,16 @@
 <div class="wrapper">
   <div class="row">
     <div class="field">
-      <%= form.check_box :enable_partial_sms_signup, help_text: t("help_text", scope:"decidim.half_signup.admin.auth_settings.sms") %>
+      <% if Decidim.config.sms_gateway_service.nil? %>
+        <div class="help-text">
+          <%= form.check_box :enable_partial_sms_signup, disabled: true  %>
+        </div>
+        <div class="text-alert help-text">
+          <%= t("help_text", scope:"decidim.half_signup.admin.auth_settings.sms_disabled") %>
+        </div>
+      <% else %>
+        <%= form.check_box :enable_partial_sms_signup, help_text: t("help_text", scope:"decidim.half_signup.admin.auth_settings.sms") %>
+      <% end %>
     </div>
     <br/>
     <div class="field">

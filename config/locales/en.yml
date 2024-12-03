@@ -49,6 +49,10 @@ en:
           sms:
             help_text: This option allows users to sign up and sign in to the platform
               using their email address by receiving a verification code by SMS.
+          sms_disabled:
+            help_text: This option is disabled please contact the host of the platform
+              to enable it.
+          sms_gateway_service_not_defined: The SMS gateway service is not defined.
           title: Settings available through code
       menu:
         auth_settings: Authentication settings

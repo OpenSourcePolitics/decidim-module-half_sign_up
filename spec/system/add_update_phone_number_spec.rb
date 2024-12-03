@@ -7,12 +7,19 @@ describe "Add/update phone number", type: :system do
   let(:user) { create(:user, :confirmed, organization: organization) }
   let!(:auth_settings) { create(:auth_setting, organization: organization) }
   let(:decidim_half_signup_admin) { Decidim::HalfSignup::AdminEngine.routes.url_helpers }
+  let(:sms_gateway_service) { "Decidim::Verifications::Sms::ExampleGateway" }
   let(:phone) { "4578878784" }
 
   before do
     sign_in user
     switch_to_host(organization.host)
     visit decidim.account_path
+
+    allow(Decidim.config).to receive(:sms_gateway_service).and_return(sms_gateway_service)
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   context "when sms_auth is not enabled" do

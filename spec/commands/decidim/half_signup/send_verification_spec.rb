@@ -14,6 +14,7 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
   let(:valid) { true }
   let(:phone_number) { nil }
   let(:phone_country) { nil }
+  let(:sms_gateway_service) { "Decidim::Verifications::Sms::ExampleGateway" }
   let(:form) do
     double(
       valid?: valid,
@@ -27,6 +28,14 @@ describe Decidim::HalfSignup::SendVerification, type: :command do
 
   before do
     allow(SecureRandom).to receive(:random_number).and_return(verification)
+
+    Decidim.configure do |config|
+      config.sms_gateway_service = sms_gateway_service
+    end
+  end
+
+  after do
+    allow(Decidim.config).to receive(:sms_gateway_service).and_call_original
   end
 
   describe "when email" do
