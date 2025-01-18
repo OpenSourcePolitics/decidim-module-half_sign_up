@@ -3,6 +3,8 @@
 module Decidim
   module HalfSignup
     class AuthenticateUser < Decidim::Command
+      CODE_EXPIRATION_WINDOW = 5.minutes.freeze
+
       def initialize(form:, data:)
         @form = form
         @data = data
@@ -10,33 +12,34 @@ module Decidim
 
       def call
         return broadcast(:invalid) unless form.valid?
-        return broadcast(:invalid, verification_failed) unless validate!
 
-        user = nil
-        transaction do
-          user = find_or_create_user!
+        case validate_code
+        when :code_expired
+          return broadcast(:invalid, code_expired_message)
+        when :code_invalid
+          return broadcast(:invalid, verification_failed_message)
         end
 
-        Rails.logger.debug { "User authenticate: #{user.inspect}" }
+        user = nil
+        transaction { user = find_or_create_user! }
+
         return broadcast(:ok, user) if user.present?
 
-        broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
+        broadcast(:invalid, default_error_message)
       end
 
       private
 
       attr_reader :form, :data
 
-      def validate!
-        return false unless code_still_valid?
+      def validate_code
+        return :code_expired unless code_valid_within_window?
 
-        data["code"] == form.verification
+        :code_invalid unless data["code"] == form.verification
       end
 
-      def code_still_valid?
-        return false unless verification_code_sent_at
-
-        verification_code_sent_at > 5.minutes.ago
+      def code_valid_within_window?
+        verification_code_sent_at && verification_code_sent_at > CODE_EXPIRATION_WINDOW.ago
       end
 
       def verification_code_sent_at
@@ -44,80 +47,100 @@ module Decidim
       end
 
       def find_or_create_user!
-        user = if sms_auth?
-                 if session.present? && session[:user_id].present?
-                   existing_user = update_decidim_user_phone(session, data)
+        return authenticate_with_sms if sms_auth?
 
-                   existing_user.presence || find_user_by_phone_country(data)
-                 else
-                   find_user_by_phone_country(data)
-                 end
-               else
-                 Decidim::User.find_by(
-                   email: data["email"],
-                   organization: form.organization
-                 )
-               end
+        find_or_initialize_user
+      end
 
+      def authenticate_with_sms
+        existing_user = update_user_phone_from_session || find_user_by_phone_country
+        return existing_user if existing_user.present? && existing_user != :already_taken
+
+        find_user_by_phone_country
+      end
+
+      def update_user_phone_from_session
+        return unless session_present_and_valid?
+
+        user = Decidim::User.find(session[:user_id])
+        return if user_has_matching_phone?(user)
+        return :already_taken if phone_already_taken?
+
+        session[:has_validated] = true
+        user.update(
+          phone_number: data["phone"],
+          phone_country: data["country"]
+        )
+        user
+      rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid => e
+        Rails.logger.warn("Error updating user phone: #{e.message}")
+        nil
+      end
+
+      def session_present_and_valid?
+        data["session"]&.dig(:user_id).present?
+      end
+
+      def user_has_matching_phone?(user)
+        user.phone_number == data["phone"] && user.phone_country == data["country"]
+      end
+
+      def phone_already_taken?
+        find_user_by_phone_country.present?
+      end
+
+      def find_user_by_phone_country
+        Decidim::User.find_by(
+          organization: form.organization,
+          phone_number: data["phone"],
+          phone_country: data["country"]
+        )
+      end
+
+      def find_or_initialize_user
+        user = Decidim::User.find_by(email: data["email"], organization: form.organization)
         return user if user.present?
 
-        generated_password = SecureRandom.hex
-        Decidim::User.create! do |record|
-          record.name = I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
-          record.nickname = UserBaseEntity.nicknamize("#{record.name}_#{SecureRandom.hex(4)}")
-          record.email = data["email"].presence || generate_email(data["country"], data["phone"])
-          record.password = generated_password
-          record.password_confirmation = generated_password
+        create_user
+      end
 
-          record.skip_confirmation!
-
-          record.phone_number = data["phone"]
-          record.phone_country = data["country"]
-          record.tos_agreement = "1"
-          record.organization = form.organization
-          record.accepted_tos_version = Time.current unless Decidim::HalfSignup.show_tos_page_after_signup
-          record.locale = form.current_locale
+      def create_user
+        password = SecureRandom.hex
+        Decidim::User.create! do |user|
+          user.name = I18n.t("unnamed_user", scope: "decidim.half_signup.quick_auth.authenticate")
+          user.nickname = UserBaseEntity.nicknamize("#{user.name}_#{SecureRandom.hex(8)}")
+          user.email = data["email"].presence || generate_email
+          user.password = password
+          user.password_confirmation = password
+          user.skip_confirmation!
+          user.phone_number = data["phone"]
+          user.phone_country = data["country"]
+          user.tos_agreement = "1"
+          user.organization = form.organization
+          user.accepted_tos_version = Time.current unless Decidim::HalfSignup.show_tos_page_after_signup
+          user.locale = form.current_locale
         end
       end
 
-      def generate_email(country, phone)
-        EmailGenerator.new(form.organization, country, phone).generate
-      end
-
-      def verification_failed
-        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+      def generate_email
+        EmailGenerator.new(form.organization, data["country"], data["phone"]).generate
       end
 
       def sms_auth?
         data["method"] == "sms"
       end
 
-      def update_decidim_user_phone(session, data)
-        user = Decidim::User.find(session[:user_id])
-
-        return if check_phone_difference(user)
-
-        session[:has_validated] = true
-
-        user.update!(
-          phone_number: data["phone"],
-          phone_country: data["country"]
-        )
-        user
-      rescue ActiveRecord::RecordNotFound
-        nil
+      # Error messages
+      def verification_failed_message
+        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
 
-      def check_phone_difference(user)
-        user.phone_number.present? && (user.phone_number == data["phone"].to_s && user.phone_country == data["country"])
+      def code_expired_message
+        I18n.t("code_expired", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
 
-      def find_user_by_phone_country(data)
-        Decidim::User.find_by(
-          organization: form.organization,
-          phone_number: data["phone"],
-          phone_country: data["country"]
-        )
+      def default_error_message
+        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
     end
   end
