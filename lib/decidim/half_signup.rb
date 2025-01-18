@@ -42,5 +42,10 @@ module Decidim
     config_accessor :skip_csrf do
       false
     end
+
+    # Default configuration to enable or disable the CSRF token verification
+    config_accessor :show_sms_verification_code do
+      false
+    end
   end
 end

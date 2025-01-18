@@ -11,7 +11,7 @@
               <%= auth_link_generator %>
             </p>
             <%= decidim_form_for(@form, url: current_user.present? ? users_quick_auth_update_phone_path : users_quick_auth_authenticate_path, method: :post) do |form| %>
-              <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? %>
+              <%= render partial: "development_hint" if Rails.env.development? || Rails.env.test? || Decidim::HalfSignup.show_sms_verification_code %>
               <div class="columns small-12 smallmedium-10 medium-8 small-centered">
                 <div id="verification" class="flex-digits">
                   <% auth_code_length.times do |ind| %>
