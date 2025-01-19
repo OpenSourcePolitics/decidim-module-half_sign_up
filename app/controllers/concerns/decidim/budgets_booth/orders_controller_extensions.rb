@@ -72,10 +72,9 @@ module Decidim
         end
 
         def order
-          result = Decidim::Budgets::Order.find_by(decidim_budgets_budget_id: params[:budget_id])
-          return nil unless result && result.checked_out_at.present?
+          return unless current_order.present? && current_order.checked_out_at.present?
 
-          result
+          current_order
         end
       end
     end

@@ -53,6 +53,8 @@ class HalfSignupMiddleware
   end
 
   def sign_out_user(request)
+    request.session[:user_id] = nil
+    request.session[:has_validated] = nil
     request.session["warden.user.user.key"] = nil
   end
 end

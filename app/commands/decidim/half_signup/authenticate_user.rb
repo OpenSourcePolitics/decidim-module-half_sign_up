@@ -3,6 +3,8 @@
 module Decidim
   module HalfSignup
     class AuthenticateUser < Decidim::Command
+      CODE_EXPIRATION_WINDOW = 5.minutes.freeze
+
       def initialize(form:, data:)
         @form = form
         @data = data
@@ -10,7 +12,13 @@ module Decidim
 
       def call
         return broadcast(:invalid) unless form.valid?
-        return broadcast(:invalid, verification_failed) unless validate!
+
+        case validate_code
+        when :code_expired
+          return broadcast(:invalid, code_expired_message)
+        when :code_invalid
+          return broadcast(:invalid, verification_failed_message)
+        end
 
         user = nil
         transaction do
@@ -18,7 +26,8 @@ module Decidim
         end
 
         Rails.logger.debug { "User authenticate: #{user.inspect}" }
-        return broadcast(:ok, user) if user.present?
+        return broadcast(:ok, user) if user.present? && user.is_a?(Decidim::User)
+        return broadcast(:invalid, I18n.t("phone_taken", scope: "decidim.half_signup.quick_auth.authenticate_user")) if user == :phone_number_taken
 
         broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
       end
@@ -27,22 +36,22 @@ module Decidim
 
       attr_reader :form, :data
 
-      def validate!
-        return false unless code_still_valid?
+      def validate_code
+        return :code_expired unless code_still_valid?
 
-        data["code"] == form.verification
+        :code_invalid unless data["code"] == form.verification
       end
 
       def code_still_valid?
-        return false unless verification_code_sent_at
-
-        verification_code_sent_at > 5.minutes.ago
+        verification_code_sent_at && verification_code_sent_at > CODE_EXPIRATION_WINDOW.ago
       end
 
       def verification_code_sent_at
         @verification_code_sent_at ||= data["sent_at"]&.in_time_zone
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def find_or_create_user!
         user = if sms_auth?
                  if session.present? && session[:user_id].present?
@@ -78,7 +87,12 @@ module Decidim
           record.accepted_tos_version = Time.current unless Decidim::HalfSignup.show_tos_page_after_signup
           record.locale = form.current_locale
         end
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.debug { "Error creating user: #{e.inspect}" }
+        :phone_number_taken if e.message.downcase.include?("email")
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
 
       def generate_email(country, phone)
         EmailGenerator.new(form.organization, country, phone).generate
@@ -104,8 +118,9 @@ module Decidim
           phone_country: data["country"]
         )
         user
-      rescue ActiveRecord::RecordNotFound
-        nil
+      rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid => e
+        Rails.logger.debug { "Error updating user: #{e.inspect}" }
+        :phone_number_taken if e.message.downcase.include?("email") || e.message.downcase.include?("phone")
       end
 
       def check_phone_difference(user)
