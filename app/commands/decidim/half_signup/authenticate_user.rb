@@ -50,6 +50,8 @@ module Decidim
         @verification_code_sent_at ||= data["sent_at"]&.in_time_zone
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def find_or_create_user!
         user = if sms_auth?
                  if session.present? && session[:user_id].present?
@@ -85,11 +87,12 @@ module Decidim
           record.accepted_tos_version = Time.current unless Decidim::HalfSignup.show_tos_page_after_signup
           record.locale = form.current_locale
         end
-
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.debug { "Error creating user: #{e.inspect}" }
         :phone_number_taken if e.message.downcase.include?("email")
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
 
       def generate_email(country, phone)
         EmailGenerator.new(form.organization, country, phone).generate
