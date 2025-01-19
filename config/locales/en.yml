@@ -63,9 +63,11 @@ en:
         authenticate_user:
           authenticity_token: Your session has expired. Please try submitting the
             form again.
+          code_expired: The code has expired. Please resend a code.
           error: Verification failed. Please try again.
           phone_exist: This phone number is bined to another account. Please use another
             phone number, or contact administration.
+          phone_taken: This phone number is already in use.
           signed_in: Signed in successfully.
           threshold_exceeded: Too many failed attempts. Please try again later.
           unauthorized: You are not authorized to perform this action.
@@ -115,10 +117,13 @@ en:
           instruction: The phone number will be your key to the platform. Unless you
             add a password to your accout, an SMS will be sent to your phone number
             every time you wish to sign in.
-          invalid_phone: 'Is not valid, it must start with 06 or 07 and contain 10 digits'
+          invalid_phone: Is not valid, it must start with 06 or 07 and contain 10
+            digits
         sms_option:
           sms: SMS
         sms_verification:
+          already_exists: This phone number is not available, please enter another
+            number.
           invalid_from_number: The sender number is not correctly configured or is
             not able to send messages. Please contact the platform support for further
             help.
@@ -130,7 +135,6 @@ en:
           text_message: Use code %{verification} to sign in to the platform.
           unknown: An error occured which has been logged, please try again. If the
             error persists, please contact the platform support for further help.
-          already_exists: This phone number is not available, please enter another number.
         verify:
           have_not_received: Haven't received the code?
           incorrect_email: "(incorrect address?)"

@@ -55,8 +55,8 @@ fr:
               connecter à la plateforme en utilisant leur adresse e-mail en recevant
               un code de vérification par SMS.
           sms_disabled:
-            help_text: Cette option est désactivée, veuillez contacter l'hôte de
-              la plateforme pour l'activer.
+            help_text: Cette option est désactivée, veuillez contacter l'hôte de la
+              plateforme pour l'activer.
           sms_gateway_service_not_defined: Le service de passerelle SMS n'est pas
             défini.
           title: Paramètres disponibles via le code
@@ -69,9 +69,11 @@ fr:
         authenticate_user:
           authenticity_token: Votre session a expiré, veuillez à nouveau remplir le
             formulaire.
+          code_expired: Le code a expiré. Veuillez renvoyer un code.
           error: La vérification a échoué. Veuillez réessayer.
           phone_exist: Ce numéro de téléphone est lié à un autre compte. Veuillez
             utiliser un autre numéro de téléphone, ou contacter l'administration.
+          phone_taken: Ce numéro de téléphone est déjà utilisé.
           signed_in: Connexion réussie.
           threshold_exceeded: Trop de tentatives échouées. Veuillez réessayer plus
             tard.
@@ -120,11 +122,17 @@ fr:
           not_allowed: Veuillez attendre au moins 1 minute avant de renvoyer le code.
         sms:
           enter_phone: 'Veuillez saisir votre numéro de téléphone :'
-          instruction: Le numéro de téléphone sera votre clé d'accès à la plateforme. À moins que vous n'ajoutiez un mot de passe à votre compte, un SMS sera envoyé à votre numéro de téléphone chaque fois que vous souhaitez vous connecter.
-          invalid_phone: "N'est pas valide, il doit commencer par 06 ou 07 et contenir 10 chiffres"
+          instruction: Le numéro de téléphone sera votre clé d'accès à la plateforme.
+            À moins que vous n'ajoutiez un mot de passe à votre compte, un SMS sera
+            envoyé à votre numéro de téléphone chaque fois que vous souhaitez vous
+            connecter.
+          invalid_phone: N'est pas valide, il doit commencer par 06 ou 07 et contenir
+            10 chiffres
         sms_option:
           sms: SMS
         sms_verification:
+          already_exists: Ce numéro de téléphone n'est pas disponible, veuillez renseigner
+            un autre numéro.
           invalid_from_number: Le numéro de l'expéditeur n'est pas correctement configuré
             ou n'est pas capable d'envoyer des messages. Veuillez contacter le support
             de la plateforme pour obtenir de l'aide supplémentaire.
@@ -135,9 +143,11 @@ fr:
             correct. Veuillez vérifier que vous avez entré correctement votre numéro
             de téléphone.
           success: Code de vérification envoyé à %{phone}.
-          text_message: Utilisez le code %{verification} pour vous connecter à la plateforme.
-          unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer. Si l'erreur persiste, veuillez contacter le support de la plateforme pour obtenir de l'aide supplémentaire.
-          already_exists: Ce numéro de téléphone n'est pas disponible, veuillez renseigner un autre numéro.
+          text_message: Utilisez le code %{verification} pour vous connecter à la
+            plateforme.
+          unknown: Une erreur s'est produite et a été journalisée, veuillez réessayer.
+            Si l'erreur persiste, veuillez contacter le support de la plateforme pour
+            obtenir de l'aide supplémentaire.
         verify:
           have_not_received: Vous n'avez pas reçu le code ?
           incorrect_email: "(adresse incorrecte ?)"
