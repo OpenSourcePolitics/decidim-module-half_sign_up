@@ -29,7 +29,7 @@ module Decidim
         return broadcast(:ok, user) if user.present? && user.is_a?(Decidim::User)
         return broadcast(:invalid, I18n.t("phone_taken", scope: "decidim.half_signup.quick_auth.authenticate_user")) if user == :phone_number_taken
 
-        broadcast(:invalid, I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user"))
+        broadcast(:invalid, default_error_message)
       end
 
       private
@@ -133,6 +133,19 @@ module Decidim
           phone_number: data["phone"],
           phone_country: data["country"]
         )
+      end
+
+      # Error messages
+      def verification_failed_message
+        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
+      end
+
+      def code_expired_message
+        I18n.t("code_expired", scope: "decidim.half_signup.quick_auth.authenticate_user")
+      end
+
+      def default_error_message
+        I18n.t("error", scope: "decidim.half_signup.quick_auth.authenticate_user")
       end
     end
   end
